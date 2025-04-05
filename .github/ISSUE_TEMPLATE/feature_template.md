@@ -1,6 +1,6 @@
 ---
 name: feature_template
-about: 해당 이슈 템플릿을 사용하여 이슈를 생성해주세요.
+about: '기능 추가 템플릿'
 title: 'feat: '
 labels: ['✨feature']
 assignees: ''
