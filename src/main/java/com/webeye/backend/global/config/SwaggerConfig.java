@@ -5,8 +5,8 @@ import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.servers.Server;
 
 @OpenAPIDefinition(
-        info = @Info(title = "WebEye API 명세서",
-                description = "WebEye API 명세서",
+        info = @Info(title = "VOIM API 명세서",
+                description = "VOIM API 명세서",
                 version = "v1"
         ),
         servers = @Server(url = "/api", description = "Default Server URL")
