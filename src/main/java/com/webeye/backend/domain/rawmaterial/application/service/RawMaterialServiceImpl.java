@@ -29,7 +29,7 @@ public class RawMaterialServiceImpl implements RawMaterialService {
 
     @Override
     @Transactional
-    public RawMaterialResponseDTO.Body getRawMaterial() {
+    public RawMaterialResponseDTO.Body callRawMaterialAPI() {
         RawMaterialResponseDTO response = rawMaterialClient.getRawMaterialInfo(serviceKey, 1, 100, "json");
 
         RawMaterialResponseDTO.Response responseDto = response.getResponse();
