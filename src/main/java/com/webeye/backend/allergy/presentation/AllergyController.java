@@ -2,6 +2,7 @@ package com.webeye.backend.allergy.presentation;
 
 import com.webeye.backend.allergy.application.AllergyService;
 import com.webeye.backend.allergy.dto.response.AllergyResponse;
+import com.webeye.backend.allergy.presentation.swagger.AllergySwagger;
 import com.webeye.backend.global.dto.response.SuccessResponse;
 import com.webeye.backend.imageanalysis.dto.request.ImageAnalysisRequest;
 import lombok.RequiredArgsConstructor;
@@ -13,9 +14,10 @@ import static com.webeye.backend.global.dto.response.type.SuccessCode.ALLERGY_AN
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/allergy")
-public class AllergyController {
+public class AllergyController implements AllergySwagger {
     private final AllergyService allergyService;
 
+    @Override
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "")
     public SuccessResponse<AllergyResponse> allergyAnalysis(@RequestBody ImageAnalysisRequest request) {

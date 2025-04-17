@@ -17,6 +17,7 @@ import static com.webeye.backend.global.dto.response.type.SuccessCode.NUTRITION_
 public class NutritionController implements NutritionSwagger {
     private final NutritionService nutritionService;
 
+    @Override
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "")
     public SuccessResponse<NutritionResponse> nutritionAnalysis(@RequestBody ImageAnalysisRequest request) {
