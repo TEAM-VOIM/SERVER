@@ -5,6 +5,7 @@ import com.webeye.backend.explanation.dto.response.DetailExplanationResponse;
 import com.webeye.backend.explanation.dto.response.PointExplanationResponse;
 import com.webeye.backend.imageanalysis.dto.request.ImageAnalysisPrompt;
 import com.webeye.backend.imageanalysis.dto.request.ImageAnalysisRequest;
+import com.webeye.backend.nutrition.dto.response.NutritionResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
@@ -86,6 +87,19 @@ public class OpenAiClient {
 
         ImageAnalysisPrompt prompt = new ImageAnalysisPrompt(system, user);
         return callWithStructuredOutput(request, prompt, AllergyResponse.class);
+    }
+
+    public NutritionResponse explainNutrition(ImageAnalysisRequest request) {
+        String system = """
+                You are a nutrition description assistant.
+                """;
+
+        String user = """
+                If the attached images contain 'nutrition information', please provide the amount of each nutrient in the format I sent.
+                """;
+
+        ImageAnalysisPrompt prompt = new ImageAnalysisPrompt(system, user);
+        return callWithStructuredOutput(request, prompt, NutritionResponse.class);
     }
 
 
