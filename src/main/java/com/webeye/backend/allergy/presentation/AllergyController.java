@@ -2,12 +2,13 @@ package com.webeye.backend.allergy.presentation;
 
 import com.webeye.backend.allergy.application.AllergyService;
 import com.webeye.backend.allergy.dto.response.AllergyResponse;
+import com.webeye.backend.global.dto.response.SuccessResponse;
 import com.webeye.backend.imageanalysis.dto.request.ImageAnalysisRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+import static com.webeye.backend.global.dto.response.type.SuccessCode.ALLERGY_ANALYSIS_SUCCESS;
 
 @RequiredArgsConstructor
 @RestController
@@ -15,8 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class AllergyController {
     private final AllergyService allergyService;
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "")
-    public AllergyResponse allergyAnalysis(@RequestBody ImageAnalysisRequest request) {
-        return allergyService.analyzeAllergy(request);
+    public SuccessResponse<AllergyResponse> allergyAnalysis(@RequestBody ImageAnalysisRequest request) {
+        return SuccessResponse.of(ALLERGY_ANALYSIS_SUCCESS ,allergyService.analyzeAllergy(request));
     }
 }

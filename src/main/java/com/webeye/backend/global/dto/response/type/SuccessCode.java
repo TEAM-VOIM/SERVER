@@ -13,6 +13,8 @@ public enum SuccessCode {
     // nutrition
     NUTRITION_ANALYSIS_SUCCESS(201, "Nutrition analysis success"),
 
+    // allergy
+    ALLERGY_ANALYSIS_SUCCESS(201, "Allergy analysis success"),
 
     ;
 
