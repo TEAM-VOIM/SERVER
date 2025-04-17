@@ -9,6 +9,11 @@ public enum SuccessCode {
 
     // health
     HEALTH_CHECK_SUCCESS(200, "Health Check Success"),
+
+    // nutrition
+    NUTRITION_ANALYSIS_SUCCESS(201, "Nutrition analysis success"),
+
+
     ;
 
     private final int status;

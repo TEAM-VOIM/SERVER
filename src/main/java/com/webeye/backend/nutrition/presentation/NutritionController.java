@@ -1,22 +1,25 @@
 package com.webeye.backend.nutrition.presentation;
 
+import com.webeye.backend.global.dto.response.SuccessResponse;
 import com.webeye.backend.imageanalysis.dto.request.ImageAnalysisRequest;
 import com.webeye.backend.nutrition.application.NutritionService;
 import com.webeye.backend.nutrition.dto.response.NutritionResponse;
+import com.webeye.backend.nutrition.presentation.swagger.NutritionSwagger;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+import static com.webeye.backend.global.dto.response.type.SuccessCode.NUTRITION_ANALYSIS_SUCCESS;
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/nutrition")
-public class NutritionController {
+public class NutritionController implements NutritionSwagger {
     private final NutritionService nutritionService;
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "")
-    public NutritionResponse nutritionAnalysis(@RequestBody ImageAnalysisRequest request) {
-        return nutritionService.analyzeNutrition(request);
+    public SuccessResponse<NutritionResponse> nutritionAnalysis(@RequestBody ImageAnalysisRequest request) {
+        return SuccessResponse.of(NUTRITION_ANALYSIS_SUCCESS, nutritionService.analyzeNutrition(request));
     }
 }
