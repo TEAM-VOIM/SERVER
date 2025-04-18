@@ -1,8 +1,9 @@
-package com.webeye.backend.imageanalysis.infrastrucutre;
+package com.webeye.backend.imageanalysis.infrastructure;
 
 import com.webeye.backend.allergy.dto.response.AllergyResponse;
 import com.webeye.backend.explanation.dto.response.DetailExplanationResponse;
 import com.webeye.backend.explanation.dto.response.PointExplanationResponse;
+import com.webeye.backend.global.error.BusinessException;
 import com.webeye.backend.imageanalysis.dto.request.ImageAnalysisPrompt;
 import com.webeye.backend.imageanalysis.dto.request.ImageAnalysisRequest;
 import com.webeye.backend.nutrition.dto.response.NutritionResponse;
@@ -15,6 +16,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.MimeType;
 
 import java.net.MalformedURLException;
+
+import static com.webeye.backend.global.error.ErrorCode.FILE_EXTENSION_NOT_FOUND;
+import static com.webeye.backend.global.error.ErrorCode.INVALID_IMAGE_URL;
 
 @Slf4j
 @Component
@@ -116,7 +120,7 @@ public class OpenAiClient {
                         }
                     } catch (MalformedURLException exception) {
                         log.error("MalformedURLException: callWithStructuredOutput() 에서 발생");
-                        throw new RuntimeException();
+                        throw new BusinessException(INVALID_IMAGE_URL);
                     }
                 })
                 .system(prompt.system())
@@ -130,7 +134,7 @@ public class OpenAiClient {
         String fileName = url.substring(url.lastIndexOf('/') + 1);
         int dotIndex = fileName.lastIndexOf('.');
         if (dotIndex == -1) {
-            return "";
+            throw new BusinessException(FILE_EXTENSION_NOT_FOUND);
         }
         return fileName.substring(dotIndex + 1);
     }

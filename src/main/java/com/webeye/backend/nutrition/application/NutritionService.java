@@ -1,7 +1,7 @@
 package com.webeye.backend.nutrition.application;
 
 import com.webeye.backend.imageanalysis.dto.request.ImageAnalysisRequest;
-import com.webeye.backend.imageanalysis.infrastrucutre.OpenAiClient;
+import com.webeye.backend.imageanalysis.infrastructure.OpenAiClient;
 import com.webeye.backend.nutrition.dto.response.NutritionResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

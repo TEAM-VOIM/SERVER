@@ -1,4 +1,4 @@
-package com.webeye.backend.imageanalysis.infrastrucutre;
+package com.webeye.backend.imageanalysis.infrastructure;
 
 import org.springframework.util.MimeType;
 import org.springframework.util.MimeTypeUtils;

@@ -2,7 +2,7 @@ package com.webeye.backend.allergy.application;
 
 import com.webeye.backend.allergy.dto.response.AllergyResponse;
 import com.webeye.backend.imageanalysis.dto.request.ImageAnalysisRequest;
-import com.webeye.backend.imageanalysis.infrastrucutre.OpenAiClient;
+import com.webeye.backend.imageanalysis.infrastructure.OpenAiClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
