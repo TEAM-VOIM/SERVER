@@ -1,11 +1,14 @@
 package com.webeye.backend.imageanalysis.infrastructure;
 
+import com.webeye.backend.global.error.BusinessException;
 import org.springframework.util.MimeType;
 import org.springframework.util.MimeTypeUtils;
 
 import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import static com.webeye.backend.global.error.ErrorCode.UNSUPPORTED_IMAGE_TYPE;
 
 public enum ImageMimeType {
     PNG("png", MimeTypeUtils.IMAGE_PNG),
@@ -33,7 +36,7 @@ public enum ImageMimeType {
         String lowerExtension = extension.toLowerCase();
         MimeType mimeType = EXTENSION_TO_MIMETYPE_MAP.get(lowerExtension);
         if (mimeType == null) {
-            throw new IllegalArgumentException("Unsupported image extension: " + extension);
+            throw new BusinessException(UNSUPPORTED_IMAGE_TYPE);
         }
         return mimeType;
     }
