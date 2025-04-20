@@ -1,7 +1,7 @@
-package com.webeye.backend.domain.rawmaterial.infrastructure.mapper;
+package com.webeye.backend.rawmaterial.infrastructure.mapper;
 
-import com.webeye.backend.domain.rawmaterial.domain.RawMaterial;
-import com.webeye.backend.domain.rawmaterial.dto.RawMaterialResponseDTO;
+import com.webeye.backend.rawmaterial.domain.RawMaterial;
+import com.webeye.backend.rawmaterial.dto.RawMaterialResponseDTO;
 
 import java.util.List;
 import java.util.stream.Collectors;

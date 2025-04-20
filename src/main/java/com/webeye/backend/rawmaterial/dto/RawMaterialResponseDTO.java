@@ -1,4 +1,4 @@
-package com.webeye.backend.domain.rawmaterial.dto;
+package com.webeye.backend.rawmaterial.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,8 +1,8 @@
-package com.webeye.backend.domain.rawmaterial.presentation;
+package com.webeye.backend.rawmaterial.presentation;
 
-import com.webeye.backend.domain.rawmaterial.application.service.RawMaterialService;
-import com.webeye.backend.domain.rawmaterial.dto.RawMaterialResponseDTO;
-import com.webeye.backend.domain.rawmaterial.presentation.swagger.RawMaterialSwagger;
+import com.webeye.backend.rawmaterial.application.service.RawMaterialService;
+import com.webeye.backend.rawmaterial.dto.RawMaterialResponseDTO;
+import com.webeye.backend.rawmaterial.presentation.swagger.RawMaterialSwagger;
 import com.webeye.backend.global.dto.response.SuccessResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

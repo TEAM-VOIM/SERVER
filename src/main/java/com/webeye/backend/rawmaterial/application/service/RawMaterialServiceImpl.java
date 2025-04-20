@@ -1,10 +1,10 @@
-package com.webeye.backend.domain.rawmaterial.application.service;
+package com.webeye.backend.rawmaterial.application.service;
 
-import com.webeye.backend.domain.rawmaterial.infrastructure.mapper.RawMaterialMapper;
-import com.webeye.backend.domain.rawmaterial.domain.RawMaterial;
-import com.webeye.backend.domain.rawmaterial.dto.RawMaterialResponseDTO;
-import com.webeye.backend.domain.rawmaterial.infrastructure.client.RawMaterialClient;
-import com.webeye.backend.domain.rawmaterial.infrastructure.persistence.RawMaterialRepository;
+import com.webeye.backend.rawmaterial.infrastructure.mapper.RawMaterialMapper;
+import com.webeye.backend.rawmaterial.domain.RawMaterial;
+import com.webeye.backend.rawmaterial.dto.RawMaterialResponseDTO;
+import com.webeye.backend.rawmaterial.infrastructure.client.RawMaterialClient;
+import com.webeye.backend.rawmaterial.infrastructure.persistence.RawMaterialRepository;
 import com.webeye.backend.global.error.BusinessException;
 import com.webeye.backend.global.error.ErrorCode;
 import lombok.RequiredArgsConstructor;

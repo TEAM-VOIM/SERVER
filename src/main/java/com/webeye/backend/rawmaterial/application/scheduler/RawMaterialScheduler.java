@@ -1,6 +1,6 @@
-package com.webeye.backend.domain.rawmaterial.application.scheduler;
+package com.webeye.backend.rawmaterial.application.scheduler;
 
-import com.webeye.backend.domain.rawmaterial.application.service.RawMaterialService;
+import com.webeye.backend.rawmaterial.application.service.RawMaterialService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;

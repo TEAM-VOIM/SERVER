@@ -1,6 +1,6 @@
-package com.webeye.backend.domain.rawmaterial.infrastructure.client;
+package com.webeye.backend.rawmaterial.infrastructure.client;
 
-import com.webeye.backend.domain.rawmaterial.dto.RawMaterialResponseDTO;
+import com.webeye.backend.rawmaterial.dto.RawMaterialResponseDTO;
 import com.webeye.backend.global.config.OpenFeignConfig;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;

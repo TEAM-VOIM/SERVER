@@ -1,4 +1,4 @@
-package com.webeye.backend.domain.rawmaterial.domain;
+package com.webeye.backend.rawmaterial.domain;
 
 import com.webeye.backend.global.domain.BaseEntity;
 import jakarta.persistence.*;

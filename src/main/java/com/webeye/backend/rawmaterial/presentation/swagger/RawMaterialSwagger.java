@@ -1,6 +1,6 @@
-package com.webeye.backend.domain.rawmaterial.presentation.swagger;
+package com.webeye.backend.rawmaterial.presentation.swagger;
 
-import com.webeye.backend.domain.rawmaterial.dto.RawMaterialResponseDTO;
+import com.webeye.backend.rawmaterial.dto.RawMaterialResponseDTO;
 import com.webeye.backend.global.dto.response.SuccessResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
