@@ -2,7 +2,7 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ "main", "develop", "feat/#20-ncp" ]
+    branches: [ "main", "develop" ]
 
 jobs:
   build-docker-image:
