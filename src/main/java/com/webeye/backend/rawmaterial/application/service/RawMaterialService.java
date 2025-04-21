@@ -1,7 +1,7 @@
 package com.webeye.backend.rawmaterial.application.service;
 
-import com.webeye.backend.rawmaterial.dto.RawMaterialResponseDTO;
+import com.webeye.backend.rawmaterial.dto.RawMaterialResponse;
 
 public interface RawMaterialService {
-    RawMaterialResponseDTO.Body callRawMaterialAPI();
+    RawMaterialResponse.Body callRawMaterialAPI(int pageNo, int numOfRows);
 }

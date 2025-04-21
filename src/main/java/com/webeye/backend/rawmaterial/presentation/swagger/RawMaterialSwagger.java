@@ -1,6 +1,6 @@
 package com.webeye.backend.rawmaterial.presentation.swagger;
 
-import com.webeye.backend.rawmaterial.dto.RawMaterialResponseDTO;
+import com.webeye.backend.rawmaterial.dto.RawMaterialResponse;
 import com.webeye.backend.global.dto.response.SuccessResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -19,5 +19,5 @@ public interface RawMaterialSwagger {
                     description = "OPEN API가 성공적으로 호출되었습니다."
             )
     })
-    SuccessResponse<RawMaterialResponseDTO.Body> callRawMaterialApi();
+    SuccessResponse<RawMaterialResponse.Body> callRawMaterialApi(int pageNo, int numOfRows);
 }

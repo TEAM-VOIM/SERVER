@@ -1,84 +1,95 @@
 package com.webeye.backend.rawmaterial.infrastructure.mapper;
 
 import com.webeye.backend.rawmaterial.domain.RawMaterial;
-import com.webeye.backend.rawmaterial.dto.RawMaterialResponseDTO;
+import com.webeye.backend.rawmaterial.dto.RawMaterialResponse;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class RawMaterialMapper {
 
-    public static RawMaterial toEntity(RawMaterialResponseDTO.Item item) {
+    public static RawMaterial toEntity(RawMaterialResponse.Item item) {
         return RawMaterial.builder()
-                .foodCd(item.getFoodCd())
-                .foodNm(item.getFoodNm())
-                .nutConSrtrQua(item.getNutConSrtrQua())
-                .enerc(item.getEnerc())
-                .water(item.getWater())
-                .prot(item.getProt())
-                .fatce(item.getFatce())
-                .ash(item.getAsh())
-                .chocdf(item.getChocdf())
-                .sugar(item.getSugar())
-                .fibtg(item.getFibtg())
-                .ca(item.getCa())
-                .fe(item.getFe())
-                .p(item.getP())
-                .k(item.getK())
-                .nat(item.getNat())
-                .vitaRae(item.getVitaRae())
-                .retol(item.getRetol())
-                .cartb(item.getCartb())
-                .thia(item.getThia())
-                .ribf(item.getRibf())
-                .nia(item.getNia())
-                .vitc(item.getVitc())
-                .vitd(item.getVitd())
-                .chole(item.getChole())
-                .fasat(item.getFasat())
-                .fartn(item.getFartn())
+                .foodCd(item.foodCd())
+                .foodNm(item.foodNm())
+                .nutConSrtrQua(item.nutConSrtrQua())
+                .enerc(item.enerc())
+                .water(item.water())
+                .prot(item.prot())
+                .fatce(item.fatce())
+                .ash(item.ash())
+                .chocdf(item.chocdf())
+                .sugar(item.sugar())
+                .fibtg(item.fibtg())
+                .ca(item.ca())
+                .fe(item.fe())
+                .p(item.p())
+                .k(item.k())
+                .nat(item.nat())
+                .vitaRae(item.vitaRae())
+                .retol(item.retol())
+                .cartb(item.cartb())
+                .thia(item.thia())
+                .ribf(item.ribf())
+                .nia(item.nia())
+                .vitc(item.vitc())
+                .vitd(item.vitd())
+                .chole(item.chole())
+                .fasat(item.fasat())
+                .fartn(item.fartn())
                 .build();
     }
 
-    public static RawMaterialResponseDTO.Item of(RawMaterial rawMaterial) {
-        return RawMaterialResponseDTO.Item.builder()
-                .rawMaterialId(rawMaterial.getId())
-                .foodCd(rawMaterial.getFoodCd())
-                .foodNm(rawMaterial.getFoodNm())
-                .nutConSrtrQua(rawMaterial.getNutConSrtrQua())
-                .enerc(rawMaterial.getEnerc())
-                .water(rawMaterial.getWater())
-                .prot(rawMaterial.getProt())
-                .fatce(rawMaterial.getFatce())
-                .ash(rawMaterial.getAsh())
-                .chocdf(rawMaterial.getChocdf())
-                .sugar(rawMaterial.getSugar())
-                .fibtg(rawMaterial.getFibtg())
-                .ca(rawMaterial.getCa())
-                .fe(rawMaterial.getFe())
-                .p(rawMaterial.getP())
-                .k(rawMaterial.getK())
-                .nat(rawMaterial.getNat())
-                .vitaRae(rawMaterial.getVitaRae())
-                .retol(rawMaterial.getRetol())
-                .cartb(rawMaterial.getCartb())
-                .thia(rawMaterial.getThia())
-                .ribf(rawMaterial.getRibf())
-                .nia(rawMaterial.getNia())
-                .vitc(rawMaterial.getVitc())
-                .vitd(rawMaterial.getVitd())
-                .chole(rawMaterial.getChole())
-                .fasat(rawMaterial.getFasat())
-                .fartn(rawMaterial.getFartn())
-                .build();
+    public static RawMaterialResponse.Item of(RawMaterial rawMaterial) {
+        return new RawMaterialResponse.Item(
+                rawMaterial.getId(),
+                rawMaterial.getFoodCd(),
+                rawMaterial.getFoodNm(),
+                rawMaterial.getNutConSrtrQua(),
+                rawMaterial.getEnerc(),
+                rawMaterial.getWater(),
+                rawMaterial.getProt(),
+                rawMaterial.getFatce(),
+                rawMaterial.getAsh(),
+                rawMaterial.getChocdf(),
+                rawMaterial.getSugar(),
+                rawMaterial.getFibtg(),
+                rawMaterial.getCa(),
+                rawMaterial.getFe(),
+                rawMaterial.getP(),
+                rawMaterial.getK(),
+                rawMaterial.getNat(),
+                rawMaterial.getVitaRae(),
+                rawMaterial.getRetol(),
+                rawMaterial.getCartb(),
+                rawMaterial.getThia(),
+                rawMaterial.getRibf(),
+                rawMaterial.getNia(),
+                rawMaterial.getVitc(),
+                rawMaterial.getVitd(),
+                rawMaterial.getChole(),
+                rawMaterial.getFasat(),
+                rawMaterial.getFartn()
+        );
     }
 
-    public static RawMaterialResponseDTO.Body ofList(List<RawMaterial> rawMaterials) {
-        List<RawMaterialResponseDTO.Item> rawMaterialResponseDTOList = rawMaterials.stream()
-                .map(RawMaterialMapper::of).collect(Collectors.toList());
+    public static List<RawMaterial> toEntityList(List<RawMaterialResponse.Item> items) {
+        return items.stream()
+                .map(RawMaterialMapper::toEntity)
+                .collect(Collectors.toList());
+    }
 
-        return RawMaterialResponseDTO.Body.builder()
-                .items(rawMaterialResponseDTOList)
-                .build();
+    public static RawMaterialResponse.Body of(List<RawMaterial> list, int totalCount, int numOfRows, int pageNo) {
+        List<RawMaterialResponse.Item> itemList = list.stream()
+                .map(RawMaterialMapper::of)
+                .collect(Collectors.toList());
+
+        return new RawMaterialResponse.Body(
+                itemList,
+                String.valueOf(totalCount),
+                String.valueOf(numOfRows),
+                String.valueOf(pageNo)
+        );
     }
 }

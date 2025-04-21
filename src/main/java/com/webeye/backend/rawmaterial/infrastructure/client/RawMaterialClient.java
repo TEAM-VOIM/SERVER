@@ -1,6 +1,6 @@
 package com.webeye.backend.rawmaterial.infrastructure.client;
 
-import com.webeye.backend.rawmaterial.dto.RawMaterialResponseDTO;
+import com.webeye.backend.rawmaterial.dto.RawMaterialResponse;
 import com.webeye.backend.global.config.OpenFeignConfig;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +17,7 @@ public interface RawMaterialClient {
             value = "/openapi/tn_pubr_public_nutri_material_info_api",
             produces = "application/json"
     )
-    RawMaterialResponseDTO getRawMaterialInfo(
+    RawMaterialResponse getRawMaterialInfo(
             @RequestParam("serviceKey") String serviceKey,
             @RequestParam("pageNo") int pageNo,
             @RequestParam("numOfRows") int numOfRows,

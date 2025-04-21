@@ -1,7 +1,7 @@
 package com.webeye.backend.rawmaterial.presentation;
 
 import com.webeye.backend.rawmaterial.application.service.RawMaterialService;
-import com.webeye.backend.rawmaterial.dto.RawMaterialResponseDTO;
+import com.webeye.backend.rawmaterial.dto.RawMaterialResponse;
 import com.webeye.backend.rawmaterial.presentation.swagger.RawMaterialSwagger;
 import com.webeye.backend.global.dto.response.SuccessResponse;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ public class RawMaterialController implements RawMaterialSwagger {
     private final RawMaterialService rawMaterialService;
 
     @GetMapping
-    public SuccessResponse<RawMaterialResponseDTO.Body> callRawMaterialApi() {
-        return SuccessResponse.of(RAW_MATERIAL_API_SUCCESS, rawMaterialService.callRawMaterialAPI());
+    public SuccessResponse<RawMaterialResponse.Body> callRawMaterialApi(int pageNo, int numOfRows) {
+        return SuccessResponse.of(RAW_MATERIAL_API_SUCCESS, rawMaterialService.callRawMaterialAPI(pageNo, numOfRows));
     }
 }

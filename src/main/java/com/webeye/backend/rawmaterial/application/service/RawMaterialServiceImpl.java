@@ -2,7 +2,7 @@ package com.webeye.backend.rawmaterial.application.service;
 
 import com.webeye.backend.rawmaterial.infrastructure.mapper.RawMaterialMapper;
 import com.webeye.backend.rawmaterial.domain.RawMaterial;
-import com.webeye.backend.rawmaterial.dto.RawMaterialResponseDTO;
+import com.webeye.backend.rawmaterial.dto.RawMaterialResponse;
 import com.webeye.backend.rawmaterial.infrastructure.client.RawMaterialClient;
 import com.webeye.backend.rawmaterial.infrastructure.persistence.RawMaterialRepository;
 import com.webeye.backend.global.error.BusinessException;
@@ -29,32 +29,30 @@ public class RawMaterialServiceImpl implements RawMaterialService {
 
     @Override
     @Transactional
-    public RawMaterialResponseDTO.Body callRawMaterialAPI() {
-        RawMaterialResponseDTO response = rawMaterialClient.getRawMaterialInfo(serviceKey, 1, 100, "json");
+    public RawMaterialResponse.Body callRawMaterialAPI(int pageNo, int numOfRows) {
+        RawMaterialResponse response = rawMaterialClient.getRawMaterialInfo(serviceKey, pageNo, numOfRows, "json");
 
-        RawMaterialResponseDTO.Response responseDto = response.getResponse();
+        RawMaterialResponse.Response responseDto = response.response();
 
-        List<RawMaterialResponseDTO.Item> items = responseDto.getBody().getItems();
+        List<RawMaterialResponse.Item> items = responseDto.body().items();
 
         validateRawMaterial(responseDto, items);
 
-        List<RawMaterial> rawMaterials = items.stream()
-                .map(RawMaterialMapper::toEntity)
-                .collect(Collectors.toList());
+        List<RawMaterial> rawMaterials = RawMaterialMapper.toEntityList(items);
 
         List<RawMaterial> saved = rawMaterialRepository.saveAll(rawMaterials);
 
-        return RawMaterialMapper.ofList(saved);
+        return RawMaterialMapper.of(saved, pageNo, numOfRows, items.size());
     }
 
-    private void validateRawMaterial(RawMaterialResponseDTO.Response response, List<RawMaterialResponseDTO.Item> items) {
+    private void validateRawMaterial(RawMaterialResponse.Response response, List<RawMaterialResponse.Item> items) {
         // Open API 응답 실패
-        if (response == null || response.getBody() == null) {
+        if (response == null || response.body() == null) {
             throw new BusinessException(ErrorCode.OPEN_API_RESPONSE_NULL);
         }
 
         // items not found
-        if (items == null || response.getBody().getItems().isEmpty()) {
+        if (items == null || response.body().items().isEmpty()) {
             throw new BusinessException(ErrorCode.OPEN_API_DATA_MISSING);
         }
     }
