@@ -106,7 +106,6 @@ public class OpenAiClient {
         return callWithStructuredOutput(request, prompt, NutritionResponse.class);
     }
 
-
     private <T> T callWithStructuredOutput(ImageAnalysisRequest request, ImageAnalysisPrompt prompt, Class<T> clazz) {
         BeanOutputConverter<T> outputConverter = new BeanOutputConverter<>(clazz);
 

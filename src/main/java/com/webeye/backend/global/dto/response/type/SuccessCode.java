@@ -20,6 +20,8 @@ public enum SuccessCode {
     PRODUCT_POINT_EXPLANATION_ANALYSIS_SUCCESS(200, "Product point explanation analysis success"),
     PRODUCT_DETAIL_EXPLANATION_ANALYSIS_SUCCESS(200, "Product detail explanation analysis success"),
 
+    // review
+    REVIEW_SUMMARY_SUCCESS(200, "Review summary success"),
     ;
 
     private final int status;
