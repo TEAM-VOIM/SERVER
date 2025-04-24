@@ -39,9 +39,9 @@ public class RawMaterialServiceImpl implements RawMaterialService {
 
         List<RawMaterial> rawMaterials = RawMaterialMapper.toEntityList(items);
 
-        List<RawMaterial> saved = rawMaterialRepository.saveAll(rawMaterials);
+        // List<RawMaterial> savedRawMaterials = rawMaterialRepository.saveAll(rawMaterials);
 
-        return RawMaterialMapper.of(saved, pageNo, numOfRows, items.size());
+        return RawMaterialMapper.of(rawMaterials, pageNo, numOfRows, items.size());
     }
 
     private void validateRawMaterial(RawMaterialResponse.Response response, List<RawMaterialResponse.Item> items) {

@@ -2,7 +2,6 @@ package com.webeye.backend.rawmaterial.infrastructure.mapper;
 
 import com.webeye.backend.rawmaterial.domain.RawMaterial;
 import com.webeye.backend.rawmaterial.dto.RawMaterialResponse;
-import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -80,16 +79,16 @@ public class RawMaterialMapper {
                 .collect(Collectors.toList());
     }
 
-    public static RawMaterialResponse.Body of(List<RawMaterial> list, int totalCount, int numOfRows, int pageNo) {
+    public static RawMaterialResponse.Body of(List<RawMaterial> list, int pageNo,int numOfRows, int totalCount) {
         List<RawMaterialResponse.Item> itemList = list.stream()
                 .map(RawMaterialMapper::of)
                 .collect(Collectors.toList());
 
         return new RawMaterialResponse.Body(
                 itemList,
-                String.valueOf(totalCount),
+                String.valueOf(pageNo),
                 String.valueOf(numOfRows),
-                String.valueOf(pageNo)
+                String.valueOf(totalCount)
         );
     }
 }
