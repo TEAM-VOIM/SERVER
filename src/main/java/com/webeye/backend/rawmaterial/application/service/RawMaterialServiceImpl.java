@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -29,7 +28,7 @@ public class RawMaterialServiceImpl implements RawMaterialService {
 
     @Override
     @Transactional
-    public RawMaterialResponse.Body callRawMaterialAPI(int pageNo, int numOfRows) {
+    public RawMaterialResponse.Body callRawMaterialAPI(Integer pageNo, Integer numOfRows) {
         RawMaterialResponse response = rawMaterialClient.getRawMaterialInfo(serviceKey, pageNo, numOfRows, "json");
 
         RawMaterialResponse.Response responseDto = response.response();

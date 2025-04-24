@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Tag(name = "[원재료 주의 영양 성분]", description = "원재료 주의 영양 성분 표시 관련 API")
 public interface RawMaterialSwagger {
@@ -19,5 +20,8 @@ public interface RawMaterialSwagger {
                     description = "OPEN API가 성공적으로 호출되었습니다."
             )
     })
-    SuccessResponse<RawMaterialResponse.Body> callRawMaterialApi(int pageNo, int numOfRows);
+    SuccessResponse<RawMaterialResponse.Body> callRawMaterialApi(
+            @RequestParam Integer pageNo,
+            @RequestParam Integer numOfRows
+    );
 }

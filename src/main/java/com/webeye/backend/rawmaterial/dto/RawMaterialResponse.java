@@ -47,4 +47,3 @@ public record RawMaterialResponse(
             double fartn
     ) {}
 }
-
