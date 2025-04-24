@@ -79,7 +79,7 @@ public class RawMaterialMapper {
                 .collect(Collectors.toList());
     }
 
-    public static RawMaterialResponse.Body of(List<RawMaterial> list, int pageNo,int numOfRows, int totalCount) {
+    public static RawMaterialResponse.Body ofList(List<RawMaterial> list, Integer pageNo, Integer numOfRows, Integer totalCount) {
         List<RawMaterialResponse.Item> itemList = list.stream()
                 .map(RawMaterialMapper::of)
                 .collect(Collectors.toList());

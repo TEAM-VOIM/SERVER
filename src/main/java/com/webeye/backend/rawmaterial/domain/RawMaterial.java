@@ -27,81 +27,81 @@ public class RawMaterial extends BaseEntity {
     private String nutConSrtrQua;
 
     @Column
-    private double enerc;
+    private Double enerc;
 
     @Column
-    private double water;
+    private Double water;
 
     @Column
-    private double prot;
+    private Double prot;
 
     @Column
-    private double fatce;
+    private Double fatce;
 
     @Column
-    private double ash;
+    private Double ash;
 
     @Column
-    private double chocdf;
+    private Double chocdf;
 
     @Column
-    private double sugar;
+    private Double sugar;
 
     @Column
-    private double fibtg;
+    private Double fibtg;
 
     @Column
-    private double ca;
+    private Double ca;
 
     @Column
-    private double fe;
+    private Double fe;
 
     @Column
-    private double p;
+    private Double p;
 
     @Column
-    private double k;
+    private Double k;
 
     @Column
-    private double nat;
+    private Double nat;
 
     @Column
-    private double vitaRae;
+    private Double vitaRae;
 
     @Column
-    private double retol;
+    private Double retol;
 
     @Column
-    private double cartb;
+    private Double cartb;
 
     @Column
-    private double thia;
+    private Double thia;
 
     @Column
-    private double ribf;
+    private Double ribf;
 
     @Column
-    private double nia;
+    private Double nia;
 
     @Column
-    private double vitc;
+    private Double vitc;
 
     @Column
-    private double vitd;
+    private Double vitd;
 
     @Column
-    private double chole;
+    private Double chole;
 
     @Column
-    private double fasat;
+    private Double fasat;
 
     @Column
-    private double fartn;
+    private Double fartn;
 
     @Builder
-    private RawMaterial(Long id, String foodCd, String foodNm, String nutConSrtrQua, double enerc, double water, double prot, double fatce, double ash,
-                        double chocdf, double sugar, double fibtg, double ca, double fe, double p, double k, double nat, double vitaRae, double retol,
-                        double cartb, double thia, double ribf, double nia, double vitc, double vitd, double chole, double fasat, double fartn) {
+    private RawMaterial(Long id, String foodCd, String foodNm, String nutConSrtrQua, Double enerc, Double water, Double prot, Double fatce, Double ash,
+                        Double chocdf, Double sugar, Double fibtg, Double ca, Double fe, Double p, Double k, Double nat, Double vitaRae, Double retol,
+                        Double cartb, Double thia, Double ribf, Double nia, Double vitc, Double vitd, Double chole, Double fasat, Double fartn) {
         this.id = id;
         this.foodCd = foodCd;
         this.foodNm = foodNm;
