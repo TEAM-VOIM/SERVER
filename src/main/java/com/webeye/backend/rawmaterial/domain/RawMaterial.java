@@ -17,86 +17,86 @@ public class RawMaterial extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
-    private String foodCd;
+    @Column(name = "food_cd")
+    private String foodCd; // 식품 코드
 
-    @Column
-    private String foodNm;
+    @Column(name = "food_nm")
+    private String foodNm; // 식품명
 
-    @Column
-    private String nutConSrtrQua;
+    @Column(name = "nut_con_srtr_qua")
+    private String nutConSrtrQua; // 영양성분함량기준량
 
-    @Column
-    private Double enerc;
+    @Column(name = "enerc")
+    private Double enerc; // 에너지
 
-    @Column
-    private Double water;
+    @Column(name = "water")
+    private Double water; // 수분
 
-    @Column
-    private Double prot;
+    @Column(name = "prot")
+    private Double prot; // 단백질
 
-    @Column
-    private Double fatce;
+    @Column(name = "fatce")
+    private Double fatce; // 지방
 
-    @Column
-    private Double ash;
+    @Column(name = "ash")
+    private Double ash; // 회분
 
-    @Column
-    private Double chocdf;
+    @Column(name = "chocdf")
+    private Double chocdf; // 탄수화물
 
-    @Column
-    private Double sugar;
+    @Column(name = "sugar")
+    private Double sugar; // 당류
 
-    @Column
-    private Double fibtg;
+    @Column(name = "fibtg")
+    private Double fibtg; // 식이섬유
 
-    @Column
-    private Double ca;
+    @Column(name = "ca")
+    private Double ca; // 칼슘
 
-    @Column
-    private Double fe;
+    @Column(name = "fe")
+    private Double fe; // 철
 
-    @Column
-    private Double p;
+    @Column(name = "p")
+    private Double p; // 인
 
-    @Column
-    private Double k;
+    @Column(name = "k")
+    private Double k; // 칼륨
 
-    @Column
-    private Double nat;
+    @Column(name = "nat")
+    private Double nat; // 나트륨
 
-    @Column
-    private Double vitaRae;
+    @Column(name = "vita_rae")
+    private Double vitaRae; // 비타민 A
 
-    @Column
-    private Double retol;
+    @Column(name = "retol")
+    private Double retol; // 레티놀
 
-    @Column
-    private Double cartb;
+    @Column(name = "cartb")
+    private Double cartb; // 베타카르틴
 
-    @Column
-    private Double thia;
+    @Column(name = "thia")
+    private Double thia; // 티아민
 
-    @Column
-    private Double ribf;
+    @Column(name = "ribf")
+    private Double ribf; // 리보플라빈
 
-    @Column
-    private Double nia;
+    @Column(name = "nia")
+    private Double nia; // 니아신
 
-    @Column
-    private Double vitc;
+    @Column(name = "vitc")
+    private Double vitc; // 비타민 C
 
-    @Column
-    private Double vitd;
+    @Column(name = "vitd")
+    private Double vitd; // 비타민 D
 
-    @Column
-    private Double chole;
+    @Column(name = "chole")
+    private Double chole; // 콜레스테롤
 
-    @Column
-    private Double fasat;
+    @Column(name = "fasat")
+    private Double fasat; // 포화지방산
 
-    @Column
-    private Double fartn;
+    @Column(name = "fartn")
+    private Double fartn; // 트랜스지방산
 
     @Builder
     private RawMaterial(Long id, String foodCd, String foodNm, String nutConSrtrQua, Double enerc, Double water, Double prot, Double fatce, Double ash,

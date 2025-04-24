@@ -31,17 +31,20 @@ public class RawMaterialServiceImpl implements RawMaterialService {
     public RawMaterialResponse.Body callRawMaterialAPI(Integer pageNo, Integer numOfRows) {
         RawMaterialResponse response = rawMaterialClient.getRawMaterialInfo(serviceKey, pageNo, numOfRows, "json");
 
-        RawMaterialResponse.Response responseDto = response.response();
+        RawMaterialResponse.Response innerResponse = response.response();
 
-        List<RawMaterialResponse.Item> items = responseDto.body().items();
+        List<RawMaterialResponse.Item> items = innerResponse.body().items();
 
-        validateRawMaterial(responseDto, items);
+        validateRawMaterial(innerResponse, items);
+
+        Integer totalCount = Integer.parseInt(innerResponse.body().totalCount());
 
         List<RawMaterial> rawMaterials = RawMaterialMapper.toEntityList(items);
 
+        // TODO: 전처리 후 저장
         // List<RawMaterial> savedRawMaterials = rawMaterialRepository.saveAll(rawMaterials);
 
-        return RawMaterialMapper.ofList(rawMaterials, pageNo, numOfRows, items.size());
+        return RawMaterialMapper.ofList(rawMaterials, pageNo, numOfRows, totalCount);
     }
 
     private void validateRawMaterial(RawMaterialResponse.Response response, List<RawMaterialResponse.Item> items) {
