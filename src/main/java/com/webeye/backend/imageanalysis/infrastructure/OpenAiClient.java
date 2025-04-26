@@ -38,7 +38,7 @@ public class OpenAiClient {
                 You may adjust the content depending on the product type, but make sure the extracted items are helpful for making a purchase decision.
                 Limit the result to a maximum of 6 items, and keep each one clear and concise.
                 Below is just a guideline — instead of following the content exactly, follow the intent.
-                                
+                
                 Example (Generate appropriately according to the product)
                 - 핵심 특징 요약 (제품 포인트)
                 - 당류 비교 (10g당 당류 함량 비교)
@@ -75,7 +75,7 @@ public class OpenAiClient {
                 """;
 
         String user = """
-                Step 1: Carefully examine the attached image(s). 
+                Step 1: Carefully examine the attached image(s).
                 If there is a table that clearly describes '원재료명' (ingredients name), identify it. 
                 Do not output anything unless the table exists.
 
@@ -133,10 +133,10 @@ public class OpenAiClient {
                 "아니스에탄올": "anisylAlcohol",
                 "벤질신나메이트": "benzylCinnamate"
                 }
-                Return a JSON where keys are English names and values are true if the exact full Korean ingredient name appears continuously, false otherwise. 
+                Return true only if the exact full Korean ingredient name appears continuously and separately; otherwise, return false.
                 Ignore partial, similar, or incomplete matches.
                 
-                Note: "hicc" and "Hydroxyisohexyl 3-Cyclohexene Carboxaldehyde" are the same.                                                                                    
+                Note: "hicc" and "Hydroxyisohexyl 3-Cyclohexene Carboxaldehyde" are the same.
                 """;
 
         ImageAnalysisPrompt prompt = new ImageAnalysisPrompt(system, user);
