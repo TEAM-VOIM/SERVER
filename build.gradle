@@ -32,6 +32,7 @@ repositories {
 
 dependencyManagement {
     imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:2023.0.2"
         mavenBom "org.springframework.ai:spring-ai-bom:1.0.0-M6"
     }
 }
@@ -50,8 +51,11 @@ dependencies {
     // swagger
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
 
-    //spring ai
+    // spring ai
     implementation 'org.springframework.ai:spring-ai-openai-spring-boot-starter:1.0.0-M6'
+
+    // open feign
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 }
 
 tasks.named('test') {
