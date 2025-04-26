@@ -1,6 +1,7 @@
 package com.webeye.backend.imageanalysis.infrastructure;
 
 import com.webeye.backend.allergy.dto.response.AllergyResponse;
+import com.webeye.backend.cosmetic.dto.response.CosmeticResponse;
 import com.webeye.backend.explanation.dto.response.DetailExplanationResponse;
 import com.webeye.backend.explanation.dto.response.PointExplanationResponse;
 import com.webeye.backend.global.error.BusinessException;
@@ -106,6 +107,41 @@ public class OpenAiClient {
         return callWithStructuredOutput(request, prompt, NutritionResponse.class);
     }
 
+    public CosmeticResponse explainCosmetic(ImageAnalysisRequest request) {
+        String system = """
+                You are a cosmetic ingredients description assistant.
+                """;
+
+        String user = """
+                Check the attached image for cosmetic ingredients.
+                
+                Use this mapping:
+                {
+                "아밀신남알": "amylCinnamal",
+                "벤질알코올": "benzylAlcohol",
+                "신나밀알코올": "cinnamylAlcohol",
+                "시트랄": "citral",
+                "유제놀": "eugenol",
+                "하이드록시시트로넬알": "hydroxycitronellal",
+                "이소유제놀": "isoeugenol",
+                "아밀신나밀알코올": "amylCinnamylAlcohol",
+                "벤질살리실레이트": "benzylSalicylate",
+                "신남알": "cinnamal",
+                "쿠마린": "coumarin",
+                "제라니올": "geraniol",
+                "하이드록시이소헥실3-사이클로헥센카복스알데하이드": "hydroxyisohexyl3CyclohexeneCarboxaldehyde",
+                "아니스에탄올": "anisylAlcohol",
+                "벤질신나메이트": "benzylCinnamate"
+                }
+                Return a JSON where keys are English names and values are true if the exact full Korean ingredient name appears continuously, false otherwise. 
+                Ignore partial, similar, or incomplete matches.
+                
+                Note: "hicc" and "Hydroxyisohexyl 3-Cyclohexene Carboxaldehyde" are the same.                                                                                    
+                """;
+
+        ImageAnalysisPrompt prompt = new ImageAnalysisPrompt(system, user);
+        return callWithStructuredOutput(request, prompt, CosmeticResponse.class);
+    }
 
     private <T> T callWithStructuredOutput(ImageAnalysisRequest request, ImageAnalysisPrompt prompt, Class<T> clazz) {
         BeanOutputConverter<T> outputConverter = new BeanOutputConverter<>(clazz);
