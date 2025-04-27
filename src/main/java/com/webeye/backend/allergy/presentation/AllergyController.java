@@ -14,7 +14,7 @@ import static com.webeye.backend.global.dto.response.type.SuccessCode.ALLERGY_AN
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/allergy")
+@RequestMapping("/v1/allergy")
 public class AllergyController implements AllergySwagger {
     private final AllergyService allergyService;
 

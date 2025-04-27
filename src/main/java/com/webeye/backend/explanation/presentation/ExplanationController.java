@@ -16,7 +16,7 @@ import static com.webeye.backend.global.dto.response.type.SuccessCode.PRODUCT_PO
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/explanation")
+@RequestMapping("/v1/explanation")
 public class ExplanationController implements ExplanationSwagger {
     private final ExplanationService explanationService;
 

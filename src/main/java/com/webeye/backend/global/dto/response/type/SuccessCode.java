@@ -19,6 +19,9 @@ public enum SuccessCode {
     // allergy
     ALLERGY_ANALYSIS_SUCCESS(200, "Allergy analysis success"),
 
+    // cosmetic
+    COSMETIC_ANALYSIS_SUCCESS(200, "Cosmetic analysis success"),
+
     // explanation
     PRODUCT_POINT_EXPLANATION_ANALYSIS_SUCCESS(200, "Product point explanation analysis success"),
     PRODUCT_DETAIL_EXPLANATION_ANALYSIS_SUCCESS(200, "Product detail explanation analysis success"),
