@@ -14,7 +14,7 @@ import static com.webeye.backend.global.dto.response.type.SuccessCode.NUTRITION_
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/nutrition")
+@RequestMapping("/v1/nutrition")
 public class NutritionController implements NutritionSwagger {
     private final NutritionService nutritionService;
 

@@ -1,6 +1,7 @@
 package com.webeye.backend.imageanalysis.infrastructure;
 
 import com.webeye.backend.allergy.dto.response.AllergyResponse;
+import com.webeye.backend.cosmetic.dto.response.CosmeticResponse;
 import com.webeye.backend.explanation.dto.response.DetailExplanationResponse;
 import com.webeye.backend.explanation.dto.response.PointExplanationResponse;
 import com.webeye.backend.global.error.BusinessException;
@@ -37,7 +38,7 @@ public class OpenAiClient {
                 You may adjust the content depending on the product type, but make sure the extracted items are helpful for making a purchase decision.
                 Limit the result to a maximum of 6 items, and keep each one clear and concise.
                 Below is just a guideline — instead of following the content exactly, follow the intent.
-                                
+                
                 Example (Generate appropriately according to the product)
                 - 핵심 특징 요약 (제품 포인트)
                 - 당류 비교 (10g당 당류 함량 비교)
@@ -74,7 +75,7 @@ public class OpenAiClient {
                 """;
 
         String user = """
-                Step 1: Carefully examine the attached image(s). 
+                Step 1: Carefully examine the attached image(s).
                 If there is a table that clearly describes '원재료명' (ingredients name), identify it. 
                 Do not output anything unless the table exists.
 
@@ -106,6 +107,41 @@ public class OpenAiClient {
         return callWithStructuredOutput(request, prompt, NutritionResponse.class);
     }
 
+    public CosmeticResponse explainCosmetic(ImageAnalysisRequest request) {
+        String system = """
+                You are a cosmetic ingredients description assistant.
+                """;
+
+        String user = """
+                Check the attached image for cosmetic ingredients.
+                
+                Use this mapping:
+                {
+                "아밀신남알": "amylCinnamal",
+                "벤질알코올": "benzylAlcohol",
+                "신나밀알코올": "cinnamylAlcohol",
+                "시트랄": "citral",
+                "유제놀": "eugenol",
+                "하이드록시시트로넬알": "hydroxycitronellal",
+                "이소유제놀": "isoeugenol",
+                "아밀신나밀알코올": "amylCinnamylAlcohol",
+                "벤질살리실레이트": "benzylSalicylate",
+                "신남알": "cinnamal",
+                "쿠마린": "coumarin",
+                "제라니올": "geraniol",
+                "하이드록시이소헥실3-사이클로헥센카복스알데하이드": "hydroxyisohexyl3CyclohexeneCarboxaldehyde",
+                "아니스에탄올": "anisylAlcohol",
+                "벤질신나메이트": "benzylCinnamate"
+                }
+                Return true only if the exact full Korean ingredient name appears continuously and separately; otherwise, return false.
+                Ignore partial, similar, or incomplete matches.
+                
+                Note: "hicc" and "Hydroxyisohexyl 3-Cyclohexene Carboxaldehyde" are the same.
+                """;
+
+        ImageAnalysisPrompt prompt = new ImageAnalysisPrompt(system, user);
+        return callWithStructuredOutput(request, prompt, CosmeticResponse.class);
+    }
 
     private <T> T callWithStructuredOutput(ImageAnalysisRequest request, ImageAnalysisPrompt prompt, Class<T> clazz) {
         BeanOutputConverter<T> outputConverter = new BeanOutputConverter<>(clazz);
