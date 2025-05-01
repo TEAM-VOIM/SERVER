@@ -20,9 +20,9 @@ public class NutrientInit implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) {
         for (NutrientType nutrientType : NutrientType.values()) {
-            if (nutrientRepository.findByName(nutrientType).isEmpty()) {
+            if (nutrientRepository.findByType(nutrientType).isEmpty()) {
                 Nutrient nutrient = Nutrient.builder()
-                        .name(nutrientType)
+                        .type(nutrientType)
                         .build();
                 nutrientRepository.save(nutrient);
             }
