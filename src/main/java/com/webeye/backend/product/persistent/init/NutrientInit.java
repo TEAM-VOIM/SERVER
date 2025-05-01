@@ -19,16 +19,13 @@ public class NutrientInit implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) {
-        if (nutrientRepository.count() >= NutrientType.values().length) {
-            log.info("[Nutrient] 기본 데이터 존재");
-            return;
-        }
         for (NutrientType nutrientType : NutrientType.values()) {
-            Nutrient nutrient = Nutrient.builder()
-                    .name(nutrientType)
-                    .build();
-            nutrientRepository.save(nutrient);
+            if (nutrientRepository.findByName(nutrientType).isEmpty()) {
+                Nutrient nutrient = Nutrient.builder()
+                        .name(nutrientType)
+                        .build();
+                nutrientRepository.save(nutrient);
+            }
         }
-        log.info("[Nutrient] 기본 데이터 저장 완료");
     }
 }
