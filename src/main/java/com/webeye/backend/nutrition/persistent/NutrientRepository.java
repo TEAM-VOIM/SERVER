@@ -9,5 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface NutrientRepository extends JpaRepository<Nutrient, Long> {
-    Optional<Nutrient> findByType(NutrientType type);
+    Optional<Nutrient> findByName(NutrientType type);
 }
