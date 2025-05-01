@@ -28,4 +28,6 @@ public class ReviewService {
 
         return response;
     }
+
+    // TODO: 저장된 리뷰 요약 조회
 }
