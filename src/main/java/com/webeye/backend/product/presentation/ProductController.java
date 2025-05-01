@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import static com.webeye.backend.global.dto.response.type.SuccessCode.PRODUCT_ANALYSIS_SUCCESS;
+import static com.webeye.backend.global.dto.response.type.SuccessCode.FOOD_PRODUCT_ANALYSIS_SUCCESS;
 
 @RequiredArgsConstructor
 @RestController
@@ -22,7 +22,7 @@ public class ProductController implements ProductSwagger {
     @ResponseStatus(HttpStatus.OK)
     @PostMapping(value = "/foods")
     public SuccessResponse<ProductResponse> foodAnalysis(@Valid @RequestBody ProductAnalysisRequest request) {
-        return SuccessResponse.of(PRODUCT_ANALYSIS_SUCCESS, productService.analyzeFoodProduct(request));
+        return SuccessResponse.of(FOOD_PRODUCT_ANALYSIS_SUCCESS, productService.analyzeFoodProduct(request));
     }
 
 }

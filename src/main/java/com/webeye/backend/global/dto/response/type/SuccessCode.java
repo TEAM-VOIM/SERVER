@@ -10,6 +10,9 @@ public enum SuccessCode {
     // health
     HEALTH_CHECK_SUCCESS(200, "Health Check Success"),
 
+    // product
+    FOOD_PRODUCT_ANALYSIS_SUCCESS(200, "Product Analysis Success"),
+
     // raw material
     RAW_MATERIAL_API_SUCCESS(200, "Raw Material API Success"),
 
