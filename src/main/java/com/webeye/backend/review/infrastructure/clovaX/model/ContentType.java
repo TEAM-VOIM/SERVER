@@ -1,4 +1,4 @@
-package com.webeye.backend.review.infrastructure.clovaX.domain;
+package com.webeye.backend.review.infrastructure.clovaX.model;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;

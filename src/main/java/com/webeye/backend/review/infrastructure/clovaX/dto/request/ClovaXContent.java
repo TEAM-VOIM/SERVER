@@ -1,6 +1,6 @@
 package com.webeye.backend.review.infrastructure.clovaX.dto.request;
 
-import com.webeye.backend.review.infrastructure.clovaX.domain.ContentType;
+import com.webeye.backend.review.infrastructure.clovaX.model.ContentType;
 
 public record ClovaXContent(
         ContentType type,
