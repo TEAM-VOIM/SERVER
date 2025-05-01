@@ -8,6 +8,7 @@ import com.webeye.backend.review.infrastructure.mapper.ReviewMapper;
 import com.webeye.backend.review.infrastructure.persistence.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -16,6 +17,7 @@ public class ReviewService {
     private final ClovaXClientService clovaXClientService;
     public final ReviewRepository reviewRepository;
 
+    @Transactional
     public ReviewSummaryResponse summarizeReview(ReviewSummaryRequest request) {
         String reviewText = String.join("\n", request.reviews());
 
