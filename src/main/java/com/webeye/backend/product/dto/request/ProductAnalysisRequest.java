@@ -17,10 +17,7 @@ public record ProductAnalysisRequest(
         List<String> urls,
 
         @Schema(description = "사용자 알레르기")
-        List<AllergyType> allergies,
-
-        @Schema(description = "사용자 질병")
-        List<String> diseases
+        List<AllergyType> allergies
 ) {
 }
 
