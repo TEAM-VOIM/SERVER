@@ -29,11 +29,16 @@ public class Review extends BaseEntity {
     @Column(nullable = false)
     private String keywords;
 
+//    @OneToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "product_id", unique = true)
+//    private Product product;
+
     @Builder
     public Review(String positiveSummary, String negativeSummary, String keywords) {
         this.positiveSummary = positiveSummary;
         this.negativeSummary = negativeSummary;
         this.keywords = keywords;
+//        this.product = product;
     }
 
     public List<String> getKeywordList() {
