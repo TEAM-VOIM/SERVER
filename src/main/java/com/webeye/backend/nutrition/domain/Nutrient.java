@@ -17,5 +17,5 @@ public class Nutrient {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, unique = true)
-    private NutrientType type;
+    private NutrientType name;
 }
