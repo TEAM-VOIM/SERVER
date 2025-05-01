@@ -32,7 +32,7 @@ public class NutritionService {
     }
 
     public Nutrient findByType(NutrientType type) {
-        return nutrientRepository.findByName(type)
+        return nutrientRepository.findByType(type)
                 .orElseThrow(() -> new BusinessException(ErrorCode.NUTRIENT_NOT_FOUND));
     }
 
@@ -41,19 +41,17 @@ public class NutritionService {
         NutritionAiResponse response = analyzeNutrition(request);
         Map<NutrientType, Double> nutrientMap = extractNutrientMap(response);
 
-        nutrientMap.entrySet().stream()
-                .filter(e -> e.getValue() != null)
-                .forEach(e -> {
-                    Nutrient nutrient = findByType(e.getKey());
-                    if (nutrient == null) return;
-                    product.addNutrient(
-                            ProductNutrient.builder()
-                                    .product(product)
-                                    .nutrient(nutrient)
-                                    .amount(e.getValue())
-                                    .build()
-                    );
-                });
+        nutrientMap.forEach((type, amount) -> {
+            if (amount == null) return;
+            Nutrient nutrient = findByType(type);
+            product.addNutrient(
+                    ProductNutrient.builder()
+                            .product(product)
+                            .nutrient(nutrient)
+                            .amount(amount)
+                            .build()
+            );
+        });
         productRepository.save(product);
     }
 
