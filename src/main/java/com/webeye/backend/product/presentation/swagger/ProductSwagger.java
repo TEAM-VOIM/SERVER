@@ -1,7 +1,6 @@
 package com.webeye.backend.product.presentation.swagger;
 
 import com.webeye.backend.global.dto.response.SuccessResponse;
-import com.webeye.backend.nutrition.dto.response.NutritionAiResponse;
 import com.webeye.backend.product.dto.request.ProductAnalysisRequest;
 import com.webeye.backend.product.dto.response.ProductResponse;
 import io.swagger.v3.oas.annotations.Operation;

@@ -1,6 +1,5 @@
 package com.webeye.backend.product.persistent.init;
 
-import com.webeye.backend.allergy.persistent.AllergyRepository;
 import com.webeye.backend.global.util.DummyDataInit;
 import com.webeye.backend.nutrition.domain.Nutrient;
 import com.webeye.backend.nutrition.domain.type.NutrientType;
