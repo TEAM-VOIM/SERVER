@@ -1,11 +1,14 @@
 package com.webeye.backend.review.presentation.swagger;
 
 import com.webeye.backend.global.dto.response.SuccessResponse;
+import com.webeye.backend.review.dto.request.ReviewSummaryRequest;
 import com.webeye.backend.review.dto.response.ReviewResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Tag(name = "[리뷰 요약]", description = "리뷰 요약 및 분석 관련 API")
 public interface ReviewSwagger {
@@ -19,5 +22,5 @@ public interface ReviewSwagger {
                     description = "리뷰 요약 및 분석이 성공적으로 수행되었습니다."
             )
     })
-    SuccessResponse<ReviewResponse> summarizeReview();
+    SuccessResponse<ReviewResponse> summarizeReview(@RequestBody @Valid ReviewSummaryRequest request);
 }

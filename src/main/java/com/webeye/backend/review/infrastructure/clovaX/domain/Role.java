@@ -1,5 +1,6 @@
 package com.webeye.backend.review.infrastructure.clovaX.domain;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 
 @Getter
@@ -8,9 +9,14 @@ public enum Role {
     USER("user"),
     ASSISTANT("assistant");
 
-    private final String value;
+    private final String role;
 
     Role(String role) {
-        this.value = role;
+        this.role = role;
+    }
+
+    @JsonValue
+    public String getRole() {
+        return role;
     }
 }

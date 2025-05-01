@@ -6,6 +6,6 @@ import java.util.List;
 
 public record ClovaXMessage(
         Role role,
-        List<ClovaXContent> contents
+        List<ClovaXContent> content
 ) {
 }
