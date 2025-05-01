@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 
 @Schema(description = "리뷰 요약")
-public record ReviewResponse(
+public record ReviewSummaryResponse(
         @Schema(description = "긍정 리뷰", example = "맛있다는 평가가 많습니다.")
         String positive,
         @Schema(description = "부정 리뷰", example = "배송이 느리다는 평가가 많습니다.")

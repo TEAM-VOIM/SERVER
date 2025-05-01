@@ -2,7 +2,7 @@ package com.webeye.backend.review.presentation.swagger;
 
 import com.webeye.backend.global.dto.response.SuccessResponse;
 import com.webeye.backend.review.dto.request.ReviewSummaryRequest;
-import com.webeye.backend.review.dto.response.ReviewResponse;
+import com.webeye.backend.review.dto.response.ReviewSummaryResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -22,5 +22,5 @@ public interface ReviewSwagger {
                     description = "리뷰 요약 및 분석이 성공적으로 수행되었습니다."
             )
     })
-    SuccessResponse<ReviewResponse> summarizeReview(@RequestBody @Valid ReviewSummaryRequest request);
+    SuccessResponse<ReviewSummaryResponse> summarizeReview(@RequestBody @Valid ReviewSummaryRequest request);
 }

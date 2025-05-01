@@ -1,7 +1,7 @@
 package com.webeye.backend.review.application;
 
 import com.webeye.backend.review.dto.request.ReviewSummaryRequest;
-import com.webeye.backend.review.dto.response.ReviewResponse;
+import com.webeye.backend.review.dto.response.ReviewSummaryResponse;
 import com.webeye.backend.review.infrastructure.clovaX.ClovaXClient;
 import com.webeye.backend.review.infrastructure.clovaX.model.ContentType;
 import com.webeye.backend.review.infrastructure.clovaX.model.Role;
@@ -30,7 +30,7 @@ public class ReviewService {
     @Value("${clova.request-id}")
     private String requestId;
 
-    public ReviewResponse summarizeReview(ReviewSummaryRequest request) {
+    public ReviewSummaryResponse summarizeReview(ReviewSummaryRequest request) {
         String reviewText = String.join("\n", request.reviews());
 
         ClovaXRequest clovaXRequest = new ClovaXRequest(List.of(
@@ -56,7 +56,7 @@ public class ReviewService {
         return parseResponse(clovaXResponse.result().message().content());
     }
 
-    private ReviewResponse parseResponse(String content) {
+    private ReviewSummaryResponse parseResponse(String content) {
         String[] lines = content.split("\n");
 
         String positive = "";
@@ -74,6 +74,6 @@ public class ReviewService {
             }
         }
 
-        return new ReviewResponse(positive, negative, keywords);
+        return new ReviewSummaryResponse(positive, negative, keywords);
     }
 }

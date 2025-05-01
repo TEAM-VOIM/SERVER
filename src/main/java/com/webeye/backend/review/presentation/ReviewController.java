@@ -3,7 +3,7 @@ package com.webeye.backend.review.presentation;
 import com.webeye.backend.global.dto.response.SuccessResponse;
 import com.webeye.backend.review.application.ReviewService;
 import com.webeye.backend.review.dto.request.ReviewSummaryRequest;
-import com.webeye.backend.review.dto.response.ReviewResponse;
+import com.webeye.backend.review.dto.response.ReviewSummaryResponse;
 import com.webeye.backend.review.presentation.swagger.ReviewSwagger;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ public class ReviewController implements ReviewSwagger {
     @Override
     @PostMapping("/summary")
     @ResponseStatus(HttpStatus.OK)
-    public SuccessResponse<ReviewResponse> summarizeReview(@RequestBody @Valid ReviewSummaryRequest request) {
+    public SuccessResponse<ReviewSummaryResponse> summarizeReview(@RequestBody @Valid ReviewSummaryRequest request) {
         return SuccessResponse.of(REVIEW_SUMMARY_SUCCESS, reviewService.summarizeReview(request));
     }
 }
