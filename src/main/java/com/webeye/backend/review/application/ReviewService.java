@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ReviewService {
 
     private final ClovaXClientService clovaXClientService;
-    public final ReviewRepository reviewRepository;
+    private final ReviewRepository reviewRepository;
 
     @Transactional
     public ReviewSummaryResponse summarizeReview(ReviewSummaryRequest request) {
