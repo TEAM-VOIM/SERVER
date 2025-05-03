@@ -4,6 +4,7 @@ import com.webeye.backend.healthfood.domain.HealthFood;
 import com.webeye.backend.healthfood.dto.HealthFoodResponse;
 import com.webeye.backend.healthfood.infrastructure.client.HealthFoodClient;
 import com.webeye.backend.healthfood.infrastructure.mapper.HealthFoodMapper;
+import com.webeye.backend.healthfood.infrastructure.persistence.HealthFoodRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ public class HealthFoodService {
     private String serviceKey;
 
     private final HealthFoodClient healthFoodClient;
+    private final HealthFoodRepository healthFoodRepository;
 
     @Transactional
     public HealthFoodResponse.I2710 callHealthFoodApi() {

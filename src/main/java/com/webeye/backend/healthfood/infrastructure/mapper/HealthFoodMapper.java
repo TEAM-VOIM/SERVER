@@ -10,7 +10,7 @@ public class HealthFoodMapper {
 
     public static HealthFood toEntity(HealthFoodResponse.Row row) {
         return HealthFood.builder()
-                .name(row.PRDCT_NM())
+                .itemName(row.PRDCT_NM())
                 .functionality(row.PRIMARY_FNCLTY())
                 .build();
     }
@@ -23,7 +23,7 @@ public class HealthFoodMapper {
 
     public static HealthFoodResponse.Row toResponse(HealthFood healthFood) {
         return new HealthFoodResponse.Row(
-                healthFood.getName(),
+                healthFood.getItemName(),
                 healthFood.getFunctionality()
         );
     }

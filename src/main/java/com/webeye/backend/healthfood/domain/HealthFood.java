@@ -18,19 +18,19 @@ public class HealthFood extends BaseEntity {
     private Long id;
 
     @Column(nullable = false)
-    private String name;
+    private String itemName;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String functionality;
 
     @Column
     @Enumerated(EnumType.STRING)
-    private Keyword keyword;
+    private Keyword keywords;
 
     @Builder
-    public HealthFood(String name, String functionality, Keyword keyword) {
-        this.name = name;
+    public HealthFood(String itemName, String functionality, Keyword keywords) {
+        this.itemName = itemName;
         this.functionality = functionality;
-        this.keyword = keyword;
+        this.keywords = keywords;
     }
 }
