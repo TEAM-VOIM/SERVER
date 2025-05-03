@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(
         name = "rawMaterialClient",
-        url = "${open-api.url}",
+        url = "${open-api.raw-material.url}",
         configuration = OpenFeignConfig.class
 )
 public interface RawMaterialClient {
 
     @GetMapping(
-            value = "/openapi/tn_pubr_public_nutri_material_info_api",
+            value = "${open-api.raw-material.value}",
             produces = "application/json"
     )
     RawMaterialResponse getRawMaterialInfo(
