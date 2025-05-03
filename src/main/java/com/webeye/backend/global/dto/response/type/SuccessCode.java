@@ -26,6 +26,9 @@ public enum SuccessCode {
     PRODUCT_POINT_EXPLANATION_ANALYSIS_SUCCESS(200, "Product point explanation analysis success"),
     PRODUCT_DETAIL_EXPLANATION_ANALYSIS_SUCCESS(200, "Product detail explanation analysis success"),
 
+    // health food
+    HEALTH_FOOD_API_SUCCESS(200, "Health Food API success"),
+
     ;
 
     private final int status;
