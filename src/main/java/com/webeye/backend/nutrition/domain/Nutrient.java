@@ -7,10 +7,7 @@ import lombok.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-@Builder
 public class Nutrient {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,4 +15,9 @@ public class Nutrient {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, unique = true)
     private NutrientType type;
+
+    @Builder
+    public Nutrient(NutrientType type) {
+        this.type = type;
+    }
 }
