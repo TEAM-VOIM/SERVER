@@ -28,7 +28,7 @@ public class ProductAllergy {
         this.allergy = allergy;
     }
 
-    public void setProduct(Product product) {
+    public void associateWithProduct(Product product) {
         this.product = product;
         product.getAllergies().add(this);
     }

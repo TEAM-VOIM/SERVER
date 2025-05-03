@@ -30,7 +30,7 @@ public class ProductNutrient {
         this.amount = amount;
     }
 
-    public void setProduct(Product product) {
+    public void associateWithProduct(Product product) {
         this.product = product;
         product.getNutrients().add(this);
     }

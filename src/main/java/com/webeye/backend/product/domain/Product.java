@@ -27,11 +27,11 @@ public class Product {
 
     public void addNutrient(ProductNutrient nutrient) {
         this.nutrients.add(nutrient);
-        nutrient.setProduct(this);
+        nutrient.associateWithProduct(this);
     }
 
     public void addAllergy(ProductAllergy allergy) {
         this.allergies.add(allergy);
-        allergy.setProduct(this);
+        allergy.associateWithProduct(this);
     }
 }
