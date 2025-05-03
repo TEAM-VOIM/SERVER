@@ -5,7 +5,7 @@ import com.webeye.backend.explanation.dto.response.DetailExplanationResponse;
 import com.webeye.backend.explanation.dto.response.PointExplanationResponse;
 import com.webeye.backend.explanation.presentation.swagger.ExplanationSwagger;
 import com.webeye.backend.global.dto.response.SuccessResponse;
-import com.webeye.backend.imageanalysis.dto.request.ImageAnalysisRequest;
+import com.webeye.backend.product.dto.request.ProductAnalysisRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,14 +23,14 @@ public class ExplanationController implements ExplanationSwagger {
     @Override
     @ResponseStatus(HttpStatus.OK)
     @PostMapping(value = "")
-    public SuccessResponse<PointExplanationResponse> productAnalysis(@Valid @RequestBody ImageAnalysisRequest request) {
+    public SuccessResponse<PointExplanationResponse> productAnalysis(@Valid @RequestBody ProductAnalysisRequest request) {
         return SuccessResponse.of(PRODUCT_POINT_EXPLANATION_ANALYSIS_SUCCESS, explanationService.analyzeProductPoint(request));
     }
 
     @Override
     @ResponseStatus(HttpStatus.OK)
     @PostMapping(value = "/detail")
-    public SuccessResponse<DetailExplanationResponse> productDetailAnalysis(@Valid @RequestBody ImageAnalysisRequest request) {
+    public SuccessResponse<DetailExplanationResponse> productDetailAnalysis(@Valid @RequestBody ProductAnalysisRequest request) {
         return SuccessResponse.of(PRODUCT_DETAIL_EXPLANATION_ANALYSIS_SUCCESS, explanationService.analyzeProductDetail(request));
     }
 }

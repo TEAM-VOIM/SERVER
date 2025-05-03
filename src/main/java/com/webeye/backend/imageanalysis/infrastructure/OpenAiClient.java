@@ -1,13 +1,13 @@
 package com.webeye.backend.imageanalysis.infrastructure;
 
-import com.webeye.backend.allergy.dto.response.AllergyResponse;
+import com.webeye.backend.allergy.dto.response.AllergyAiResponse;
 import com.webeye.backend.cosmetic.dto.response.CosmeticResponse;
 import com.webeye.backend.explanation.dto.response.DetailExplanationResponse;
 import com.webeye.backend.explanation.dto.response.PointExplanationResponse;
 import com.webeye.backend.global.error.BusinessException;
 import com.webeye.backend.imageanalysis.dto.request.ImageAnalysisPrompt;
-import com.webeye.backend.imageanalysis.dto.request.ImageAnalysisRequest;
-import com.webeye.backend.nutrition.dto.response.NutritionResponse;
+import com.webeye.backend.product.dto.request.ProductAnalysisRequest;
+import com.webeye.backend.nutrition.dto.response.NutritionAiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
@@ -27,7 +27,7 @@ import static com.webeye.backend.global.error.ErrorCode.INVALID_IMAGE_URL;
 public class OpenAiClient {
     private final ChatClient chatClient;
 
-    public PointExplanationResponse explainProductPoint(ImageAnalysisRequest request) {
+    public PointExplanationResponse explainProductPoint(ProductAnalysisRequest request) {
         String system = """
                 You are an expert in analyzing product images and extracting key information that helps users make purchase decisions.
                 Based on the image provided, extract only the most relevant and concise information that highlights the product's core value.
@@ -52,7 +52,7 @@ public class OpenAiClient {
     }
 
 
-    public DetailExplanationResponse explainProductDetail(ImageAnalysisRequest request) {
+    public DetailExplanationResponse explainProductDetail(ProductAnalysisRequest request) {
         String system = """
                 You are an expert in providing detailed explanations about products based on images.
                 When a user provides a product description image along with the key elements of that description, you should offer a clear and detailed explanation of that element.
@@ -69,32 +69,36 @@ public class OpenAiClient {
         return callWithStructuredOutput(request, prompt, DetailExplanationResponse.class);
     }
 
-    public AllergyResponse explainAllergy(ImageAnalysisRequest request) {
+    public AllergyAiResponse explainAllergy(ProductAnalysisRequest request) {
         String system = """
-                You are an assistant that extracts allergy-causing ingredients.
+                You are an OCR assistant that extracts and detects allergenic ingredients from Korean product label images. Always treat partial matches inside compound words as valid if they contain the full Korean name of an allergen.
+                                                                               
                 """;
 
         String user = """
                 Step 1: Carefully examine the attached image(s).
-                If there is a table that clearly describes '원재료명' (ingredients name), identify it. 
-                Do not output anything unless the table exists.
+                
+                Identify the box that contains the full list of ingredients, labeled with '원재료명' or similar (e.g., '원재료 및 함량').
+                
+                Only extract text from this box — ignore all other parts of the image, including allergy warnings or separate notices.
+                
+                Step 2: From the identified box, extract the ingredient list **exactly as written**, without summarizing, translating, or omitting anything — including words like '분말', '가루', or '함유'.
+                
+                Step 3: Compare the text to the following list of allergenic ingredients:
+                계란(EGG), 우유(MILK), 메밀(BUCKWHEAT), 땅콩(PEANUT), 대두(SOYBEAN), 밀(WHEAT), 잣(PINE_NUT), 호두(WALNUT), 게(CRAB), 새우(SHRIMP), 오징어(SQUID), 고등어(MACKEREL), 조개(SHELLFISH), 복숭아(PEACH), 토마토(TOMATO), 닭고기(CHICKEN), 돼지고기(PORK), 쇠고기(BEEF), 아황산류(SULFITE).
 
-                Step 2: From the '원재료명' table, extract all listed ingredients. Do not output anything yet.
-
-                Step 3: Compare the extracted ingredients with the following list:
-                계란, 우유, 메밀, 땅콩, 대두, 밀, 잣, 호두, 게, 새우, 오징어, 고등어, 조개, 복숭아, 토마토, 닭고기, 돼지고기, 쇠고기, 아황산류.
-
-                Step 4: If any ingredients from the list are found in the table, return only those names **in Korean**. 
-                Do not explain. If none are found, return nothing.
-
-                Step 5: If '복숭아' is present, be sure to include it in the result — even if it's the only match.
-                """;
+                Return true for an allergen if its full Korean name appears **anywhere inside any word** in the ingredient list — even if it is part of a compound word (e.g., "호두함유", "호두분말", "밀가루").
+                
+                Return false if the full Korean allergen word does not appear in any part of the ingredient text.
+                
+                Step 4: Output a list of booleans (true/false), in the same order as the allergen list above.
+                 """;
 
         ImageAnalysisPrompt prompt = new ImageAnalysisPrompt(system, user);
-        return callWithStructuredOutput(request, prompt, AllergyResponse.class);
+        return callWithStructuredOutput(request, prompt, AllergyAiResponse.class);
     }
 
-    public NutritionResponse explainNutrition(ImageAnalysisRequest request) {
+    public NutritionAiResponse explainNutrition(ProductAnalysisRequest request) {
         String system = """
                 You are a nutrition description assistant.
                 """;
@@ -104,10 +108,10 @@ public class OpenAiClient {
                 """;
 
         ImageAnalysisPrompt prompt = new ImageAnalysisPrompt(system, user);
-        return callWithStructuredOutput(request, prompt, NutritionResponse.class);
+        return callWithStructuredOutput(request, prompt, NutritionAiResponse.class);
     }
 
-    public CosmeticResponse explainCosmetic(ImageAnalysisRequest request) {
+    public CosmeticResponse explainCosmetic(ProductAnalysisRequest request) {
         String system = """
                 You are a cosmetic ingredients description assistant.
                 """;
@@ -143,7 +147,7 @@ public class OpenAiClient {
         return callWithStructuredOutput(request, prompt, CosmeticResponse.class);
     }
 
-    private <T> T callWithStructuredOutput(ImageAnalysisRequest request, ImageAnalysisPrompt prompt, Class<T> clazz) {
+    private <T> T callWithStructuredOutput(ProductAnalysisRequest request, ImageAnalysisPrompt prompt, Class<T> clazz) {
         BeanOutputConverter<T> outputConverter = new BeanOutputConverter<>(clazz);
 
         String response = chatClient.prompt()

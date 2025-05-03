@@ -1,9 +1,9 @@
 package com.webeye.backend.nutrition.presentation;
 
 import com.webeye.backend.global.dto.response.SuccessResponse;
-import com.webeye.backend.imageanalysis.dto.request.ImageAnalysisRequest;
+import com.webeye.backend.product.dto.request.ProductAnalysisRequest;
 import com.webeye.backend.nutrition.application.NutritionService;
-import com.webeye.backend.nutrition.dto.response.NutritionResponse;
+import com.webeye.backend.nutrition.dto.response.NutritionAiResponse;
 import com.webeye.backend.nutrition.presentation.swagger.NutritionSwagger;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ public class NutritionController implements NutritionSwagger {
     @Override
     @ResponseStatus(HttpStatus.OK)
     @PostMapping(value = "")
-    public SuccessResponse<NutritionResponse> nutritionAnalysis(@Valid @RequestBody ImageAnalysisRequest request) {
+    public SuccessResponse<NutritionAiResponse> nutritionAnalysis(@Valid @RequestBody ProductAnalysisRequest request) {
         return SuccessResponse.of(NUTRITION_ANALYSIS_SUCCESS, nutritionService.analyzeNutrition(request));
     }
 }
