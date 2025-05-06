@@ -8,6 +8,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -24,12 +27,17 @@ public class HealthFood extends BaseEntity {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String functionality;
 
-    @Column
+    @ElementCollection(targetClass = Keyword.class)
+    @CollectionTable(
+            name = "health_food_keywords",
+            joinColumns = @JoinColumn(name = "health_food_id")
+    )
     @Enumerated(EnumType.STRING)
-    private Keyword keywords;
+    @Column(name = "keywords")
+    private Set<Keyword> keywords = new HashSet<>();
 
     @Builder
-    public HealthFood(String itemName, String functionality, Keyword keywords) {
+    public HealthFood(String itemName, String functionality, Set<Keyword> keywords) {
         this.itemName = itemName;
         this.functionality = functionality;
         this.keywords = keywords;
