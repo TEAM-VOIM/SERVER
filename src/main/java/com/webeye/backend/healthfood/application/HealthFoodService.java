@@ -35,6 +35,8 @@ public class HealthFoodService {
 
         List<HealthFood> healthFoods = HealthFoodMapper.toEntityList(rows);
 
+        healthFoodRepository.saveAll(healthFoods);
+
         return HealthFoodMapper.toResponseList(healthFoods, i2710.totalCount());
     }
 }

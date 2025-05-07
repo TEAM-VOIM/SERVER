@@ -1,15 +1,14 @@
 package com.webeye.backend.healthfood.domain;
 
 import com.webeye.backend.global.domain.BaseEntity;
-import com.webeye.backend.healthfood.domain.type.Keyword;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -27,19 +26,17 @@ public class HealthFood extends BaseEntity {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String functionality;
 
-    @ElementCollection(targetClass = Keyword.class)
-    @CollectionTable(
-            name = "health_food_keywords",
-            joinColumns = @JoinColumn(name = "health_food_id")
-    )
-    @Enumerated(EnumType.STRING)
-    @Column(name = "keywords")
-    private Set<Keyword> keywords = new HashSet<>();
+    @OneToMany(mappedBy = "healthFood", cascade = CascadeType.ALL)
+    private List<HealthFoodKeyword> keyword = new ArrayList<>();
 
     @Builder
-    public HealthFood(String itemName, String functionality, Set<Keyword> keywords) {
+    public HealthFood(String itemName, String functionality) {
         this.itemName = itemName;
         this.functionality = functionality;
-        this.keywords = keywords;
+    }
+
+    public void addKeyword(HealthFoodKeyword healthFoodKeyword) {
+        keyword.add(healthFoodKeyword);
+        healthFoodKeyword.associateWithHealthFood(this);
     }
 }
