@@ -1,8 +1,8 @@
 package com.webeye.backend.nutrition.presentation.swagger;
 
 import com.webeye.backend.global.dto.response.SuccessResponse;
-import com.webeye.backend.imageanalysis.dto.request.ImageAnalysisRequest;
-import com.webeye.backend.nutrition.dto.response.NutritionResponse;
+import com.webeye.backend.product.dto.request.ProductAnalysisRequest;
+import com.webeye.backend.nutrition.dto.response.NutritionAiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -21,7 +21,7 @@ public interface NutritionSwagger {
                     description = "영양소 함량이 성공적으로 추출되었습니다."
             )
     })
-    SuccessResponse<NutritionResponse> nutritionAnalysis(
-            @RequestBody ImageAnalysisRequest request
+    SuccessResponse<NutritionAiResponse> nutritionAnalysis(
+            @RequestBody ProductAnalysisRequest request
     );
 }

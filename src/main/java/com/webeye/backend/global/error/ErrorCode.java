@@ -16,7 +16,13 @@ public enum ErrorCode {
 
     // open api
     OPEN_API_RESPONSE_NULL(HttpStatus.INTERNAL_SERVER_ERROR, "Open API 응답에 실패했습니다."),
-    OPEN_API_DATA_MISSING(HttpStatus.NOT_FOUND, "Open API 데이터가 존재하지 않습니다.")
+    OPEN_API_DATA_MISSING(HttpStatus.NOT_FOUND, "Open API 데이터가 존재하지 않습니다."),
+
+    // product
+    PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 제품입니다."),
+
+    // nutrient
+    NUTRIENT_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 영양성분입니다."),
     ;
     private final HttpStatus status;
     private final String errorMessage;

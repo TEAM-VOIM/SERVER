@@ -5,7 +5,7 @@ import lombok.Builder;
 
 @Schema(description = "제품 영양 정보 응답")
 @Builder
-public record NutritionResponse(
+public record NutritionAiResponse(
         @Schema(description = "나트륨 (mg)", example = "120.5")
         Double sodium,
         @Schema(description = "탄수화물 (g)", example = "25.0")

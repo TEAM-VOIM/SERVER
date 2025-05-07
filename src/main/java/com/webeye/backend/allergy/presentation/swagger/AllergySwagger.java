@@ -1,9 +1,8 @@
 package com.webeye.backend.allergy.presentation.swagger;
 
-import com.webeye.backend.allergy.dto.response.AllergyResponse;
+import com.webeye.backend.allergy.dto.response.AllergyAiResponse;
 import com.webeye.backend.global.dto.response.SuccessResponse;
-import com.webeye.backend.imageanalysis.dto.request.ImageAnalysisRequest;
-import com.webeye.backend.nutrition.dto.response.NutritionResponse;
+import com.webeye.backend.product.dto.request.ProductAnalysisRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -22,8 +21,8 @@ public interface AllergySwagger {
                     description = "알러지 유발 요소가 성공적으로 추출되었습니다."
             )
     })
-    SuccessResponse<AllergyResponse> allergyAnalysis(
-            @RequestBody ImageAnalysisRequest request
+    SuccessResponse<AllergyAiResponse> allergyAnalysis(
+            @RequestBody ProductAnalysisRequest request
     );
 
 }

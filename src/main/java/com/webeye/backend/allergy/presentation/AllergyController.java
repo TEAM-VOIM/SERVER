@@ -1,10 +1,10 @@
 package com.webeye.backend.allergy.presentation;
 
 import com.webeye.backend.allergy.application.AllergyService;
-import com.webeye.backend.allergy.dto.response.AllergyResponse;
+import com.webeye.backend.allergy.dto.response.AllergyAiResponse;
 import com.webeye.backend.allergy.presentation.swagger.AllergySwagger;
 import com.webeye.backend.global.dto.response.SuccessResponse;
-import com.webeye.backend.imageanalysis.dto.request.ImageAnalysisRequest;
+import com.webeye.backend.product.dto.request.ProductAnalysisRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,7 +21,7 @@ public class AllergyController implements AllergySwagger {
     @Override
     @ResponseStatus(HttpStatus.OK)
     @PostMapping(value = "")
-    public SuccessResponse<AllergyResponse> allergyAnalysis(@Valid @RequestBody ImageAnalysisRequest request) {
+    public SuccessResponse<AllergyAiResponse> allergyAnalysis(@Valid @RequestBody ProductAnalysisRequest request) {
         return SuccessResponse.of(ALLERGY_ANALYSIS_SUCCESS ,allergyService.analyzeAllergy(request));
     }
 }
