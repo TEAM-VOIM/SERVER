@@ -1,6 +1,5 @@
 package com.webeye.backend.healthfood.domain;
 
-import com.webeye.backend.global.domain.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -13,7 +12,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Keyword extends BaseEntity {
+public class Keyword {
 
     @Id
     @Column(name = "keyword_id", nullable = false)
@@ -24,7 +23,7 @@ public class Keyword extends BaseEntity {
     private String keyword;
 
     @OneToMany(mappedBy = "keyword", cascade = CascadeType.ALL)
-    private List<HealthFoodKeyword> healthFood = new ArrayList<>();
+    private List<HealthFoodKeyword> healthFoodKeywords = new ArrayList<>();
 
     @Builder
     public Keyword(String keyword) {
@@ -32,7 +31,7 @@ public class Keyword extends BaseEntity {
     }
 
     public void addHealthFood(HealthFoodKeyword healthFoodKeyword) {
-        healthFood.add(healthFoodKeyword);
+        healthFoodKeywords.add(healthFoodKeyword);
         healthFoodKeyword.associateWithKeyword(this);
     }
 }
