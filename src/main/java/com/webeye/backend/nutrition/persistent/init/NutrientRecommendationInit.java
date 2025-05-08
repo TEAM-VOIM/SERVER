@@ -201,6 +201,7 @@ public class NutrientRecommendationInit implements ApplicationRunner {
 
         saveRecommendation(vitaminB, Gender.FEMALE, 0, 0, 0.2);
         saveRecommendation(vitaminB, Gender.FEMALE, 1, 2, 20);
+        saveRecommendation(vitaminB, Gender.FEMALE, 3, 5, 30);
         saveRecommendation(vitaminB, Gender.FEMALE, 6, 8, 45);
         saveRecommendation(vitaminB, Gender.FEMALE, 9, 11, 60);
         saveRecommendation(vitaminB, Gender.FEMALE, 12, 14, 80);
