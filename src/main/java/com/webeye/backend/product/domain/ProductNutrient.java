@@ -1,5 +1,6 @@
 package com.webeye.backend.product.domain;
 
+import com.webeye.backend.global.domain.BaseEntity;
 import com.webeye.backend.nutrition.domain.Nutrient;
 import jakarta.persistence.*;
 import lombok.*;
@@ -7,7 +8,7 @@ import lombok.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ProductNutrient {
+public class ProductNutrient extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

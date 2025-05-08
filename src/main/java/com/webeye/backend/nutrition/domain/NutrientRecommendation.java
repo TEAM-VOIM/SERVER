@@ -1,5 +1,6 @@
 package com.webeye.backend.nutrition.domain;
 
+import com.webeye.backend.global.domain.BaseEntity;
 import com.webeye.backend.nutrition.domain.type.Gender;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -10,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class NutrientRecommendation {
+public class NutrientRecommendation extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

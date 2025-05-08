@@ -1,6 +1,7 @@
 package com.webeye.backend.product.domain;
 
 import com.webeye.backend.allergy.type.AllergyType;
+import com.webeye.backend.global.domain.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -10,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ProductAllergy {
+public class ProductAllergy extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
