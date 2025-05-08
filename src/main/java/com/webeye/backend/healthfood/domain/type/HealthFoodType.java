@@ -3,7 +3,7 @@ package com.webeye.backend.healthfood.domain.type;
 import lombok.Getter;
 
 @Getter
-public enum Keyword {
+public enum HealthFoodType {
     IMMUNE("면역기능"),
     SKIN("피부건강"),
     BLOOD("혈액건강"),
@@ -39,7 +39,7 @@ public enum Keyword {
 
     private final String description;
 
-    Keyword(String description) {
+    HealthFoodType(String description) {
         this.description = description;
     }
 }

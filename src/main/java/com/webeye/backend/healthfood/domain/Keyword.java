@@ -1,5 +1,6 @@
 package com.webeye.backend.healthfood.domain;
 
+import com.webeye.backend.healthfood.domain.type.HealthFoodType;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -19,15 +20,16 @@ public class Keyword {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, unique = true)
-    private String keyword;
+    private HealthFoodType type;
 
     @OneToMany(mappedBy = "keyword", cascade = CascadeType.ALL)
     private List<HealthFoodKeyword> healthFoodKeywords = new ArrayList<>();
 
     @Builder
-    public Keyword(String keyword) {
-        this.keyword = keyword;
+    public Keyword(HealthFoodType type) {
+        this.type = type;
     }
 
     public void addHealthFood(HealthFoodKeyword healthFoodKeyword) {
