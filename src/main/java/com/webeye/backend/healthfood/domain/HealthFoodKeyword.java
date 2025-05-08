@@ -1,5 +1,6 @@
 package com.webeye.backend.healthfood.domain;
 
+import com.webeye.backend.global.domain.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -9,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class HealthFoodKeyword {
+public class HealthFoodKeyword extends BaseEntity {
 
     @Id
     @Column(name = "health_food_keyword_id", nullable = false)
