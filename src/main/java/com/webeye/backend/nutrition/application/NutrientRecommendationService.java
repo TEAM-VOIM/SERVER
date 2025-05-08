@@ -20,6 +20,8 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class NutrientRecommendationService {
+    private final int ZERO_RECOMMENDATION = 100;
+
     private final NutrientRecommendationRepository recommendationRepository;
 
     @Transactional
@@ -38,7 +40,7 @@ public class NutrientRecommendationService {
             }
 
             NutrientRecommendation recommendation = recommendationOpt.get();
-            double percentage = productNutrient.getAmount() / recommendation.getAmount() * 100;
+            double percentage = getPercentageOfRecommendation(recommendation.getAmount(), productNutrient.getAmount());
 
             if (percentage >= 40.0) {
                 overRecommendationNutrients.add(NutrientRecommendationResponse.builder()
@@ -47,5 +49,12 @@ public class NutrientRecommendationService {
             }
         }
         return overRecommendationNutrients;
+    }
+
+    private double getPercentageOfRecommendation(double recommendationAmount, double productAmount) {
+        if (recommendationAmount > 0) {
+            return productAmount / recommendationAmount * 100;
+        }
+        return ZERO_RECOMMENDATION;
     }
 }
