@@ -11,6 +11,6 @@ public record NutrientRecommendationResponse(
         NutrientType nutrientType,
 
         @Schema(description = "권장량에 대한 영양성분의 비율")
-        int percnetage
+        int percentage
 ) {
 }

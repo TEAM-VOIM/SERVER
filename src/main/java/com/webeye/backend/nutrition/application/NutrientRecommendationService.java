@@ -43,7 +43,7 @@ public class NutrientRecommendationService {
             if (percentage >= 40.0) {
                 overRecommendationNutrients.add(NutrientRecommendationResponse.builder()
                         .nutrientType(productNutrient.getNutrient().getType())
-                        .percnetage((int) percentage).build());
+                        .percentage((int) percentage).build());
             }
         }
         return overRecommendationNutrients;
