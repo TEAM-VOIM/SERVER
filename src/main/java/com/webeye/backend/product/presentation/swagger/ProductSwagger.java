@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface ProductSwagger {
     @Operation(
             summary = "음식 제품 분석",
-            description = "음식 제품을 분석합니다. 질환, 알레르기를 입력받아 이를 유발하는 성분이 포함되어 있는지를 반환합니다."
+            description = "음식 제품을 분석합니다. 질환, 알레르기를 입력받아 이를 유발하는 성분과 영양소 권장량을 초과하는 성분이 포함되어 있는지를 반환합니다."
     )
     @ApiResponses(value = {
             @ApiResponse(
