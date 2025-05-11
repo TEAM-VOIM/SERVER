@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Year;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,13 +20,13 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class NutrientRecommendationService {
-    private final int ZERO_RECOMMENDATION = 100;
+    private static final int ZERO_RECOMMENDATION = 100;
 
     private final NutrientRecommendationRepository recommendationRepository;
 
     @Transactional
     public List<NutrientRecommendationResponse> analyzeNutrientSufficiency(NutrientRecommendationRequest request) {
-        List<NutrientRecommendationResponse> overRecommendationNutrients = new LinkedList<>();
+        List<NutrientRecommendationResponse> overRecommendationNutrients = new ArrayList<>();
         int userAge = Year.now().getValue() - request.birthYear();
 
         for (ProductNutrient productNutrient : request.product().getNutrients()) {
