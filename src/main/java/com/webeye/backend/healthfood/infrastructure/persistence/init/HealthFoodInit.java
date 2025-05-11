@@ -12,7 +12,7 @@ import org.springframework.core.annotation.Order;
 
 @Slf4j
 @RequiredArgsConstructor
-@Order(3)
+@Order(1)
 @DummyDataInit
 public class HealthFoodInit implements ApplicationRunner {
 
