@@ -1,7 +1,7 @@
 package com.webeye.backend.nutrition.domain.type;
 
 public enum NutrientType {
-    SODIUM,  // 나트룸
+    SODIUM,  // 나트륨
     CARBOHYDRATE,  // 탄수화물
     SUGARS,  // 당류
     FAT,  // 지방

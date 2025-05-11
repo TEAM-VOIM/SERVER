@@ -4,6 +4,9 @@ import com.webeye.backend.allergy.application.AllergyService;
 import com.webeye.backend.allergy.type.AllergyType;
 import com.webeye.backend.global.error.BusinessException;
 import com.webeye.backend.global.error.ErrorCode;
+import com.webeye.backend.nutrition.application.NutrientRecommendationService;
+import com.webeye.backend.nutrition.dto.request.NutrientRecommendationRequest;
+import com.webeye.backend.nutrition.dto.response.NutrientRecommendationResponse;
 import com.webeye.backend.product.domain.ProductAllergy;
 import com.webeye.backend.product.dto.request.ProductAnalysisRequest;
 import com.webeye.backend.nutrition.application.NutritionService;
@@ -21,16 +24,20 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class ProductService {
     private final NutritionService nutritionService;
+    private final NutrientRecommendationService nutrientRecommendationService;
     private final AllergyService allergyService;
 
     private final ProductRepository productRepository;
 
-    // TODO: 음식 제품 영양성분 분석
     @Transactional
     public ProductResponse analyzeFoodProduct(ProductAnalysisRequest request) {
         if (productRepository.existsById(request.productId())) {
+            Product product = productRepository.findById(request.productId())
+                    .orElseThrow(() -> new BusinessException(ErrorCode.PRODUCT_NOT_FOUND));
+
             return ProductResponse.builder()
-                    .allergyTypes(getAllergyResponse(request.productId(), request.allergies()))
+                    .allergyTypes(getAllergyResponse(product, request.allergies()))
+                    .overRecommendationNutrients(getNutrientRecommendationResponse(request, product))
                     .build();
         }
 
@@ -43,17 +50,22 @@ public class ProductService {
         allergyService.saveProductAllergy(product, request);
 
         return ProductResponse.builder()
-                .allergyTypes(getAllergyResponse(request.productId(), request.allergies()))
+                .allergyTypes(getAllergyResponse(product, request.allergies()))
+                .overRecommendationNutrients(getNutrientRecommendationResponse(request, product))
                 .build();
     }
 
-    private List<AllergyType> getAllergyResponse(String productId, List<AllergyType> userAllergies) {
-        Product product = productRepository.findById(productId).orElseThrow(() -> new BusinessException(ErrorCode.PRODUCT_NOT_FOUND));
-
+    private List<AllergyType> getAllergyResponse(Product product, List<AllergyType> userAllergies) {
         return product.getAllergies().stream()
                 .map(ProductAllergy::getAllergy)
                 .distinct()
                 .filter(userAllergies::contains)
                 .toList();
     }
+
+    private List<NutrientRecommendationResponse> getNutrientRecommendationResponse(ProductAnalysisRequest request, Product product) {
+        return nutrientRecommendationService.analyzeNutrientSufficiency(NutrientRecommendationRequest
+                .builder().birthYear(request.birthYear()).gender(request.gender()).product(product).build());
+    }
+
 }

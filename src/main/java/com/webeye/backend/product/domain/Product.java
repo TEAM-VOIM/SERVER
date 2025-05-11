@@ -1,5 +1,6 @@
 package com.webeye.backend.product.domain;
 
+import com.webeye.backend.global.domain.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,9 +10,9 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Product {
+public class Product extends BaseEntity {
     @Id
-    @Column(name = "product_id")
+    @Column(name = "product_id", nullable = false)
     private String id; // 쿠팡에서 products 뒤에 오는 숫자
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
