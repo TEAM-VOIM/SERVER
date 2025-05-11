@@ -20,7 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RawMaterialServiceImpl implements RawMaterialService {
 
-    @Value("${open-api.service-key}")
+    @Value("${open-api.raw-material.service-key}")
     private String serviceKey;
 
     private final RawMaterialClient rawMaterialClient;

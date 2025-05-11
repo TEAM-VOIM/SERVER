@@ -31,6 +31,10 @@ public enum SuccessCode {
 
     // review
     REVIEW_SUMMARY_SUCCESS(200, "Review summary success"),
+
+    // health food
+    HEALTH_FOOD_API_SUCCESS(200, "Health Food API success"),
+
     ;
 
     private final int status;
