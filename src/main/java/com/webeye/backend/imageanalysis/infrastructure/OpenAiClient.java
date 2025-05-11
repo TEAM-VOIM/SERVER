@@ -5,6 +5,7 @@ import com.webeye.backend.cosmetic.dto.response.CosmeticResponse;
 import com.webeye.backend.explanation.dto.response.DetailExplanationResponse;
 import com.webeye.backend.explanation.dto.response.PointExplanationResponse;
 import com.webeye.backend.global.error.BusinessException;
+import com.webeye.backend.healthfood.dto.HealthFoodAiResponse;
 import com.webeye.backend.imageanalysis.dto.request.ImageAnalysisPrompt;
 import com.webeye.backend.product.dto.request.ProductAnalysisRequest;
 import com.webeye.backend.nutrition.dto.response.NutritionAiResponse;
@@ -145,6 +146,28 @@ public class OpenAiClient {
 
         ImageAnalysisPrompt prompt = new ImageAnalysisPrompt(system, user);
         return callWithStructuredOutput(request, prompt, CosmeticResponse.class);
+    }
+
+    public HealthFoodAiResponse explainHealthFood(ProductAnalysisRequest request) {
+        String system = """
+                You are a health food ingredient analysis expert.
+                You specialize in identifying functional health food ingredients based on product labels or ingredient lists.
+                Do not include explanations, summaries, or any other text.
+                """;
+
+        String user = """
+                Analyze the provided product's ingredient label image.
+                
+                Check if any of the following ingredients are present:
+
+                %s
+
+                If any are found, list only the matched ingredient names separated by commas.
+                If none are found, reply with "None".
+                """;
+
+        ImageAnalysisPrompt prompt = new ImageAnalysisPrompt(system, user);
+        return callWithStructuredOutput(request, prompt, HealthFoodAiResponse.class);
     }
 
     private <T> T callWithStructuredOutput(ProductAnalysisRequest request, ImageAnalysisPrompt prompt, Class<T> clazz) {
