@@ -1,7 +1,6 @@
 package com.webeye.backend.product.dto.response;
 
 import com.webeye.backend.allergy.type.AllergyType;
-import com.webeye.backend.nutrition.domain.type.NutrientType;
 import com.webeye.backend.nutrition.dto.response.NutrientRecommendationResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;

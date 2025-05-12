@@ -2,7 +2,7 @@ package com.webeye.backend.allergy.presentation.swagger;
 
 import com.webeye.backend.allergy.dto.response.AllergyAiResponse;
 import com.webeye.backend.global.dto.response.SuccessResponse;
-import com.webeye.backend.product.dto.request.ProductAnalysisRequest;
+import com.webeye.backend.product.dto.request.FoodProductAnalysisRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -22,7 +22,7 @@ public interface AllergySwagger {
             )
     })
     SuccessResponse<AllergyAiResponse> allergyAnalysis(
-            @RequestBody ProductAnalysisRequest request
+            @RequestBody FoodProductAnalysisRequest request
     );
 
 }

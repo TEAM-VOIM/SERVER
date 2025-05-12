@@ -1,7 +1,7 @@
 package com.webeye.backend.allergy.application;
 
 import com.webeye.backend.allergy.dto.response.AllergyAiResponse;
-import com.webeye.backend.product.dto.request.ProductAnalysisRequest;
+import com.webeye.backend.product.dto.request.FoodProductAnalysisRequest;
 import com.webeye.backend.imageanalysis.infrastructure.OpenAiClient;
 import com.webeye.backend.product.domain.Product;
 import com.webeye.backend.product.domain.ProductAllergy;
@@ -16,12 +16,12 @@ public class AllergyService {
     private final OpenAiClient openAiClient;
     private final ProductRepository productRepository;
 
-    public AllergyAiResponse analyzeAllergy(ProductAnalysisRequest request) {
+    public AllergyAiResponse analyzeAllergy(FoodProductAnalysisRequest request) {
         return openAiClient.explainAllergy(request);
     }
 
     @Transactional
-    public void saveProductAllergy(Product product, ProductAnalysisRequest request) {
+    public void saveProductAllergy(Product product, FoodProductAnalysisRequest request) {
         AllergyAiResponse response = analyzeAllergy(request);
 
         response.getAllergyTypes().forEach(allergyType ->

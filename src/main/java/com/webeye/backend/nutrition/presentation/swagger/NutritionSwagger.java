@@ -1,7 +1,7 @@
 package com.webeye.backend.nutrition.presentation.swagger;
 
 import com.webeye.backend.global.dto.response.SuccessResponse;
-import com.webeye.backend.product.dto.request.ProductAnalysisRequest;
+import com.webeye.backend.product.dto.request.FoodProductAnalysisRequest;
 import com.webeye.backend.nutrition.dto.response.NutritionAiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -22,6 +22,6 @@ public interface NutritionSwagger {
             )
     })
     SuccessResponse<NutritionAiResponse> nutritionAnalysis(
-            @RequestBody ProductAnalysisRequest request
+            @RequestBody FoodProductAnalysisRequest request
     );
 }
