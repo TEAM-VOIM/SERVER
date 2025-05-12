@@ -3,7 +3,7 @@ package com.webeye.backend.healthfood.presentation.swagger;
 import com.webeye.backend.global.dto.response.SuccessResponse;
 import com.webeye.backend.healthfood.dto.HealthFoodAiResponse;
 import com.webeye.backend.healthfood.dto.HealthFoodResponse;
-import com.webeye.backend.product.dto.request.ProductAnalysisRequest;
+import com.webeye.backend.product.dto.request.FoodProductAnalysisRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -36,6 +36,6 @@ public interface HealthFoodSwagger {
             )
     })
     SuccessResponse<HealthFoodAiResponse> analyzeHealthFood(
-            @Valid @RequestBody ProductAnalysisRequest request
+            @Valid @RequestBody FoodProductAnalysisRequest request
     );
 }

@@ -15,7 +15,7 @@ import com.webeye.backend.healthfood.infrastructure.persistence.HealthFoodReposi
 import com.webeye.backend.imageanalysis.infrastructure.OpenAiClient;
 import com.webeye.backend.product.domain.Product;
 import com.webeye.backend.product.domain.ProductHealthfood;
-import com.webeye.backend.product.dto.request.ProductAnalysisRequest;
+import com.webeye.backend.product.dto.request.FoodProductAnalysisRequest;
 import com.webeye.backend.product.persistent.ProductHealthFoodRepository;
 import com.webeye.backend.product.persistent.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -60,7 +60,7 @@ public class HealthFoodService {
     }
 
     @Transactional
-    public HealthFoodAiResponse analyzeAndSave(ProductAnalysisRequest request) {
+    public HealthFoodAiResponse analyzeAndSave(FoodProductAnalysisRequest request) {
         Product product = productRepository.findById(request.productId())
                 .orElseGet(() -> productRepository.save(
                         Product.builder()
@@ -80,7 +80,7 @@ public class HealthFoodService {
     }
 
     @Transactional(readOnly = true)
-    public List<String> analyzeHealthFood(ProductAnalysisRequest request) {
+    public List<String> analyzeHealthFood(FoodProductAnalysisRequest request) {
         List<String> ingredients = healthFoodRepository.findAllItemNames();
 
         String extractedText = openAiClient.explainHealthFood(request, ingredients);

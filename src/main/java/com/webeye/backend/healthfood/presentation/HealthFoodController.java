@@ -5,7 +5,7 @@ import com.webeye.backend.healthfood.application.HealthFoodService;
 import com.webeye.backend.healthfood.dto.HealthFoodAiResponse;
 import com.webeye.backend.healthfood.dto.HealthFoodResponse;
 import com.webeye.backend.healthfood.presentation.swagger.HealthFoodSwagger;
-import com.webeye.backend.product.dto.request.ProductAnalysisRequest;
+import com.webeye.backend.product.dto.request.FoodProductAnalysisRequest;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +32,7 @@ public class HealthFoodController implements HealthFoodSwagger {
     @Override
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/keywords")
-    public SuccessResponse<HealthFoodAiResponse> analyzeHealthFood(@Valid @RequestBody ProductAnalysisRequest request) {
+    public SuccessResponse<HealthFoodAiResponse> analyzeHealthFood(@Valid @RequestBody FoodProductAnalysisRequest request) {
         return SuccessResponse.of(HEALTH_FOOD_ANALYSIS_SUCCESS, healthFoodService.analyzeAndSave(request));
     }
 }

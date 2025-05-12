@@ -2,12 +2,14 @@ package com.webeye.backend.imageanalysis.infrastructure;
 
 import com.webeye.backend.allergy.dto.response.AllergyAiResponse;
 import com.webeye.backend.cosmetic.dto.response.CosmeticResponse;
+import com.webeye.backend.explanation.dto.request.ProductAnalysisRequest;
+import com.webeye.backend.explanation.dto.request.ProductDetailAnalysisRequest;
 import com.webeye.backend.explanation.dto.response.DetailExplanationResponse;
 import com.webeye.backend.explanation.dto.response.PointExplanationResponse;
 import com.webeye.backend.global.error.BusinessException;
 import com.webeye.backend.healthfood.dto.HealthFoodAiResponse;
 import com.webeye.backend.imageanalysis.dto.request.ImageAnalysisPrompt;
-import com.webeye.backend.product.dto.request.ProductAnalysisRequest;
+import com.webeye.backend.product.dto.request.FoodProductAnalysisRequest;
 import com.webeye.backend.nutrition.dto.response.NutritionAiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +42,7 @@ public class OpenAiClient {
                 You may adjust the content depending on the product type, but make sure the extracted items are helpful for making a purchase decision.
                 Limit the result to a maximum of 6 items, and keep each one clear and concise.
                 Below is just a guideline — instead of following the content exactly, follow the intent.
-                
+                                              
                 Example (Generate appropriately according to the product)
                 - 핵심 특징 요약 (제품 포인트)
                 - 당류 비교 (10g당 당류 함량 비교)
@@ -50,28 +52,29 @@ public class OpenAiClient {
                 """;
 
         ImageAnalysisPrompt prompt = new ImageAnalysisPrompt(system, user);
-        return callWithStructuredOutput(request, prompt, PointExplanationResponse.class);
+        return callWithStructuredOutput(request.urls(), prompt, PointExplanationResponse.class);
     }
 
 
-    public DetailExplanationResponse explainProductDetail(ProductAnalysisRequest request) {
+    public DetailExplanationResponse explainProductDetail(ProductDetailAnalysisRequest request) {
         String system = """
                 You are an expert in providing detailed explanations about products based on images.
                 When a user provides a product description image along with the key elements of that description, you should offer a clear and detailed explanation of that element.
-                In this explanation, you must provide very detailed information about that element from the image.
+                In this explanation, you must provide very detailed information about that element from the image. Answer in Korean.
                 """;
 
-        String user = """
+        String user = String.format("""
+                Key descriptive element: %s
                 I have provided a product description image along with the key descriptive elements extracted from the image.
                 Please generate a detailed explanation of the provided key descriptive element.
-                """;
+                """, request.description());
 
 
         ImageAnalysisPrompt prompt = new ImageAnalysisPrompt(system, user);
-        return callWithStructuredOutput(request, prompt, DetailExplanationResponse.class);
+        return callWithStructuredOutput(request.urls(), prompt, DetailExplanationResponse.class);
     }
 
-    public AllergyAiResponse explainAllergy(ProductAnalysisRequest request) {
+    public AllergyAiResponse explainAllergy(FoodProductAnalysisRequest request) {
         String system = """
                 You are an OCR assistant that extracts and detects allergenic ingredients from Korean product label images. Always treat partial matches inside compound words as valid if they contain the full Korean name of an allergen.
                                                                                
@@ -97,10 +100,10 @@ public class OpenAiClient {
                  """;
 
         ImageAnalysisPrompt prompt = new ImageAnalysisPrompt(system, user);
-        return callWithStructuredOutput(request, prompt, AllergyAiResponse.class);
+        return callWithStructuredOutput(request.urls(), prompt, AllergyAiResponse.class);
     }
 
-    public NutritionAiResponse explainNutrition(ProductAnalysisRequest request) {
+    public NutritionAiResponse explainNutrition(FoodProductAnalysisRequest request) {
         String system = """
                 You are a nutrition description assistant.
                 """;
@@ -110,7 +113,7 @@ public class OpenAiClient {
                 """;
 
         ImageAnalysisPrompt prompt = new ImageAnalysisPrompt(system, user);
-        return callWithStructuredOutput(request, prompt, NutritionAiResponse.class);
+        return callWithStructuredOutput(request.urls(), prompt, NutritionAiResponse.class);
     }
 
     public CosmeticResponse explainCosmetic(ProductAnalysisRequest request) {
@@ -146,10 +149,10 @@ public class OpenAiClient {
                 """;
 
         ImageAnalysisPrompt prompt = new ImageAnalysisPrompt(system, user);
-        return callWithStructuredOutput(request, prompt, CosmeticResponse.class);
+        return callWithStructuredOutput(request.urls(), prompt, CosmeticResponse.class);
     }
 
-    public String explainHealthFood(ProductAnalysisRequest request, List<String> ingredients) {
+    public String explainHealthFood(FoodProductAnalysisRequest request, List<String> ingredients) {
         String system = """
                 You are a health food ingredient analysis expert.
                 You specialize in identifying functional health food ingredients based on product labels or ingredient lists.
@@ -170,14 +173,14 @@ public class OpenAiClient {
         return callWithRawOutput(request, prompt);
     }
 
-    private <T> T callWithStructuredOutput(ProductAnalysisRequest request, ImageAnalysisPrompt prompt, Class<T> clazz) {
+    private <T> T callWithStructuredOutput(List<String> urls, ImageAnalysisPrompt prompt, Class<T> clazz) {
         BeanOutputConverter<T> outputConverter = new BeanOutputConverter<>(clazz);
 
         String response = chatClient.prompt()
                 .user(promptUserSpec -> {
                     try {
                         promptUserSpec.text(prompt.user() + outputConverter.getFormat());
-                        for (String imageUrl : request.urls()) {
+                        for (String imageUrl : urls) {
                             MimeType extension = ImageMimeType.fromExtension(extractFileExtension(imageUrl));
                             promptUserSpec.media(extension, new UrlResource(imageUrl));
                         }
@@ -193,7 +196,7 @@ public class OpenAiClient {
         return outputConverter.convert(response);
     }
 
-    private String callWithRawOutput(ProductAnalysisRequest request, ImageAnalysisPrompt prompt) {
+    private String callWithRawOutput(FoodProductAnalysisRequest request, ImageAnalysisPrompt prompt) {
         String response = chatClient.prompt()
                 .user(promptUserSpec -> {
                     try {
