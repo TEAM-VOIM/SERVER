@@ -109,6 +109,7 @@ public class OpenAiClient {
 
         String user = """
                 If the attached images contain 'nutrition information', please provide the amount of each nutrient in the format I sent.
+                If the nutritional information is not included, set the isNutrientIncluded field to false; if it is included, set it to true.
                 """;
 
         ImageAnalysisPrompt prompt = new ImageAnalysisPrompt(system, user);
