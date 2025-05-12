@@ -1,7 +1,7 @@
 package com.webeye.backend.nutrition.presentation;
 
 import com.webeye.backend.global.dto.response.SuccessResponse;
-import com.webeye.backend.product.dto.request.ProductAnalysisRequest;
+import com.webeye.backend.product.dto.request.FoodProductAnalysisRequest;
 import com.webeye.backend.nutrition.application.NutritionService;
 import com.webeye.backend.nutrition.dto.response.NutritionAiResponse;
 import com.webeye.backend.nutrition.presentation.swagger.NutritionSwagger;
@@ -21,7 +21,7 @@ public class NutritionController implements NutritionSwagger {
     @Override
     @ResponseStatus(HttpStatus.OK)
     @PostMapping(value = "")
-    public SuccessResponse<NutritionAiResponse> nutritionAnalysis(@Valid @RequestBody ProductAnalysisRequest request) {
+    public SuccessResponse<NutritionAiResponse> nutritionAnalysis(@Valid @RequestBody FoodProductAnalysisRequest request) {
         return SuccessResponse.of(NUTRITION_ANALYSIS_SUCCESS, nutritionService.analyzeNutrition(request));
     }
 }

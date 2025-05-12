@@ -8,7 +8,7 @@ import com.webeye.backend.nutrition.application.NutrientRecommendationService;
 import com.webeye.backend.nutrition.dto.request.NutrientRecommendationRequest;
 import com.webeye.backend.nutrition.dto.response.NutrientRecommendationResponse;
 import com.webeye.backend.product.domain.ProductAllergy;
-import com.webeye.backend.product.dto.request.ProductAnalysisRequest;
+import com.webeye.backend.product.dto.request.FoodProductAnalysisRequest;
 import com.webeye.backend.nutrition.application.NutritionService;
 import com.webeye.backend.product.domain.Product;
 import com.webeye.backend.product.dto.response.ProductResponse;
@@ -30,7 +30,7 @@ public class ProductService {
     private final ProductRepository productRepository;
 
     @Transactional
-    public ProductResponse analyzeFoodProduct(ProductAnalysisRequest request) {
+    public ProductResponse analyzeFoodProduct(FoodProductAnalysisRequest request) {
         if (productRepository.existsById(request.productId())) {
             Product product = productRepository.findById(request.productId())
                     .orElseThrow(() -> new BusinessException(ErrorCode.PRODUCT_NOT_FOUND));
@@ -63,7 +63,7 @@ public class ProductService {
                 .toList();
     }
 
-    private List<NutrientRecommendationResponse> getNutrientRecommendationResponse(ProductAnalysisRequest request, Product product) {
+    private List<NutrientRecommendationResponse> getNutrientRecommendationResponse(FoodProductAnalysisRequest request, Product product) {
         return nutrientRecommendationService.analyzeNutrientSufficiency(NutrientRecommendationRequest
                 .builder().birthYear(request.birthYear()).gender(request.gender()).product(product).build());
     }

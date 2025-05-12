@@ -2,11 +2,12 @@ package com.webeye.backend.imageanalysis.infrastructure;
 
 import com.webeye.backend.allergy.dto.response.AllergyAiResponse;
 import com.webeye.backend.cosmetic.dto.response.CosmeticResponse;
+import com.webeye.backend.explanation.dto.request.ProductAnalysisRequest;
 import com.webeye.backend.explanation.dto.response.DetailExplanationResponse;
 import com.webeye.backend.explanation.dto.response.PointExplanationResponse;
 import com.webeye.backend.global.error.BusinessException;
 import com.webeye.backend.imageanalysis.dto.request.ImageAnalysisPrompt;
-import com.webeye.backend.product.dto.request.ProductAnalysisRequest;
+import com.webeye.backend.product.dto.request.FoodProductAnalysisRequest;
 import com.webeye.backend.nutrition.dto.response.NutritionAiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.MimeType;
 
 import java.net.MalformedURLException;
+import java.util.List;
 
 import static com.webeye.backend.global.error.ErrorCode.FILE_EXTENSION_NOT_FOUND;
 import static com.webeye.backend.global.error.ErrorCode.INVALID_IMAGE_URL;
@@ -48,7 +50,7 @@ public class OpenAiClient {
                 """;
 
         ImageAnalysisPrompt prompt = new ImageAnalysisPrompt(system, user);
-        return callWithStructuredOutput(request, prompt, PointExplanationResponse.class);
+        return callWithStructuredOutput(request.urls(), prompt, PointExplanationResponse.class);
     }
 
 
@@ -60,16 +62,17 @@ public class OpenAiClient {
                 """;
 
         String user = """
+                Key descriptive element: %s
                 I have provided a product description image along with the key descriptive elements extracted from the image.
                 Please generate a detailed explanation of the provided key descriptive element.
                 """;
 
 
         ImageAnalysisPrompt prompt = new ImageAnalysisPrompt(system, user);
-        return callWithStructuredOutput(request, prompt, DetailExplanationResponse.class);
+        return callWithStructuredOutput(request.urls(), prompt, DetailExplanationResponse.class);
     }
 
-    public AllergyAiResponse explainAllergy(ProductAnalysisRequest request) {
+    public AllergyAiResponse explainAllergy(FoodProductAnalysisRequest request) {
         String system = """
                 You are an OCR assistant that extracts and detects allergenic ingredients from Korean product label images. Always treat partial matches inside compound words as valid if they contain the full Korean name of an allergen.
                                                                                
@@ -95,10 +98,10 @@ public class OpenAiClient {
                  """;
 
         ImageAnalysisPrompt prompt = new ImageAnalysisPrompt(system, user);
-        return callWithStructuredOutput(request, prompt, AllergyAiResponse.class);
+        return callWithStructuredOutput(request.urls(), prompt, AllergyAiResponse.class);
     }
 
-    public NutritionAiResponse explainNutrition(ProductAnalysisRequest request) {
+    public NutritionAiResponse explainNutrition(FoodProductAnalysisRequest request) {
         String system = """
                 You are a nutrition description assistant.
                 """;
@@ -108,7 +111,7 @@ public class OpenAiClient {
                 """;
 
         ImageAnalysisPrompt prompt = new ImageAnalysisPrompt(system, user);
-        return callWithStructuredOutput(request, prompt, NutritionAiResponse.class);
+        return callWithStructuredOutput(request.urls(), prompt, NutritionAiResponse.class);
     }
 
     public CosmeticResponse explainCosmetic(ProductAnalysisRequest request) {
@@ -144,17 +147,17 @@ public class OpenAiClient {
                 """;
 
         ImageAnalysisPrompt prompt = new ImageAnalysisPrompt(system, user);
-        return callWithStructuredOutput(request, prompt, CosmeticResponse.class);
+        return callWithStructuredOutput(request.urls(), prompt, CosmeticResponse.class);
     }
 
-    private <T> T callWithStructuredOutput(ProductAnalysisRequest request, ImageAnalysisPrompt prompt, Class<T> clazz) {
+    private <T> T callWithStructuredOutput(List<String> urls, ImageAnalysisPrompt prompt, Class<T> clazz) {
         BeanOutputConverter<T> outputConverter = new BeanOutputConverter<>(clazz);
 
         String response = chatClient.prompt()
                 .user(promptUserSpec -> {
                     try {
                         promptUserSpec.text(prompt.user() + outputConverter.getFormat());
-                        for (String imageUrl : request.urls()) {
+                        for (String imageUrl : urls) {
                             MimeType extension = ImageMimeType.fromExtension(extractFileExtension(imageUrl));
                             promptUserSpec.media(extension, new UrlResource(imageUrl));
                         }

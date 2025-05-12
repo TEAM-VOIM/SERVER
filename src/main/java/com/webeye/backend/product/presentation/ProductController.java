@@ -1,7 +1,7 @@
 package com.webeye.backend.product.presentation;
 
 import com.webeye.backend.global.dto.response.SuccessResponse;
-import com.webeye.backend.product.dto.request.ProductAnalysisRequest;
+import com.webeye.backend.product.dto.request.FoodProductAnalysisRequest;
 import com.webeye.backend.product.application.ProductService;
 import com.webeye.backend.product.dto.response.ProductResponse;
 import com.webeye.backend.product.presentation.swagger.ProductSwagger;
@@ -21,7 +21,7 @@ public class ProductController implements ProductSwagger {
     @Override
     @ResponseStatus(HttpStatus.OK)
     @PostMapping(value = "/foods")
-    public SuccessResponse<ProductResponse> foodAnalysis(@Valid @RequestBody ProductAnalysisRequest request) {
+    public SuccessResponse<ProductResponse> foodAnalysis(@Valid @RequestBody FoodProductAnalysisRequest request) {
         return SuccessResponse.of(FOOD_PRODUCT_ANALYSIS_SUCCESS, productService.analyzeFoodProduct(request));
     }
 
