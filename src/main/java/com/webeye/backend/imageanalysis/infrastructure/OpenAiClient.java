@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.MimeType;
 
 import java.net.MalformedURLException;
+import java.util.List;
 
 import static com.webeye.backend.global.error.ErrorCode.FILE_EXTENSION_NOT_FOUND;
 import static com.webeye.backend.global.error.ErrorCode.INVALID_IMAGE_URL;
@@ -148,26 +149,25 @@ public class OpenAiClient {
         return callWithStructuredOutput(request, prompt, CosmeticResponse.class);
     }
 
-    public HealthFoodAiResponse explainHealthFood(ProductAnalysisRequest request) {
+    public String explainHealthFood(ProductAnalysisRequest request, List<String> ingredients) {
         String system = """
                 You are a health food ingredient analysis expert.
                 You specialize in identifying functional health food ingredients based on product labels or ingredient lists.
                 Do not include explanations, summaries, or any other text.
                 """;
 
-        String user = """
-                Analyze the provided product's ingredient label image.
-                
-                Check if any of the following ingredients are present:
+        String user = String.format("""
+                If the attached images contain 'nutrition information', please provide the amount of each ingredient in the format I sent.
 
+                Check if any of the following ingredients are present:
                 %s
 
                 If any are found, list only the matched ingredient names separated by commas.
                 If none are found, reply with "None".
-                """;
-
+                """, String.join(", ", ingredients)
+        );
         ImageAnalysisPrompt prompt = new ImageAnalysisPrompt(system, user);
-        return callWithStructuredOutput(request, prompt, HealthFoodAiResponse.class);
+        return callWithRawOutput(request, prompt);
     }
 
     private <T> T callWithStructuredOutput(ProductAnalysisRequest request, ImageAnalysisPrompt prompt, Class<T> clazz) {
@@ -191,6 +191,27 @@ public class OpenAiClient {
                 .content();
 
         return outputConverter.convert(response);
+    }
+
+    private String callWithRawOutput(ProductAnalysisRequest request, ImageAnalysisPrompt prompt) {
+        String response = chatClient.prompt()
+                .user(promptUserSpec -> {
+                    try {
+                        promptUserSpec.text(prompt.user());
+                        for (String imageUrl : request.urls()) {
+                            MimeType extension = ImageMimeType.fromExtension(extractFileExtension(imageUrl));
+                            promptUserSpec.media(extension, new UrlResource(imageUrl));
+                        }
+                    } catch (MalformedURLException exception) {
+                        log.error("MalformedURLException: callWithStructuredOutput() 에서 발생");
+                        throw new BusinessException(INVALID_IMAGE_URL);
+                    }
+                })
+                .system(prompt.system())
+                .call()
+                .content();
+
+        return response;
     }
 
     private String extractFileExtension(String url) {
