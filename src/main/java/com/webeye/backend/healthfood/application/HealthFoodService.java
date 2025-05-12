@@ -73,7 +73,7 @@ public class HealthFoodService {
 
         saveProductHealthFood(product, healthFoods);
 
-        List<HealthFoodType> types = mapHealthFoodTypes(itemNames);
+        List<HealthFoodType> types = mapHealthFoodTypes(healthFoods);
 
         return HealthFoodMapper.toResponse(types);
     }
@@ -88,7 +88,7 @@ public class HealthFoodService {
         for (int i = 0; i < ingredients.size(); i += 100) {
             List<String> batch = ingredients.subList(i, Math.min(i + 100, ingredients.size()));
 
-            String extractedText = openAiClient.explainHealthFood(request, ingredients);
+            String extractedText = openAiClient.explainHealthFood(request, batch);
 
             List<String> matched = Arrays.stream(extractedText.split(","))
                     .map(String::trim)
@@ -112,9 +112,8 @@ public class HealthFoodService {
 
     // TODO: 저장된 제품 - 건강기능식품 키워드 조회
 
-    private List<HealthFoodType> mapHealthFoodTypes(List<String> ingredients) {
-        return ingredients.stream()
-                .flatMap(ingredient -> healthFoodRepository.findByItemNameContaining(ingredient).stream())
+    private List<HealthFoodType> mapHealthFoodTypes(List<HealthFood> healthFoods) {
+        return healthFoods.stream()
                 .flatMap(healthFood -> healthFood.getHealthFoodKeywords().stream())
                 .map(HealthFoodKeyword::getKeyword)
                 .map(Keyword::getType)

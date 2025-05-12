@@ -6,7 +6,6 @@ import com.webeye.backend.healthfood.dto.HealthFoodAiResponse;
 import com.webeye.backend.healthfood.dto.HealthFoodResponse;
 import com.webeye.backend.healthfood.presentation.swagger.HealthFoodSwagger;
 import com.webeye.backend.product.dto.request.FoodProductAnalysisRequest;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
