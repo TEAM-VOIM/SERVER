@@ -1,7 +1,6 @@
 package com.webeye.backend.product.domain;
 
 import com.webeye.backend.global.domain.BaseEntity;
-import com.webeye.backend.healthfood.domain.HealthFood;
 import jakarta.persistence.*;
 import lombok.*;
 
