@@ -1,6 +1,7 @@
 package com.webeye.backend.explanation.application;
 
 import com.webeye.backend.explanation.dto.request.ProductAnalysisRequest;
+import com.webeye.backend.explanation.dto.request.ProductDetailAnalysisRequest;
 import com.webeye.backend.explanation.dto.response.DetailExplanationResponse;
 import com.webeye.backend.explanation.dto.response.PointExplanationResponse;
 import com.webeye.backend.imageanalysis.infrastructure.OpenAiClient;
@@ -16,7 +17,7 @@ public class ExplanationService {
         return openAiClient.explainProductPoint(request);
     }
 
-    public DetailExplanationResponse analyzeProductDetail(ProductAnalysisRequest request) {
+    public DetailExplanationResponse analyzeProductDetail(ProductDetailAnalysisRequest request) {
         return openAiClient.explainProductDetail(request);
     }
 }

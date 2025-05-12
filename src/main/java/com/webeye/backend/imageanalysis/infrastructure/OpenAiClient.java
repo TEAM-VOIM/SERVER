@@ -3,6 +3,7 @@ package com.webeye.backend.imageanalysis.infrastructure;
 import com.webeye.backend.allergy.dto.response.AllergyAiResponse;
 import com.webeye.backend.cosmetic.dto.response.CosmeticResponse;
 import com.webeye.backend.explanation.dto.request.ProductAnalysisRequest;
+import com.webeye.backend.explanation.dto.request.ProductDetailAnalysisRequest;
 import com.webeye.backend.explanation.dto.response.DetailExplanationResponse;
 import com.webeye.backend.explanation.dto.response.PointExplanationResponse;
 import com.webeye.backend.global.error.BusinessException;
@@ -54,18 +55,18 @@ public class OpenAiClient {
     }
 
 
-    public DetailExplanationResponse explainProductDetail(ProductAnalysisRequest request) {
+    public DetailExplanationResponse explainProductDetail(ProductDetailAnalysisRequest request) {
         String system = """
                 You are an expert in providing detailed explanations about products based on images.
                 When a user provides a product description image along with the key elements of that description, you should offer a clear and detailed explanation of that element.
                 In this explanation, you must provide very detailed information about that element from the image.
                 """;
 
-        String user = """
+        String user = String.format("""
                 Key descriptive element: %s
                 I have provided a product description image along with the key descriptive elements extracted from the image.
                 Please generate a detailed explanation of the provided key descriptive element.
-                """;
+                """, request.description());
 
 
         ImageAnalysisPrompt prompt = new ImageAnalysisPrompt(system, user);
