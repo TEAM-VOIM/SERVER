@@ -41,7 +41,7 @@ public class NutritionService {
     @Transactional
     public void saveProductNutrition(Product product, FoodProductAnalysisRequest request) {
         NutritionAiResponse response = openAiClient.explainNutrition(request);
-        if (response.isNutrientIncluded()) {
+        if (Boolean.TRUE.equals(response.isNutrientIncluded())) {
             Map<NutrientType, Double> nutrientMap = extractNutrientMap(response);
 
             nutrientMap.forEach((type, amount) -> {
