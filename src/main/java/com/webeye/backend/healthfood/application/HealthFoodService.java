@@ -110,6 +110,8 @@ public class HealthFoodService {
         productHealthFoodRepository.saveAll(productHealthFoods);
     }
 
+    // TODO: 저장된 제품 - 건강기능식품 키워드 조회
+
     private List<HealthFoodType> mapHealthFoodTypes(List<String> ingredients) {
         return ingredients.stream()
                 .flatMap(ingredient -> healthFoodRepository.findByItemNameContaining(ingredient).stream())
