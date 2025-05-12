@@ -1,9 +1,10 @@
 package com.webeye.backend.explanation.presentation.swagger;
 
+import com.webeye.backend.explanation.dto.request.ProductAnalysisRequest;
+import com.webeye.backend.explanation.dto.request.ProductDetailAnalysisRequest;
 import com.webeye.backend.explanation.dto.response.DetailExplanationResponse;
 import com.webeye.backend.explanation.dto.response.PointExplanationResponse;
 import com.webeye.backend.global.dto.response.SuccessResponse;
-import com.webeye.backend.product.dto.request.ProductAnalysisRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -37,7 +38,7 @@ public interface ExplanationSwagger {
             )
     })
     SuccessResponse<DetailExplanationResponse> productDetailAnalysis(
-            @RequestBody ProductAnalysisRequest request
+            @RequestBody ProductDetailAnalysisRequest request
     );
 }
 

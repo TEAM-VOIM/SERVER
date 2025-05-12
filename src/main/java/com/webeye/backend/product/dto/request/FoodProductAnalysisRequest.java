@@ -8,9 +8,9 @@ import lombok.Builder;
 
 import java.util.List;
 
-@Schema(description = "이미지 분석 URL 요청")
+@Schema(description = "사용자 정보 기반 식품 분석")
 @Builder
-public record ProductAnalysisRequest(
+public record FoodProductAnalysisRequest(
         @NotEmpty(message = "제품 ID는 비어있을 수 없습니다.")
         String productId,
 
