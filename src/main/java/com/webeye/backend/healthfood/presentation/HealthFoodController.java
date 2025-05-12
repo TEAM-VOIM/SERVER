@@ -22,12 +22,12 @@ public class HealthFoodController implements HealthFoodSwagger {
 
     private final HealthFoodService healthFoodService;
 
-    @Override
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping
-    public SuccessResponse<HealthFoodResponse.I2710> callHealthFoodApi() {
-        return SuccessResponse.of(HEALTH_FOOD_API_SUCCESS, healthFoodService.callHealthFoodApi());
-    }
+//    @Override
+//    @ResponseStatus(HttpStatus.OK)
+//    @GetMapping
+//    public SuccessResponse<HealthFoodResponse.I2710> callHealthFoodApi() {
+//        return SuccessResponse.of(HEALTH_FOOD_API_SUCCESS, healthFoodService.callHealthFoodApi());
+//    }
 
     @Override
     @ResponseStatus(HttpStatus.OK)
