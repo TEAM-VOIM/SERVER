@@ -41,7 +41,7 @@ public class OpenAiClient {
                 You may adjust the content depending on the product type, but make sure the extracted items are helpful for making a purchase decision.
                 Limit the result to a maximum of 6 items, and keep each one clear and concise.
                 Below is just a guideline — instead of following the content exactly, follow the intent.
-                
+                                              
                 Example (Generate appropriately according to the product)
                 - 핵심 특징 요약 (제품 포인트)
                 - 당류 비교 (10g당 당류 함량 비교)
@@ -59,7 +59,7 @@ public class OpenAiClient {
         String system = """
                 You are an expert in providing detailed explanations about products based on images.
                 When a user provides a product description image along with the key elements of that description, you should offer a clear and detailed explanation of that element.
-                In this explanation, you must provide very detailed information about that element from the image.
+                In this explanation, you must provide very detailed information about that element from the image. Answer in Korean.
                 """;
 
         String user = String.format("""
