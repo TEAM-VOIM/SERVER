@@ -1,7 +1,5 @@
 package com.webeye.backend.healthfood.application;
 
-import com.webeye.backend.global.error.BusinessException;
-import com.webeye.backend.global.error.ErrorCode;
 import com.webeye.backend.healthfood.domain.HealthFood;
 import com.webeye.backend.healthfood.domain.HealthFoodKeyword;
 import com.webeye.backend.healthfood.domain.Keyword;
@@ -24,6 +22,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -83,13 +82,23 @@ public class HealthFoodService {
     public List<String> analyzeHealthFood(FoodProductAnalysisRequest request) {
         List<String> ingredients = healthFoodRepository.findAllItemNames();
 
-        String extractedText = openAiClient.explainHealthFood(request, ingredients);
+        List<String> matchedIngredients = new ArrayList<>();
 
-        return Arrays.stream(extractedText.split(","))
-                .map(String::trim)
-                .filter(ingredients::contains)
-                .distinct()
-                .toList();
+        // 100개씩 나누어 전송
+        for (int i = 0; i < ingredients.size(); i += 100) {
+            List<String> batch = ingredients.subList(i, Math.min(i + 100, ingredients.size()));
+
+            String extractedText = openAiClient.explainHealthFood(request, ingredients);
+
+            List<String> matched = Arrays.stream(extractedText.split(","))
+                    .map(String::trim)
+                    .filter(batch::contains)
+                    .distinct()
+                    .toList();
+
+            matchedIngredients.addAll(matched);
+        }
+        return matchedIngredients.stream().distinct().toList();
     }
 
     @Transactional
