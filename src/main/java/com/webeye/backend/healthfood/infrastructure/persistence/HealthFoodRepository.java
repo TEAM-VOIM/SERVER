@@ -10,6 +10,6 @@ import java.util.Optional;
 public interface HealthFoodRepository extends JpaRepository<HealthFood, Long> {
     @Query("SELECT h.itemName FROM HealthFood h")
     List<String> findAllItemNames();
-
     Optional<HealthFood> findByItemNameContaining(String itemName);
+    List<HealthFood> findByItemNameIn(List<String> itemNames);
 }

@@ -33,6 +33,6 @@ public class HealthFoodController implements HealthFoodSwagger {
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/keywords")
     public SuccessResponse<HealthFoodAiResponse> analyzeHealthFood(@Valid @RequestBody ProductAnalysisRequest request) {
-        return SuccessResponse.of(HEALTH_FOOD_ANALYSIS_SUCCESS, healthFoodService.analyzeHealthFood(request));
+        return SuccessResponse.of(HEALTH_FOOD_ANALYSIS_SUCCESS, healthFoodService.analyzeAndSave(request));
     }
 }
