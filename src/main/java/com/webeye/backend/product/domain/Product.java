@@ -1,6 +1,7 @@
 package com.webeye.backend.product.domain;
 
 import com.webeye.backend.global.domain.BaseEntity;
+import com.webeye.backend.healthfood.domain.HealthFood;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,6 +22,9 @@ public class Product extends BaseEntity {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductNutrient> nutrients = new ArrayList<>();
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductHealthfood> healthFoods = new ArrayList<>();
+
     @Builder
     public Product(String id) {
         this.id = id;
@@ -34,5 +38,10 @@ public class Product extends BaseEntity {
     public void addAllergy(ProductAllergy allergy) {
         this.allergies.add(allergy);
         allergy.associateWithProduct(this);
+    }
+
+    public void addHealthFood(ProductHealthfood healthFood) {
+        this.healthFoods.add(healthFood);
+        healthFood.associateWithProduct(this);
     }
 }
