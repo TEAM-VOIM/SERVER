@@ -10,7 +10,13 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000", "https://voim.store")
+                .allowedOrigins(
+                        "https://voim.store",
+                        "http://localhost:3000",
+                        "chrome-extension://iofbhhcbidmfcmpjndglaignlfdojpcm",
+                        "chrome-extension://jeppkpjgeheckphiogogbffdenhlkclh",
+                        "chrome-extension://ecbaebehchfclbcglpabiclbgkjoihmf"
+                )
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true);
