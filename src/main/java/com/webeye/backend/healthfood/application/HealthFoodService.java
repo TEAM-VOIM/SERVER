@@ -5,6 +5,7 @@ import com.webeye.backend.healthfood.domain.HealthFoodKeyword;
 import com.webeye.backend.healthfood.domain.Keyword;
 import com.webeye.backend.healthfood.domain.type.HealthFoodType;
 import com.webeye.backend.healthfood.dto.HealthFoodAiResponse;
+import com.webeye.backend.healthfood.dto.HealthFoodKeywordResponse;
 import com.webeye.backend.healthfood.dto.HealthFoodResponse;
 import com.webeye.backend.healthfood.infrastructure.client.HealthFoodClient;
 import com.webeye.backend.healthfood.infrastructure.mapper.HealthFoodMapper;
@@ -22,8 +23,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
@@ -59,17 +58,16 @@ public class HealthFoodService {
     }
 
     @Transactional
-    public HealthFoodAiResponse analyzeAndSave(FoodProductAnalysisRequest request) {
+    public HealthFoodKeywordResponse analyzeAndSave(FoodProductAnalysisRequest request) {
         Product product = productRepository.findById(request.productId())
                 .orElseGet(() -> productRepository.save(
                         Product.builder()
                                 .id(request.productId())
                                 .build()
-                        )
-                );
-        List<String> itemNames = analyzeHealthFood(request);
+                ));
+        HealthFoodAiResponse response = analyzeHealthFood(request);
 
-        List<HealthFood> healthFoods = healthFoodRepository.findByItemNameIn(itemNames);
+        List<HealthFood> healthFoods = healthFoodRepository.findByItemNameIn(response.itemNames());
 
         saveProductHealthFood(product, healthFoods);
 
@@ -79,26 +77,9 @@ public class HealthFoodService {
     }
 
     @Transactional(readOnly = true)
-    public List<String> analyzeHealthFood(FoodProductAnalysisRequest request) {
+    public HealthFoodAiResponse analyzeHealthFood(FoodProductAnalysisRequest request) {
         List<String> ingredients = healthFoodRepository.findAllItemNames();
-
-        List<String> matchedIngredients = new ArrayList<>();
-
-        // 100개씩 나누어 전송
-        for (int i = 0; i < ingredients.size(); i += 100) {
-            List<String> batch = ingredients.subList(i, Math.min(i + 100, ingredients.size()));
-
-            String extractedText = openAiClient.explainHealthFood(request, batch);
-
-            List<String> matched = Arrays.stream(extractedText.split(","))
-                    .map(String::trim)
-                    .filter(batch::contains)
-                    .distinct()
-                    .toList();
-
-            matchedIngredients.addAll(matched);
-        }
-        return matchedIngredients.stream().distinct().toList();
+        return openAiClient.explainHealthFood(request, ingredients);
     }
 
     @Transactional
@@ -109,8 +90,6 @@ public class HealthFoodService {
 
         productHealthFoodRepository.saveAll(productHealthFoods);
     }
-
-    // TODO: 저장된 제품 - 건강기능식품 키워드 조회
 
     private List<HealthFoodType> mapHealthFoodTypes(List<HealthFood> healthFoods) {
         return healthFoods.stream()

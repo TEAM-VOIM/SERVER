@@ -1,8 +1,7 @@
 package com.webeye.backend.healthfood.presentation.swagger;
 
 import com.webeye.backend.global.dto.response.SuccessResponse;
-import com.webeye.backend.healthfood.dto.HealthFoodAiResponse;
-import com.webeye.backend.healthfood.dto.HealthFoodResponse;
+import com.webeye.backend.healthfood.dto.HealthFoodKeywordResponse;
 import com.webeye.backend.product.dto.request.FoodProductAnalysisRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -35,7 +34,7 @@ public interface HealthFoodSwagger {
                     description = "건강 기능 식품 효능 키워드 분석이 성공적으로 실행되었습니다."
             )
     })
-    SuccessResponse<HealthFoodAiResponse> analyzeHealthFood(
+    SuccessResponse<HealthFoodKeywordResponse> analyzeHealthFood(
             @Valid @RequestBody FoodProductAnalysisRequest request
     );
 }

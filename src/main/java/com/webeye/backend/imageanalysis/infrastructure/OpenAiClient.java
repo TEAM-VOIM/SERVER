@@ -152,26 +152,37 @@ public class OpenAiClient {
         return callWithStructuredOutput(request.urls(), prompt, CosmeticResponse.class);
     }
 
-    public String explainHealthFood(FoodProductAnalysisRequest request, List<String> ingredients) {
+    public HealthFoodAiResponse explainHealthFood(FoodProductAnalysisRequest request, List<String> ingredients) {
         String system = """
-                You are a health food ingredient analysis expert.
-                You specialize in identifying functional health food ingredients based on product labels or ingredient lists.
-                Do not include explanations, summaries, or any other text.
+                You are a health food ingredient analysis expert specializing in Korean product label interpretation.
+                Your role is to analyze ingredient labels and identify whether any functional health food ingredients are present.
+                Only extract ingredient names — do not summarize, explain, or add any extra commentary.
                 """;
 
         String user = String.format("""
-                If the attached images contain 'nutrition information', please provide the amount of each ingredient in the format I sent.
+            Step 1: Analyze the attached product label image(s).
 
-                Check if any of the following ingredients are present:
-                %s
+            Step 2: Focus only on the section labeled as '원재료명', '원재료 및 함량', or other similar terms indicating the ingredient list.
 
-                If any are found, list only the matched ingredient names separated by commas.
-                If none are found, reply with "None".
-                """, String.join(", ", ingredients)
-        );
+            Step 3: From the identified ingredient section, extract only the ingredient names. Do not extract amounts, units(e.g. mg, %%), or unnecessary modifiers.
+
+            Step 4: Compare the extracted ingredient names to the following list of known functional health food ingredients:
+            %s
+
+            Step 5: Match ingredients based on the following rules:
+            - Exact matches (e.g., '비타민C' → '비타민C')
+            - Partial matches embedded in compound terms (e.g., '베타카로틴함유' → match '베타카로틴', '비타민C분말' → match '비타민C')
+            - Ignore matches that are too vague or semantically unrelated.
+
+            Example (Generate appropriately according to the product):
+            - 베타카로틴
+            - 비타민C
+            """, String.join(", ", ingredients));
+
         ImageAnalysisPrompt prompt = new ImageAnalysisPrompt(system, user);
-        return callWithRawOutput(request, prompt);
+        return callWithStructuredOutput(request.urls(), prompt, HealthFoodAiResponse.class);
     }
+
 
     private <T> T callWithStructuredOutput(List<String> urls, ImageAnalysisPrompt prompt, Class<T> clazz) {
         BeanOutputConverter<T> outputConverter = new BeanOutputConverter<>(clazz);
@@ -194,27 +205,6 @@ public class OpenAiClient {
                 .content();
 
         return outputConverter.convert(response);
-    }
-
-    private String callWithRawOutput(FoodProductAnalysisRequest request, ImageAnalysisPrompt prompt) {
-        String response = chatClient.prompt()
-                .user(promptUserSpec -> {
-                    try {
-                        promptUserSpec.text(prompt.user());
-                        for (String imageUrl : request.urls()) {
-                            MimeType extension = ImageMimeType.fromExtension(extractFileExtension(imageUrl));
-                            promptUserSpec.media(extension, new UrlResource(imageUrl));
-                        }
-                    } catch (MalformedURLException exception) {
-                        log.error("MalformedURLException: callWithStructuredOutput() 에서 발생");
-                        throw new BusinessException(INVALID_IMAGE_URL);
-                    }
-                })
-                .system(prompt.system())
-                .call()
-                .content();
-
-        return response;
     }
 
     private String extractFileExtension(String url) {
