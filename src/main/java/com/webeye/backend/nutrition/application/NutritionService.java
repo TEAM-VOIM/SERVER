@@ -29,10 +29,6 @@ public class NutritionService {
     private final NutrientRepository nutrientRepository;
     private final ProductRepository productRepository;
 
-    public NutritionAiResponse analyzeNutrition(FoodProductAnalysisRequest request) {
-        return openAiClient.explainNutrition(request);
-    }
-
     public Nutrient findByType(NutrientType type) {
         return nutrientRepository.findByType(type)
                 .orElseThrow(() -> new BusinessException(ErrorCode.NUTRIENT_NOT_FOUND));
