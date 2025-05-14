@@ -58,7 +58,7 @@ public class HealthFoodService {
     }
 
     @Transactional
-    public HealthFoodKeywordResponse analyzeAndSave(FoodProductAnalysisRequest request) {
+    public HealthFoodKeywordResponse analyzeAndSaveHealthFood(FoodProductAnalysisRequest request) {
         Product product = productRepository.findById(request.productId())
                 .orElseGet(() -> productRepository.save(
                         Product.builder()
@@ -67,7 +67,10 @@ public class HealthFoodService {
                 ));
         HealthFoodAiResponse response = analyzeHealthFood(request);
 
-        List<HealthFood> healthFoods = healthFoodRepository.findByItemNameIn(response.itemNames());
+        List<String> dbItemNames = healthFoodRepository.findAllItemNames();
+        List<String> itemNames = matchItemNames(response.itemNames(), dbItemNames);
+
+        List<HealthFood> healthFoods = healthFoodRepository.findByItemNameIn(itemNames);
 
         saveProductHealthFood(product, healthFoods);
 
@@ -76,10 +79,8 @@ public class HealthFoodService {
         return HealthFoodMapper.toResponse(types);
     }
 
-    @Transactional(readOnly = true)
     public HealthFoodAiResponse analyzeHealthFood(FoodProductAnalysisRequest request) {
-        List<String> ingredients = healthFoodRepository.findAllItemNames();
-        return openAiClient.explainHealthFood(request, ingredients);
+        return openAiClient.explainHealthFood(request);
     }
 
     @Transactional
@@ -96,6 +97,14 @@ public class HealthFoodService {
                 .flatMap(healthFood -> healthFood.getHealthFoodKeywords().stream())
                 .map(HealthFoodKeyword::getKeyword)
                 .map(Keyword::getType)
+                .distinct()
+                .toList();
+    }
+
+    private List<String> matchItemNames(List<String> aiItemNames, List<String> dbItemNames) {
+        return aiItemNames.stream()
+                .flatMap(ai -> dbItemNames.stream()
+                        .filter(ai::contains))
                 .distinct()
                 .toList();
     }

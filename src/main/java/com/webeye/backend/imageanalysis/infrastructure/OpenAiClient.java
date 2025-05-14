@@ -152,37 +152,41 @@ public class OpenAiClient {
         return callWithStructuredOutput(request.urls(), prompt, CosmeticResponse.class);
     }
 
-    public HealthFoodAiResponse explainHealthFood(FoodProductAnalysisRequest request, List<String> ingredients) {
+    public HealthFoodAiResponse explainHealthFood(FoodProductAnalysisRequest request) {
         String system = """
-                You are a health food ingredient analysis expert specializing in Korean product label interpretation.
-                Your role is to analyze ingredient labels and identify whether any functional health food ingredients are present.
-                Only extract ingredient names — do not summarize, explain, or add any extra commentary.
+                You are a food label OCR expert. Your task is to extract ingredient names from Korean health supplement product images.
+                You must return only a list of ingredient names, in JSON format. Do not summarize or explain anything.
                 """;
 
-        String user = String.format("""
-            Step 1: Analyze the attached product label image(s).
+        String user = """
+                Please examine the attached image of a Korean health food product.
 
-            Step 2: Focus only on the section labeled as '원재료명', '원재료 및 함량', or other similar terms indicating the ingredient list.
+                Look for the section that lists ingredients. This section is usually labeled with:
+                - '원재료명'
+                - '원재료 및 함량'
+                - or similar titles
+                
+                From this section, extract only the ingredient names. For example:
+                - "비타민C 100mg" → "비타민C"
+                - "베타카로틴함유" → "베타카로틴"
+                - "정제수(물)" → "정제수"
+                
+                Ignore quantities (mg, %, g), descriptors (함유, 분말), or anything in parentheses
+                
+                Return only the names of the ingredients in the following JSON format:
+                {
+                 "itemNames": ["비타민C", "베타카로틴", "정제수"]
+                }
 
-            Step 3: From the identified ingredient section, extract only the ingredient names. Do not extract amounts, units(e.g. mg, %%), or unnecessary modifiers.
-
-            Step 4: Compare the extracted ingredient names to the following list of known functional health food ingredients:
-            %s
-
-            Step 5: Match ingredients based on the following rules:
-            - Exact matches (e.g., '비타민C' → '비타민C')
-            - Partial matches embedded in compound terms (e.g., '베타카로틴함유' → match '베타카로틴', '비타민C분말' → match '비타민C')
-            - Ignore matches that are too vague or semantically unrelated.
-
-            Example (Generate appropriately according to the product):
-            - 베타카로틴
-            - 비타민C
-            """, String.join(", ", ingredients));
+                If no ingredients are found, return:
+                {
+                  "itemNames": []
+                }
+                """;
 
         ImageAnalysisPrompt prompt = new ImageAnalysisPrompt(system, user);
         return callWithStructuredOutput(request.urls(), prompt, HealthFoodAiResponse.class);
     }
-
 
     private <T> T callWithStructuredOutput(List<String> urls, ImageAnalysisPrompt prompt, Class<T> clazz) {
         BeanOutputConverter<T> outputConverter = new BeanOutputConverter<>(clazz);
