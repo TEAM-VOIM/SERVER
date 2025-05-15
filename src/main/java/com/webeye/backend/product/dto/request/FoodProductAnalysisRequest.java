@@ -3,6 +3,7 @@ package com.webeye.backend.product.dto.request;
 import com.webeye.backend.allergy.type.AllergyType;
 import com.webeye.backend.nutrition.domain.type.Gender;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
@@ -15,6 +16,7 @@ public record FoodProductAnalysisRequest(
         @NotEmpty(message = "제품 ID는 비어있을 수 없습니다.")
         String productId,
 
+        @NotBlank(message = "상품 제목은 비어있을 수 없습니다.")
         @Schema(description = "상품 제목")
         String title,
 
