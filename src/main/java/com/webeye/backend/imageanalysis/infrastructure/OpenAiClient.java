@@ -118,34 +118,41 @@ public class OpenAiClient {
 
     public CosmeticResponse explainCosmetic(ProductAnalysisRequest request) {
         String system = """
-                You are a cosmetic ingredients description assistant.
+                You are an expert in identifying harmful cosmetic ingredients based on Korean labels.
+                You always return exact matches based on a predefined Korean-to-English mapping.
                 """;
 
         String user = """
-                Check the attached image for cosmetic ingredients.
+                Carefully examine the attached image. Focus only on Korean ingredient names.
+
+                Your goal is to check for the exact **presence** of the following Korean ingredient names:
+                (These names must appear exactly and completely in the image, including spacing and punctuation)
                 
                 Use this mapping:
                 {
-                "아밀신남알": "amylCinnamal",
-                "벤질알코올": "benzylAlcohol",
-                "신나밀알코올": "cinnamylAlcohol",
-                "시트랄": "citral",
-                "유제놀": "eugenol",
-                "하이드록시시트로넬알": "hydroxycitronellal",
-                "이소유제놀": "isoeugenol",
-                "아밀신나밀알코올": "amylCinnamylAlcohol",
-                "벤질살리실레이트": "benzylSalicylate",
-                "신남알": "cinnamal",
-                "쿠마린": "coumarin",
-                "제라니올": "geraniol",
-                "하이드록시이소헥실3-사이클로헥센카복스알데하이드": "hydroxyisohexyl3CyclohexeneCarboxaldehyde",
-                "아니스에탄올": "anisylAlcohol",
-                "벤질신나메이트": "benzylCinnamate"
+                  "아보벤존": "avobenzone",
+                  "이소프로필 알코올": "isopropylAlcohol",
+                  "소듐 라우릴/라우레스 설페이트 (SLS, SLES)": "sodiumLaurylSulfate",
+                  "트리에탄올아민": "triethanolamine",
+                  "폴리에틸렌 글라이콜 (PEGs)": "polyethyleneGlycol",
+                  "합성 착색료": "syntheticColorant",
+                  "이소프로필 메틸페놀": "isopropylMethylphenol",
+                  "소르빅 애씨드": "sorbicAcid",
+                  "호르몬류": "hormone",
+                  "디부틸 하이드록시 톨루엔 (BHT)": "dibutylHydroxyToluene",
+                  "파라벤류 (Methyl-, Ethyl-, Propylparaben 등)": "parabens",
+                  "트리클로산": "triclosan",
+                  "부틸 하이드록시아니솔 (BHA)": "butylatedHydroxyanisole",
+                  "옥시벤존": "oxybenzone",
+                  "이미다졸리디닐 우레아, 디아졸리디닐 우레아, DMDM 하이단토인 등": "imidazolidinylUrea",
+                  "미네랄 오일, 파라핀오일": "mineralOil",
+                  "티몰": "thymol",
+                  "트라이아이소프로판올아민": "triisopropanolamine",
+                  "인공 향료 (Synthetic Fragrance, Parfum)": "syntheticFragrance",
+                  "페녹시에탄올": "phenoxyethanol"
                 }
                 Return true only if the exact full Korean ingredient name appears continuously and separately; otherwise, return false.
                 Ignore partial, similar, or incomplete matches.
-                
-                Note: "hicc" and "Hydroxyisohexyl 3-Cyclohexene Carboxaldehyde" are the same.
                 """;
 
         ImageAnalysisPrompt prompt = new ImageAnalysisPrompt(system, user);
