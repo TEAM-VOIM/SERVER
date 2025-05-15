@@ -11,6 +11,7 @@ import com.webeye.backend.product.persistent.ProductRepository;
 import com.webeye.backend.rawmaterial.domain.RawMaterial;
 import com.webeye.backend.rawmaterial.persistent.RawMaterialRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,7 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -32,8 +34,7 @@ public class RawMaterialService {
     public void saveRawMaterialNutrition(Product product, FoodProductAnalysisRequest request) {
         String foodName = openAiClient.explainRawMaterial(request).name();
         Optional<RawMaterial> rawMaterialOpt = rawMaterialRepository.findFirstByNameContaining(foodName);
-
-        rawMaterialOpt.ifPresent(rawMaterial -> {
+        rawMaterialOpt.ifPresentOrElse(rawMaterial -> {
             Map<NutrientType, Double> nutrientMap = convertToNutrientMap(rawMaterial);
 
             nutrientMap.forEach((type, amount) -> {
@@ -49,9 +50,9 @@ public class RawMaterialService {
             });
 
             productRepository.save(product);
-        });
+        }, () -> log.warn("일치하는 원재료 데이터가 존재하지 않습니다."));
     }
-
+    
     private Map<NutrientType, Double> convertToNutrientMap(RawMaterial rawMaterial) {
         Map<NutrientType, Double> map = new EnumMap<>(NutrientType.class);
         map.put(NutrientType.SODIUM, rawMaterial.getSodium());
