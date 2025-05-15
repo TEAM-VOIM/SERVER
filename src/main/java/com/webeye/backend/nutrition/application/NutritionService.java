@@ -11,6 +11,7 @@ import com.webeye.backend.nutrition.persistent.NutrientRepository;
 import com.webeye.backend.product.domain.Product;
 import com.webeye.backend.product.domain.ProductNutrient;
 import com.webeye.backend.product.persistent.ProductRepository;
+import com.webeye.backend.rawmaterial.application.RawMaterialService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,13 +24,10 @@ import java.util.Map;
 @Transactional(readOnly = true)
 public class NutritionService {
     private final OpenAiClient openAiClient;
+    private final RawMaterialService rawMaterialService;
 
     private final NutrientRepository nutrientRepository;
     private final ProductRepository productRepository;
-
-    public NutritionAiResponse analyzeNutrition(FoodProductAnalysisRequest request) {
-        return openAiClient.explainNutrition(request);
-    }
 
     public Nutrient findByType(NutrientType type) {
         return nutrientRepository.findByType(type)
@@ -38,21 +36,25 @@ public class NutritionService {
 
     @Transactional
     public void saveProductNutrition(Product product, FoodProductAnalysisRequest request) {
-        NutritionAiResponse response = analyzeNutrition(request);
-        Map<NutrientType, Double> nutrientMap = extractNutrientMap(response);
+        NutritionAiResponse response = openAiClient.explainNutrition(request);
+        if (Boolean.TRUE.equals(response.isNutrientIncluded())) {
+            Map<NutrientType, Double> nutrientMap = extractNutrientMap(response);
 
-        nutrientMap.forEach((type, amount) -> {
-            if (amount == null) return;
-            Nutrient nutrient = findByType(type);
-            product.addNutrient(
-                    ProductNutrient.builder()
-                            .product(product)
-                            .nutrient(nutrient)
-                            .amount(amount)
-                            .build()
-            );
-        });
-        productRepository.save(product);
+            nutrientMap.forEach((type, amount) -> {
+                if (amount == null) return;
+                Nutrient nutrient = findByType(type);
+                product.addNutrient(
+                        ProductNutrient.builder()
+                                .product(product)
+                                .nutrient(nutrient)
+                                .amount(amount)
+                                .build()
+                );
+            });
+            productRepository.save(product);
+            return;
+        }
+        rawMaterialService.saveRawMaterialNutrition(product, request);
     }
 
     private Map<NutrientType, Double> extractNutrientMap(NutritionAiResponse response) {

@@ -11,9 +11,14 @@ import com.webeye.backend.healthfood.dto.HealthFoodAiResponse;
 import com.webeye.backend.imageanalysis.dto.request.ImageAnalysisPrompt;
 import com.webeye.backend.product.dto.request.FoodProductAnalysisRequest;
 import com.webeye.backend.nutrition.dto.response.NutritionAiResponse;
+import com.webeye.backend.rawmaterial.dto.response.RawMaterialAiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.messages.Message;
+import org.springframework.ai.chat.messages.SystemMessage;
+import org.springframework.ai.chat.messages.UserMessage;
+import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.converter.BeanOutputConverter;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Component;
@@ -110,11 +115,13 @@ public class OpenAiClient {
 
         String user = """
                 If the attached images contain 'nutrition information', please provide the amount of each nutrient in the format I sent.
+                If the nutritional information is not included, set the isNutrientIncluded field to false; if it is included, set it to true.
                 """;
 
         ImageAnalysisPrompt prompt = new ImageAnalysisPrompt(system, user);
         return callWithStructuredOutput(request.urls(), prompt, NutritionAiResponse.class);
     }
+
 
     public CosmeticResponse explainCosmetic(ProductAnalysisRequest request) {
         String system = """
@@ -225,6 +232,30 @@ public class OpenAiClient {
             throw new BusinessException(FILE_EXTENSION_NOT_FOUND);
         }
         return fileName.substring(dotIndex + 1);
+    }
+
+
+    public RawMaterialAiResponse explainRawMaterial(FoodProductAnalysisRequest request) {
+        Message systemMessage = new SystemMessage("""
+                너는 원재료 식품의 이름을 반환하는 어시스턴트이다.
+                """);
+
+        Message userMessage = new UserMessage(String.format("""
+                %s
+                다음은 온라인 쇼핑몰의 식품 제목입니다. 불필요한 수식어나 단위를 제거하고, 핵심 식품명만 추출하세요. 부위명(예: 살, 조각, 포, 덩어리 등)은 제거하고, 일반 식재료명을 사용하세요. 가능한 한 짧고 일반적인 명사 형태로 출력하십시오.
+                (참고로 "고구마순"은 "고구마_줄기" 이다.)
+                예시:
+                1. 달콤한 꿀고구마, 1박스, 10kg 못난이 (꿀&호박 랜덤발송) → 꿀고구마
+                2. 건나물 말린 토란줄기 토란대 미얀마산 1kg, 1개 → 토란대_줄기
+                3. [수산맥] 수율90%%내외 박달홍게 프리미엄 선주직송, 1박스, 3kg (고급형10미) → 붉은대게
+                """, request.title()));
+
+        Prompt prompt = new Prompt(List.of(systemMessage, userMessage));
+        String result = chatClient.prompt(prompt).call().content();
+
+        return RawMaterialAiResponse.builder()
+                .name(result)
+                .build();
     }
 
 }
