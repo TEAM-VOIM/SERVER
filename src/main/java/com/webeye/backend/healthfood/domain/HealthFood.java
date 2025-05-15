@@ -1,6 +1,7 @@
 package com.webeye.backend.healthfood.domain;
 
 import com.webeye.backend.global.domain.BaseEntity;
+import com.webeye.backend.product.domain.ProductHealthfood;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -29,6 +30,9 @@ public class HealthFood extends BaseEntity {
     @OneToMany(mappedBy = "healthFood", cascade = CascadeType.ALL)
     private List<HealthFoodKeyword> healthFoodKeywords= new ArrayList<>();
 
+    @OneToMany(mappedBy = "healthFood", cascade = CascadeType.ALL)
+    private List<ProductHealthfood> healthfoods = new ArrayList<>();
+
     @Builder
     public HealthFood(String itemName, String functionality) {
         this.itemName = itemName;
@@ -38,5 +42,10 @@ public class HealthFood extends BaseEntity {
     public void addKeyword(HealthFoodKeyword healthFoodKeyword) {
         healthFoodKeywords.add(healthFoodKeyword);
         healthFoodKeyword.associateWithHealthFood(this);
+    }
+
+    public void addProduct(ProductHealthfood healthFood) {
+        healthfoods.add(healthFood);
+        healthFood.associateWithHealthFood(this);
     }
 }

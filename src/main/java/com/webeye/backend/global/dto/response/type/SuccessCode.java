@@ -34,6 +34,7 @@ public enum SuccessCode {
 
     // health food
     HEALTH_FOOD_API_SUCCESS(200, "Health Food API success"),
+    HEALTH_FOOD_ANALYSIS_SUCCESS(200, "Health Food analysis success"),
 
     ;
 

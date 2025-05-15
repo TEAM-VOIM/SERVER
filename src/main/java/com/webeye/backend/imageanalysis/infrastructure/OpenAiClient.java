@@ -7,6 +7,7 @@ import com.webeye.backend.explanation.dto.request.ProductDetailAnalysisRequest;
 import com.webeye.backend.explanation.dto.response.DetailExplanationResponse;
 import com.webeye.backend.explanation.dto.response.PointExplanationResponse;
 import com.webeye.backend.global.error.BusinessException;
+import com.webeye.backend.healthfood.dto.HealthFoodAiResponse;
 import com.webeye.backend.imageanalysis.dto.request.ImageAnalysisPrompt;
 import com.webeye.backend.product.dto.request.FoodProductAnalysisRequest;
 import com.webeye.backend.nutrition.dto.response.NutritionAiResponse;
@@ -149,6 +150,42 @@ public class OpenAiClient {
 
         ImageAnalysisPrompt prompt = new ImageAnalysisPrompt(system, user);
         return callWithStructuredOutput(request.urls(), prompt, CosmeticResponse.class);
+    }
+
+    public HealthFoodAiResponse explainHealthFood(FoodProductAnalysisRequest request) {
+        String system = """
+                You are a food label OCR expert. Your task is to extract ingredient names from Korean health supplement product images.
+                You must return only a list of ingredient names, in JSON format. Do not summarize or explain anything.
+                """;
+
+        String user = """
+                Please examine the attached image of a Korean health food product.
+
+                Look for the section that lists ingredients. This section is usually labeled with:
+                - '원재료명'
+                - '원재료 및 함량'
+                - or similar titles
+                
+                From this section, extract only the ingredient names. For example:
+                - "비타민C 100mg" → "비타민C"
+                - "베타카로틴함유" → "베타카로틴"
+                - "정제수(물)" → "정제수"
+                
+                Ignore quantities (mg, %, g), descriptors (함유, 분말), or anything in parentheses
+                
+                Return only the names of the ingredients in the following JSON format:
+                {
+                 "itemNames": ["비타민C", "베타카로틴", "정제수"]
+                }
+
+                If no ingredients are found, return:
+                {
+                  "itemNames": []
+                }
+                """;
+
+        ImageAnalysisPrompt prompt = new ImageAnalysisPrompt(system, user);
+        return callWithStructuredOutput(request.urls(), prompt, HealthFoodAiResponse.class);
     }
 
     private <T> T callWithStructuredOutput(List<String> urls, ImageAnalysisPrompt prompt, Class<T> clazz) {

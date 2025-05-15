@@ -1,6 +1,8 @@
 package com.webeye.backend.healthfood.infrastructure.mapper;
 
 import com.webeye.backend.healthfood.domain.HealthFood;
+import com.webeye.backend.healthfood.domain.type.HealthFoodType;
+import com.webeye.backend.healthfood.dto.HealthFoodKeywordResponse;
 import com.webeye.backend.healthfood.dto.HealthFoodResponse;
 
 import java.util.List;
@@ -34,5 +36,11 @@ public class HealthFoodMapper {
                 .collect(Collectors.toList());
 
         return new HealthFoodResponse.I2710(totalCount, i2710List);
+    }
+
+    public static HealthFoodKeywordResponse toResponse(List<HealthFoodType> types) {
+        return HealthFoodKeywordResponse.builder()
+                .types(types)
+                .build();
     }
 }
