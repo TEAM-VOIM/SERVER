@@ -12,22 +12,13 @@ public enum SuccessCode {
 
     // product
     FOOD_PRODUCT_ANALYSIS_SUCCESS(200, "Product Analysis Success"),
+    PRODUCT_DETAIL_EXPLANATION_ANALYSIS_SUCCESS(200, "Product detail explanation analysis success"),
 
-    // raw material
-    RAW_MATERIAL_API_SUCCESS(200, "Raw Material API Success"),
-
-    // nutrition
-    NUTRITION_ANALYSIS_SUCCESS(200, "Nutrition analysis success"),
-
-    // allergy
-    ALLERGY_ANALYSIS_SUCCESS(200, "Allergy analysis success"),
+    // explanation
+    IMAGE_ANALYSIS_SUCCESS(200, "ImageAnalysis Success"),
 
     // cosmetic
     COSMETIC_ANALYSIS_SUCCESS(200, "Cosmetic analysis success"),
-
-    // explanation
-    PRODUCT_POINT_EXPLANATION_ANALYSIS_SUCCESS(200, "Product point explanation analysis success"),
-    PRODUCT_DETAIL_EXPLANATION_ANALYSIS_SUCCESS(200, "Product detail explanation analysis success"),
 
     // review
     REVIEW_SUMMARY_SUCCESS(200, "Review summary success"),
