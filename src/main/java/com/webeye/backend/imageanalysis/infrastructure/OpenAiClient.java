@@ -2,15 +2,15 @@ package com.webeye.backend.imageanalysis.infrastructure;
 
 import com.webeye.backend.allergy.dto.response.AllergyAiResponse;
 import com.webeye.backend.cosmetic.dto.response.CosmeticResponse;
-import com.webeye.backend.explanation.dto.request.ProductAnalysisRequest;
-import com.webeye.backend.explanation.dto.request.ProductDetailAnalysisRequest;
-import com.webeye.backend.explanation.dto.response.DetailExplanationResponse;
-import com.webeye.backend.explanation.dto.response.PointExplanationResponse;
+import com.webeye.backend.product.dto.request.ProductAnalysisRequest;
+import com.webeye.backend.product.dto.response.DetailExplanationResponse;
 import com.webeye.backend.global.error.BusinessException;
 import com.webeye.backend.healthfood.dto.HealthFoodAiResponse;
 import com.webeye.backend.imageanalysis.dto.request.ImageAnalysisPrompt;
+import com.webeye.backend.product.domain.type.OutlineType;
 import com.webeye.backend.product.dto.request.FoodProductAnalysisRequest;
 import com.webeye.backend.nutrition.dto.response.NutritionAiResponse;
+import com.webeye.backend.product.dto.request.ProductDetailAnalysisRequest;
 import com.webeye.backend.rawmaterial.dto.response.RawMaterialAiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,43 +36,18 @@ import static com.webeye.backend.global.error.ErrorCode.INVALID_IMAGE_URL;
 public class OpenAiClient {
     private final ChatClient chatClient;
 
-    public PointExplanationResponse explainProductPoint(ProductAnalysisRequest request) {
-        String system = """
-                You are an expert in analyzing product images and extracting key information that helps users make purchase decisions.
-                Based on the image provided, extract only the most relevant and concise information that highlights the product's core value.
-                The extracted list should contain no more than 6 items. Do not include unnecessary or overly detailed information—only what's essential for a buyer.
-                """;
-        String user = """
-                Analyze the image and extract key product information in the format below.
-                You may adjust the content depending on the product type, but make sure the extracted items are helpful for making a purchase decision.
-                Limit the result to a maximum of 6 items, and keep each one clear and concise.
-                Below is just a guideline — instead of following the content exactly, follow the intent.
-                                              
-                Example (Generate appropriately according to the product)
-                - 핵심 특징 요약 (제품 포인트)
-                - 당류 비교 (10g당 당류 함량 비교)
-                - 제품 추천 대상
-                - 상세 원재료
-                - 영양 정보 (1개 10g 기준)
-                """;
 
-        ImageAnalysisPrompt prompt = new ImageAnalysisPrompt(system, user);
-        return callWithStructuredOutput(request.urls(), prompt, PointExplanationResponse.class);
-    }
-
-
-    public DetailExplanationResponse explainProductDetail(ProductDetailAnalysisRequest request) {
+    public DetailExplanationResponse explainProductDetail(OutlineType outline, ProductDetailAnalysisRequest request) {
         String system = """
                 You are an expert in providing detailed explanations about products based on images.
-                When a user provides a product description image along with the key elements of that description, you should offer a clear and detailed explanation of that element.
+                When a user provides a product description image along with the key outline of that description, you should offer a clear and detailed explanation of that element.
                 In this explanation, you must provide very detailed information about that element from the image. Answer in Korean.
                 """;
 
         String user = String.format("""
-                Key descriptive element: %s
-                I have provided a product description image along with the key descriptive elements extracted from the image.
-                Please generate a detailed explanation of the provided key descriptive element.
-                """, request.description());
+                Key Outline: %s
+                Please generate a detailed explanation of the provided outline.
+                """, outline.getPrompt());
 
 
         ImageAnalysisPrompt prompt = new ImageAnalysisPrompt(system, user);

@@ -1,8 +1,8 @@
 package com.webeye.backend.cosmetic.presentation.swagger;
 
 import com.webeye.backend.cosmetic.dto.response.CosmeticResponse;
-import com.webeye.backend.explanation.dto.request.ProductAnalysisRequest;
 import com.webeye.backend.global.dto.response.SuccessResponse;
+import com.webeye.backend.product.dto.request.ProductAnalysisRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
