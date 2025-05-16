@@ -9,7 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@Tag(name = "이미지 분석", description = "이미지 분석 관련 API")
+@Tag(name = "[이미지 분석]", description = "이미지 분석 관련 API")
 public interface ImageAnalysisSwagger {
     @Operation(
             summary = "[이미지 분석]",

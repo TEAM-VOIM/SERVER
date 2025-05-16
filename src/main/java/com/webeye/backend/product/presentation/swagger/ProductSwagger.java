@@ -14,7 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@Tag(name = "Product", description = "제품 관련 API")
+@Tag(name = "[제품]", description = "제품 관련 API")
 public interface ProductSwagger {
     @Operation(
             summary = "음식 제품 분석",
