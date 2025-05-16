@@ -2,6 +2,8 @@ package com.webeye.backend.imageanalysis.infrastructure;
 
 import com.webeye.backend.allergy.dto.response.AllergyAiResponse;
 import com.webeye.backend.cosmetic.dto.response.CosmeticResponse;
+import com.webeye.backend.imageanalysis.dto.request.ImageAnalysisRequest;
+import com.webeye.backend.imageanalysis.dto.response.ImageAnalysisResponse;
 import com.webeye.backend.product.dto.request.ProductAnalysisRequest;
 import com.webeye.backend.product.dto.response.DetailExplanationResponse;
 import com.webeye.backend.global.error.BusinessException;
@@ -175,6 +177,21 @@ public class OpenAiClient {
 
         ImageAnalysisPrompt prompt = new ImageAnalysisPrompt(system, user);
         return callWithStructuredOutput(request.urls(), prompt, HealthFoodAiResponse.class);
+    }
+
+    public ImageAnalysisResponse explainImage(ImageAnalysisRequest request) {
+        String system = """
+                You are a helpful and concise assistant that specializes in describing images.
+                Always provide clear, accurate, and human-like descriptions of the image content.
+                Focus on the most important visual details such as objects, people, actions, scenes, and context.
+                Avoid speculation unless necessary, and do not include irrelevant information. Answer in Korean
+                """;
+        String user = """
+                Please describe the contents of this image in detail.
+                """;
+
+        ImageAnalysisPrompt prompt = new ImageAnalysisPrompt(system, user);
+        return callWithStructuredOutput(List.of(request.url()), prompt, ImageAnalysisResponse.class);
     }
 
     private <T> T callWithStructuredOutput(List<String> urls, ImageAnalysisPrompt prompt, Class<T> clazz) {
