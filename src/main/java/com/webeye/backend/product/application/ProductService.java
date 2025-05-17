@@ -92,6 +92,9 @@ public class ProductService {
             String fullUrl = "https:" + rawUrl;
             imageUrls.add(fullUrl);
         }
+        log.info("extracted urls: {}", imageUrls);
+        log.info("total number of images: {}", imageUrls.size());
+
         return imageUrls;
     }
 }
