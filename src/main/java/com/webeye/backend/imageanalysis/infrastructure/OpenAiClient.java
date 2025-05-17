@@ -53,7 +53,7 @@ public class OpenAiClient {
 
 
         ImageAnalysisPrompt prompt = new ImageAnalysisPrompt(system, user);
-        return callWithStructuredOutput(request.urls(), prompt, DetailExplanationResponse.class);
+        return callWithStructuredOutput(urls, prompt, DetailExplanationResponse.class);
     }
 
     public AllergyAiResponse explainAllergy(FoodProductAnalysisRequest request) {
