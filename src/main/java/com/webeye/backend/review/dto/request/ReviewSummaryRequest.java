@@ -6,7 +6,7 @@ import lombok.Builder;
 import java.util.Map;
 
 @Builder
-@Schema(description = "리뷰 목록")
+@Schema(description = "리뷰 만족도")
 public record ReviewSummaryRequest(
         @Schema(description = "리뷰 만족도 통계",
                 example = """
