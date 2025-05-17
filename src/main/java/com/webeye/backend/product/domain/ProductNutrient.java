@@ -8,9 +8,6 @@ import lombok.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(
-        uniqueConstraints = @UniqueConstraint(columnNames = {"product_id", "nutrient_id"})
-)
 public class ProductNutrient extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
