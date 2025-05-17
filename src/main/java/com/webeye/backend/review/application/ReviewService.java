@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Map;
+
 @Service
 @RequiredArgsConstructor
 public class ReviewService {
@@ -19,9 +21,9 @@ public class ReviewService {
 
     @Transactional
     public ReviewSummaryResponse summarizeReview(ReviewSummaryRequest request) {
-        String reviewText = String.join("\n", request.reviews());
+        Map<String, Map<String, Integer>> reviewMap = request.reviews();
 
-        ReviewSummaryResponse response = clovaXClientService.summarizeReviewText(reviewText);
+        ReviewSummaryResponse response = clovaXClientService.summarizeReviewText(reviewMap);
 
         Review review = ReviewMapper.toEntity(response);
         reviewRepository.save(review);

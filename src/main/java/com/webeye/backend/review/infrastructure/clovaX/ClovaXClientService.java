@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,7 +29,9 @@ public class ClovaXClientService {
     @Value("${clova.request-id}")
     private String requestId;
 
-    public ReviewSummaryResponse summarizeReviewText(String reviewText) {
+    public ReviewSummaryResponse summarizeReviewText(Map<String, Map<String, Integer>> reviewText) {
+        String inputText = convertReviewMapToText(reviewText);
+
         ClovaXRequest clovaXRequest = new ClovaXRequest(List.of(
                 new ClovaXMessage(Role.SYSTEM, List.of(
                         new ClovaXContent(ContentType.TEXT,
@@ -49,7 +52,7 @@ public class ClovaXClientService {
                         )
                 )),
                 new ClovaXMessage(Role.USER, List.of(
-                        new ClovaXContent(ContentType.TEXT, reviewText)
+                        new ClovaXContent(ContentType.TEXT, inputText)
                 ))
         ));
         ClovaXResponse clovaXResponse = clovaXClient.createReviewSummary("Bearer "+ secretKey, requestId, clovaXRequest);
@@ -77,4 +80,18 @@ public class ClovaXClientService {
 
         return new ReviewSummaryResponse(positive, negative, keywords);
     }
+
+    private String convertReviewMapToText(Map<String, Map<String, Integer>> reviewMap) {
+        StringBuilder sb = new StringBuilder();
+
+        for (Map.Entry<String, Map<String, Integer>> entry : reviewMap.entrySet()) {
+            sb.append("[").append(entry.getKey()).append("]\n");
+            for (Map.Entry<String, Integer> option : entry.getValue().entrySet()) {
+                sb.append("- ").append(option.getKey()).append(": ").append(option.getValue()).append("%\n");
+            }
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
+
 }
