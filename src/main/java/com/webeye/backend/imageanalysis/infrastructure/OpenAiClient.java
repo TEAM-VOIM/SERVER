@@ -12,7 +12,6 @@ import com.webeye.backend.imageanalysis.dto.request.ImageAnalysisPrompt;
 import com.webeye.backend.product.domain.type.OutlineType;
 import com.webeye.backend.product.dto.request.FoodProductAnalysisRequest;
 import com.webeye.backend.nutrition.dto.response.NutritionAiResponse;
-import com.webeye.backend.product.dto.request.ProductDetailAnalysisRequest;
 import com.webeye.backend.rawmaterial.dto.response.RawMaterialAiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -56,7 +55,7 @@ public class OpenAiClient {
         return callWithStructuredOutput(urls, prompt, DetailExplanationResponse.class);
     }
 
-    public AllergyAiResponse explainAllergy(FoodProductAnalysisRequest request) {
+    public AllergyAiResponse explainAllergy(List<String> urls) {
         String system = """
                 You are an OCR assistant that extracts and detects allergenic ingredients from Korean product label images. Always treat partial matches inside compound words as valid if they contain the full Korean name of an allergen.
                                                                                
@@ -82,10 +81,10 @@ public class OpenAiClient {
                  """;
 
         ImageAnalysisPrompt prompt = new ImageAnalysisPrompt(system, user);
-        return callWithStructuredOutput(request.urls(), prompt, AllergyAiResponse.class);
+        return callWithStructuredOutput(urls, prompt, AllergyAiResponse.class);
     }
 
-    public NutritionAiResponse explainNutrition(FoodProductAnalysisRequest request) {
+    public NutritionAiResponse explainNutrition(List<String> urls) {
         String system = """
                 You are a nutrition description assistant.
                 """;
@@ -96,11 +95,11 @@ public class OpenAiClient {
                 """;
 
         ImageAnalysisPrompt prompt = new ImageAnalysisPrompt(system, user);
-        return callWithStructuredOutput(request.urls(), prompt, NutritionAiResponse.class);
+        return callWithStructuredOutput(urls, prompt, NutritionAiResponse.class);
     }
 
 
-    public CosmeticResponse explainCosmetic(ProductAnalysisRequest request) {
+    public CosmeticResponse explainCosmetic(List<String> urls) {
         String system = """
                 You are an expert in identifying harmful cosmetic ingredients based on Korean labels.
                 You always return exact matches based on a predefined Korean-to-English mapping.
@@ -140,10 +139,10 @@ public class OpenAiClient {
                 """;
 
         ImageAnalysisPrompt prompt = new ImageAnalysisPrompt(system, user);
-        return callWithStructuredOutput(request.urls(), prompt, CosmeticResponse.class);
+        return callWithStructuredOutput(urls, prompt, CosmeticResponse.class);
     }
 
-    public HealthFoodAiResponse explainHealthFood(FoodProductAnalysisRequest request) {
+    public HealthFoodAiResponse explainHealthFood(List<String> urls) {
         String system = """
                 You are a food label OCR expert. Your task is to extract ingredient names from Korean health supplement product images.
                 You must return only a list of ingredient names, in JSON format. Do not summarize or explain anything.
@@ -176,7 +175,7 @@ public class OpenAiClient {
                 """;
 
         ImageAnalysisPrompt prompt = new ImageAnalysisPrompt(system, user);
-        return callWithStructuredOutput(request.urls(), prompt, HealthFoodAiResponse.class);
+        return callWithStructuredOutput(urls, prompt, HealthFoodAiResponse.class);
     }
 
     public ImageAnalysisResponse explainImage(ImageAnalysisRequest request) {

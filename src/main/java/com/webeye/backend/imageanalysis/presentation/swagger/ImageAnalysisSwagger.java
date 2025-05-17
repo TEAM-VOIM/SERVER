@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Tag(name = "[이미지 분석]", description = "이미지 분석 관련 API")
 public interface ImageAnalysisSwagger {
     @Operation(
-            summary = "[이미지 분석]",
+            summary = "이미지 분석",
             description = "이미지 URL을 입력받아 이미지를 분석을 제공합니다."
     )
     @ApiResponses(value = {

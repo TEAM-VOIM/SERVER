@@ -11,6 +11,7 @@ import com.webeye.backend.healthfood.infrastructure.client.HealthFoodClient;
 import com.webeye.backend.healthfood.infrastructure.mapper.HealthFoodMapper;
 import com.webeye.backend.healthfood.infrastructure.mapper.ProductHealthFoodMapper;
 import com.webeye.backend.healthfood.infrastructure.persistence.HealthFoodRepository;
+import com.webeye.backend.imageanalysis.infrastructure.ImageUrlExtractor;
 import com.webeye.backend.imageanalysis.infrastructure.OpenAiClient;
 import com.webeye.backend.product.domain.Product;
 import com.webeye.backend.product.domain.ProductHealthfood;
@@ -37,6 +38,7 @@ public class HealthFoodService {
     private String serviceKey;
 
     private final OpenAiClient openAiClient;
+    private final ImageUrlExtractor imageUrlExtractor;
     private final HealthFoodClient healthFoodClient;
     private final ProductRepository productRepository;
     private final HealthFoodRepository healthFoodRepository;
@@ -80,7 +82,7 @@ public class HealthFoodService {
     }
 
     public HealthFoodAiResponse analyzeHealthFood(FoodProductAnalysisRequest request) {
-        return openAiClient.explainHealthFood(request);
+        return openAiClient.explainHealthFood(imageUrlExtractor.extractImageUrlFromHtml(request.html()));
     }
 
     @Transactional

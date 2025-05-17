@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.Builder;
 
 import java.util.List;
@@ -20,9 +21,10 @@ public record FoodProductAnalysisRequest(
         @Schema(description = "상품 제목")
         String title,
 
-        @Schema(description = "상품 이미지 URL")
-        @NotEmpty(message = "이미지 URL 목록은 비어있을 수 없습니다.")
-        List<String> urls,
+        @Schema(description = "상품 상세 정보 HTML")
+        @NotEmpty(message = "상품 상세 정보의 HTML은 비어있을 수 없습니다.")
+        @Pattern(regexp = ".*<img.*src=.*>.*", message = "HTML에는 최소한 하나의 이미지 태그가 포함되어야 합니다.")
+        String html,
 
         @Schema(description = "사용자 출생년도")
         @NotNull(message = "사용자의 출생연도는 비어있을 수 없습니다.")

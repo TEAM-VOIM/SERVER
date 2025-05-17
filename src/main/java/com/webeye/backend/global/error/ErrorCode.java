@@ -14,6 +14,9 @@ public enum ErrorCode {
     UNSUPPORTED_IMAGE_TYPE(HttpStatus.BAD_REQUEST, "지원하지 않는 이미지 형식입니다."),
     INVALID_IMAGE_URL(HttpStatus.BAD_REQUEST, "잘못된 이미지 URL입니다."),
 
+    // image url extract
+    IMAGE_URL_NOT_FOUND(HttpStatus.NOT_FOUND, "이미지의 URL이 추출되지 않았습니다."),
+
     // open api
     OPEN_API_RESPONSE_NULL(HttpStatus.INTERNAL_SERVER_ERROR, "Open API 응답에 실패했습니다."),
     OPEN_API_DATA_MISSING(HttpStatus.NOT_FOUND, "Open API 데이터가 존재하지 않습니다."),

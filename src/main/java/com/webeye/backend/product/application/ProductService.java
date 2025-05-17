@@ -2,6 +2,7 @@ package com.webeye.backend.product.application;
 
 import com.webeye.backend.allergy.application.AllergyService;
 import com.webeye.backend.allergy.type.AllergyType;
+import com.webeye.backend.imageanalysis.infrastructure.ImageUrlExtractor;
 import com.webeye.backend.product.dto.response.DetailExplanationResponse;
 import com.webeye.backend.global.error.BusinessException;
 import com.webeye.backend.global.error.ErrorCode;
@@ -22,10 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Slf4j
 @Service
@@ -36,6 +34,7 @@ public class ProductService {
     private final NutrientRecommendationService nutrientRecommendationService;
     private final AllergyService allergyService;
     private final OpenAiClient openAiClient;
+    private final ImageUrlExtractor imageUrlExtractor;
 
     private final ProductRepository productRepository;
 
@@ -72,29 +71,13 @@ public class ProductService {
                 .toList();
     }
 
-    private List<NutrientRecommendationResponse> getNutrientRecommendationResponse(FoodProductAnalysisRequest request, Product product) {
+    private List<NutrientRecommendationResponse> getNutrientRecommendationResponse(
+            FoodProductAnalysisRequest request, Product product) {
         return nutrientRecommendationService.analyzeNutrientSufficiency(NutrientRecommendationRequest
                 .builder().birthYear(request.birthYear()).gender(request.gender()).product(product).build());
     }
 
     public DetailExplanationResponse analyzeProductDetail(OutlineType outline, ProductDetailAnalysisRequest request) {
-        return openAiClient.explainProductDetail(outline, extractImageUrlFromHtml(request.html()));
-    }
-
-    private List<String> extractImageUrlFromHtml(String html) {
-        Pattern pattern = Pattern.compile("<img[^>]+src=[\"'](//[^\"']+)[\"']");
-        Matcher matcher = pattern.matcher(html);
-
-        List<String> imageUrls = new ArrayList<>();
-
-        while (matcher.find()) {
-            String rawUrl = matcher.group(1);
-            String fullUrl = "https:" + rawUrl;
-            imageUrls.add(fullUrl);
-        }
-        log.info("extracted urls: {}", imageUrls);
-        log.info("total number of images: {}", imageUrls.size());
-
-        return imageUrls;
+        return openAiClient.explainProductDetail(outline, imageUrlExtractor.extractImageUrlFromHtml(request.html()));
     }
 }
