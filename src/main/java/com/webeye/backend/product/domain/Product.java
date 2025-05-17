@@ -1,6 +1,7 @@
 package com.webeye.backend.product.domain;
 
 import com.webeye.backend.global.domain.BaseEntity;
+import com.webeye.backend.review.domain.Review;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,6 +16,9 @@ public class Product extends BaseEntity {
     @Column(name = "product_id", nullable = false)
     private String id; // 쿠팡에서 products 뒤에 오는 숫자
 
+    @OneToOne(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private Review review;
+
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductAllergy> allergies = new ArrayList<>();
 
@@ -25,8 +29,14 @@ public class Product extends BaseEntity {
     private List<ProductHealthfood> healthFoods = new ArrayList<>();
 
     @Builder
-    public Product(String id) {
+    public Product(String id, Review review) {
         this.id = id;
+        this.review = review;
+    }
+
+    public void associateWithReview(Review review) {
+        this.review = review;
+        review.associateWithProduct(this);
     }
 
     public void addNutrient(ProductNutrient nutrient) {

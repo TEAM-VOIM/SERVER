@@ -1,6 +1,7 @@
 package com.webeye.backend.review.domain;
 
 import com.webeye.backend.global.domain.BaseEntity;
+import com.webeye.backend.product.domain.Product;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -32,9 +33,9 @@ public class Review extends BaseEntity {
     @Column(nullable = false)
     private String keywords;
 
-//    @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "product_id", unique = true)
-//    private Product product;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id", unique = true)
+    private Product product;
 
     @Builder
     public Review(
@@ -47,6 +48,11 @@ public class Review extends BaseEntity {
         this.positiveSummary = positiveSummary;
         this.negativeSummary = negativeSummary;
         this.keywords = keywords;
+    }
+
+    public void associateWithProduct(Product product) {
+        this.product = product;
+        product.associateWithReview(this);
     }
 
     public List<String> getKeywordList() {
