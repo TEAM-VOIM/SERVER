@@ -20,9 +20,9 @@ public record FoodProductAnalysisRequest(
         @Schema(description = "상품 제목")
         String title,
 
-        @Schema(description = "상품 이미지 URL")
-        @NotEmpty(message = "이미지 URL 목록은 비어있을 수 없습니다.")
-        List<String> urls,
+        @Schema(description = "상품 상세 정보 HTML")
+        @NotEmpty(message = "상품 상세 정보의 HTML은 비어있을 수 없습니다.")
+        String html,
 
         @Schema(description = "사용자 출생년도")
         @NotNull(message = "사용자의 출생연도는 비어있을 수 없습니다.")

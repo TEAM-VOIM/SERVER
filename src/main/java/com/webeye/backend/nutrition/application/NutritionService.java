@@ -2,6 +2,7 @@ package com.webeye.backend.nutrition.application;
 
 import com.webeye.backend.global.error.BusinessException;
 import com.webeye.backend.global.error.ErrorCode;
+import com.webeye.backend.imageanalysis.infrastructure.ImageUrlExtractor;
 import com.webeye.backend.product.dto.request.FoodProductAnalysisRequest;
 import com.webeye.backend.imageanalysis.infrastructure.OpenAiClient;
 import com.webeye.backend.nutrition.domain.Nutrient;
@@ -24,6 +25,7 @@ import java.util.Map;
 @Transactional(readOnly = true)
 public class NutritionService {
     private final OpenAiClient openAiClient;
+    private final ImageUrlExtractor imageUrlExtractor;
     private final RawMaterialService rawMaterialService;
 
     private final NutrientRepository nutrientRepository;
@@ -36,7 +38,7 @@ public class NutritionService {
 
     @Transactional
     public void saveProductNutrition(Product product, FoodProductAnalysisRequest request) {
-        NutritionAiResponse response = openAiClient.explainNutrition(request);
+        NutritionAiResponse response = openAiClient.explainNutrition(imageUrlExtractor.extractImageUrlFromHtml(request.html()));
         if (Boolean.TRUE.equals(response.isNutrientIncluded())) {
             Map<NutrientType, Double> nutrientMap = extractNutrientMap(response);
 

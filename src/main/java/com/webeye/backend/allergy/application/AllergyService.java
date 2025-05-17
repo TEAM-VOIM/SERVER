@@ -1,6 +1,7 @@
 package com.webeye.backend.allergy.application;
 
 import com.webeye.backend.allergy.dto.response.AllergyAiResponse;
+import com.webeye.backend.imageanalysis.infrastructure.ImageUrlExtractor;
 import com.webeye.backend.product.dto.request.FoodProductAnalysisRequest;
 import com.webeye.backend.imageanalysis.infrastructure.OpenAiClient;
 import com.webeye.backend.product.domain.Product;
@@ -14,10 +15,11 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class AllergyService {
     private final OpenAiClient openAiClient;
+    private final ImageUrlExtractor imageUrlExtractor;
     private final ProductRepository productRepository;
 
     public AllergyAiResponse analyzeAllergy(FoodProductAnalysisRequest request) {
-        return openAiClient.explainAllergy(request);
+        return openAiClient.explainAllergy(imageUrlExtractor.extractImageUrlFromHtml(request.html()));
     }
 
     @Transactional
