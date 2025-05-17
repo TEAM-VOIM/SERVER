@@ -1,5 +1,7 @@
 package com.webeye.backend.imageanalysis.infrastructure;
 
+import com.webeye.backend.global.error.BusinessException;
+import com.webeye.backend.global.error.ErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -25,6 +27,9 @@ public class ImageUrlExtractor {
         log.info("extracted urls: {}", imageUrls);
         log.info("total number of images: {}", imageUrls.size());
 
+        if (imageUrls.isEmpty()) {
+            throw new BusinessException(ErrorCode.IMAGE_URL_NOT_FOUND);
+        }
         return imageUrls;
     }
 }
