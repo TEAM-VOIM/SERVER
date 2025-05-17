@@ -29,14 +29,15 @@ public class Product extends BaseEntity {
     private List<ProductHealthfood> healthFoods = new ArrayList<>();
 
     @Builder
-    public Product(String id, Review review) {
+    public Product(String id) {
         this.id = id;
-        this.review = review;
     }
 
     public void associateWithReview(Review review) {
         this.review = review;
-        review.associateWithProduct(this);
+        if (review.getProduct() != this) {
+            review.associateWithProduct(this);
+        }
     }
 
     public void addNutrient(ProductNutrient nutrient) {

@@ -1,5 +1,9 @@
 package com.webeye.backend.review.application;
 
+import com.webeye.backend.global.error.BusinessException;
+import com.webeye.backend.global.error.ErrorCode;
+import com.webeye.backend.product.domain.Product;
+import com.webeye.backend.product.persistent.ProductRepository;
 import com.webeye.backend.review.domain.Review;
 import com.webeye.backend.review.dto.request.ReviewSummaryRequest;
 import com.webeye.backend.review.dto.response.ReviewSummaryResponse;
@@ -18,14 +22,22 @@ public class ReviewService {
 
     private final ClovaXClientService clovaXClientService;
     private final ReviewRepository reviewRepository;
+    private final ProductRepository productRepository;
 
     @Transactional
     public ReviewSummaryResponse summarizeReview(ReviewSummaryRequest request) {
+        Product product = Product.builder()
+                .id(request.productId())
+                .build();
+
+        productRepository.save(product);
+
         Map<String, Map<String, Integer>> reviewMap = request.reviews();
 
         ReviewSummaryResponse response = clovaXClientService.summarizeReviewText(reviewMap);
 
-        Review review = ReviewMapper.toEntity(response);
+        Review review = ReviewMapper.toEntity(response, product);
+
         reviewRepository.save(review);
 
         return response;

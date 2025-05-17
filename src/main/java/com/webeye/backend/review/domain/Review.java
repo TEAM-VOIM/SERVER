@@ -52,7 +52,9 @@ public class Review extends BaseEntity {
 
     public void associateWithProduct(Product product) {
         this.product = product;
-        product.associateWithReview(this);
+        if (product.getReview() != this) {
+            product.associateWithReview(this);
+        }
     }
 
     public List<String> getKeywordList() {
