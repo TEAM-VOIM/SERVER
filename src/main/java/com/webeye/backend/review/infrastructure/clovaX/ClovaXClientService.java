@@ -11,10 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,6 +28,11 @@ public class ClovaXClientService {
 
     public ReviewSummaryResponse summarizeReviewText(Map<String, Map<String, Integer>> reviewText) {
         String inputText = convertReviewMapToText(reviewText);
+
+        double averageRating = 0.0;
+        if (reviewText.containsKey("별점")) {
+            averageRating = calculateAverageRating(reviewText.get("별점"));
+        }
 
         ClovaXRequest clovaXRequest = new ClovaXRequest(List.of(
                 new ClovaXMessage(Role.SYSTEM, List.of(
@@ -57,10 +59,10 @@ public class ClovaXClientService {
         ));
         ClovaXResponse clovaXResponse = clovaXClient.createReviewSummary("Bearer "+ secretKey, requestId, clovaXRequest);
 
-        return parseResponse(clovaXResponse.result().message().content());
+        return parseResponse(clovaXResponse.result().message().content(), averageRating);
     }
 
-    private ReviewSummaryResponse parseResponse(String content) {
+    private ReviewSummaryResponse parseResponse(String content, double averageRating) {
         String[] lines = content.split("\n");
 
         String positive = "";
@@ -77,8 +79,7 @@ public class ClovaXClientService {
                 keywords = Arrays.stream(tokens).map(String::trim).collect(Collectors.toList());
             }
         }
-
-        return new ReviewSummaryResponse(positive, negative, keywords);
+        return new ReviewSummaryResponse(averageRating, positive, negative, keywords);
     }
 
     private String convertReviewMapToText(Map<String, Map<String, Integer>> reviewMap) {
@@ -94,4 +95,26 @@ public class ClovaXClientService {
         return sb.toString();
     }
 
+    private double calculateAverageRating(Map<String, Integer> ratings) {
+        Map<String, Integer> ratingPoint = Map.of(
+                "최고", 5,
+                "좋음", 4,
+                "보통", 3,
+                "별로", 2,
+                "나쁨", 1
+        );
+        int totalScore = 0;
+        int totalPercent = 0;
+
+        for (Map.Entry<String, Integer> entry : ratings.entrySet()) {
+            Integer point = ratingPoint.get(entry.getKey());
+            Integer percent = entry.getValue();
+
+            if (point != null) {
+                totalScore += point * percent;
+                totalPercent += percent;
+            }
+        }
+        return totalPercent == 0 ? 0.0 : Math.round((totalScore / (double) totalPercent) * 100.0) / 100.0;
+    }
 }

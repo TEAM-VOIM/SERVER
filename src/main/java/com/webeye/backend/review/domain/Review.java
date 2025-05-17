@@ -20,6 +20,9 @@ public class Review extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column
+    private Double averageRating;
+
     @Column(nullable = false)
     private String positiveSummary;
 
@@ -34,11 +37,16 @@ public class Review extends BaseEntity {
 //    private Product product;
 
     @Builder
-    public Review(String positiveSummary, String negativeSummary, String keywords) {
+    public Review(
+            Double averageRating,
+            String positiveSummary,
+            String negativeSummary,
+            String keywords
+    ) {
+        this.averageRating = averageRating;
         this.positiveSummary = positiveSummary;
         this.negativeSummary = negativeSummary;
         this.keywords = keywords;
-//        this.product = product;
     }
 
     public List<String> getKeywordList() {

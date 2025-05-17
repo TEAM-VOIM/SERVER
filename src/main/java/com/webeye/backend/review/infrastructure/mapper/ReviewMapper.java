@@ -17,6 +17,7 @@ public class ReviewMapper {
 
     public static ReviewSummaryResponse toResponse(Review review) {
         return new ReviewSummaryResponse(
+                review.getAverageRating(),
                 review.getPositiveSummary(),
                 review.getNegativeSummary(),
                 Arrays.asList(review.getKeywords().split(","))
