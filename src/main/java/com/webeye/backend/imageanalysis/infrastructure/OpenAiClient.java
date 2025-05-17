@@ -39,7 +39,7 @@ public class OpenAiClient {
     private final ChatClient chatClient;
 
 
-    public DetailExplanationResponse explainProductDetail(OutlineType outline, ProductDetailAnalysisRequest request) {
+    public DetailExplanationResponse explainProductDetail(OutlineType outline, List<String> urls) {
         String system = """
                 You are an expert in providing detailed explanations about products based on images.
                 When a user provides a product description image along with the key outline of that description, you should offer a clear and detailed explanation of that element.
