@@ -18,11 +18,16 @@ import com.webeye.backend.product.dto.request.ProductDetailAnalysisRequest;
 import com.webeye.backend.product.dto.response.ProductResponse;
 import com.webeye.backend.product.persistent.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -73,7 +78,23 @@ public class ProductService {
     }
 
     public DetailExplanationResponse analyzeProductDetail(OutlineType outline, ProductDetailAnalysisRequest request) {
-        return openAiClient.explainProductDetail(outline, request);
+        return openAiClient.explainProductDetail(outline, extractImageUrlFromHtml(request.html()));
     }
 
+    private List<String> extractImageUrlFromHtml(String html) {
+        Pattern pattern = Pattern.compile("<img[^>]+src=[\"'](//[^\"']+)[\"']");
+        Matcher matcher = pattern.matcher(html);
+
+        List<String> imageUrls = new ArrayList<>();
+
+        while (matcher.find()) {
+            String rawUrl = matcher.group(1);
+            String fullUrl = "https:" + rawUrl;
+            imageUrls.add(fullUrl);
+        }
+        log.info("extracted urls: {}", imageUrls);
+        log.info("total number of images: {}", imageUrls.size());
+
+        return imageUrls;
+    }
 }
