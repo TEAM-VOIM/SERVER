@@ -57,6 +57,7 @@ public class ClovaXClientService {
                                 1. 긍정 리뷰와 부정 리뷰는 최대 3개까지 표시할 것
                                 2. 제공된 입력 내용을 기반으로만 판단하고, 임의로 생성하지 말 것
                                 3. 별점과 관련된 내용은 요약에 포함하지 말 것
+                                4. 각 항목에서 수치가 가장 높은 선택지만 참고할 것
                                 """
                         )
                 )),
@@ -72,21 +73,35 @@ public class ClovaXClientService {
     private ReviewSummaryResponse parseResponse(String content, double averageRating) {
         String[] lines = content.split("\n");
 
-        String positive = "";
-        String negative = "";
+        List<String> positiveReviews = new ArrayList<>();
+        List<String> negativeReviews = new ArrayList<>();
         List<String> keywords = new ArrayList<>();
 
         for (String line : lines) {
             if (line != null && line.startsWith("긍정 리뷰:")) {
-                positive = line.replace("긍정 리뷰:", "").trim();
+                String text = line.replace("긍정 리뷰:", "").trim();
+                positiveReviews = Arrays.stream(text.split("[.,]"))
+                        .map(String::trim)
+                        .filter(s -> !s.isBlank())
+                        .limit(3)
+                        .toList();
             } else if (line != null && line.startsWith("부정 리뷰:")) {
-                negative = line.replace("부정 리뷰:", "").trim();
+                String text = line.replace("부정 리뷰:", "").trim();
+                negativeReviews = Arrays.stream(text.split("[.,]"))
+                        .map(String::trim)
+                        .filter(s -> !s.isBlank())
+                        .limit(3)
+                        .toList();
             } else if (line != null && line.startsWith("키워드:")) {
                 String[] tokens = line.replace("키워드:", "").split(",");
-                keywords = Arrays.stream(tokens).map(String::trim).collect(Collectors.toList());
+                keywords = Arrays.stream(tokens)
+                        .map(String::trim)
+                        .filter(s -> !s.isBlank())
+                        .limit(3)
+                        .toList();
             }
         }
-        return new ReviewSummaryResponse(averageRating, positive, negative, keywords);
+        return new ReviewSummaryResponse(averageRating, positiveReviews, negativeReviews, keywords);
     }
 
     private String convertReviewMapToText(Map<String, Map<String, Integer>> reviewMap) {

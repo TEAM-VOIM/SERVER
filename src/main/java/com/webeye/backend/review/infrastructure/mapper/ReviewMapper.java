@@ -9,8 +9,8 @@ public class ReviewMapper {
 
     public static Review toEntity(ReviewSummaryResponse response) {
         return Review.builder()
-                .positiveSummary(response.positive())
-                .negativeSummary(response.negative())
+                .positiveSummary(String.join("||", response.positiveReviews()))
+                .negativeSummary(String.join("||", response.negativeReviews()))
                 .keywords(String.join(",", response.keywords()))
                 .build();
     }
@@ -18,8 +18,8 @@ public class ReviewMapper {
     public static ReviewSummaryResponse toResponse(Review review) {
         return new ReviewSummaryResponse(
                 review.getAverageRating(),
-                review.getPositiveSummary(),
-                review.getNegativeSummary(),
+                Arrays.asList(review.getPositiveSummary().split("\\|\\|")),
+                Arrays.asList(review.getNegativeSummary().split("\\|\\|")),
                 Arrays.asList(review.getKeywords().split(","))
         );
     }
