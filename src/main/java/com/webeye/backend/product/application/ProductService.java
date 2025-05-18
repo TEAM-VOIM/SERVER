@@ -2,6 +2,7 @@ package com.webeye.backend.product.application;
 
 import com.webeye.backend.allergy.application.AllergyService;
 import com.webeye.backend.allergy.type.AllergyType;
+import com.webeye.backend.imageanalysis.infrastructure.ImageUrlExtractor;
 import com.webeye.backend.product.dto.response.DetailExplanationResponse;
 import com.webeye.backend.global.error.BusinessException;
 import com.webeye.backend.global.error.ErrorCode;
@@ -18,11 +19,13 @@ import com.webeye.backend.product.dto.request.ProductDetailAnalysisRequest;
 import com.webeye.backend.product.dto.response.ProductResponse;
 import com.webeye.backend.product.persistent.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -31,6 +34,7 @@ public class ProductService {
     private final NutrientRecommendationService nutrientRecommendationService;
     private final AllergyService allergyService;
     private final OpenAiClient openAiClient;
+    private final ImageUrlExtractor imageUrlExtractor;
 
     private final ProductRepository productRepository;
 
@@ -67,13 +71,13 @@ public class ProductService {
                 .toList();
     }
 
-    private List<NutrientRecommendationResponse> getNutrientRecommendationResponse(FoodProductAnalysisRequest request, Product product) {
+    private List<NutrientRecommendationResponse> getNutrientRecommendationResponse(
+            FoodProductAnalysisRequest request, Product product) {
         return nutrientRecommendationService.analyzeNutrientSufficiency(NutrientRecommendationRequest
                 .builder().birthYear(request.birthYear()).gender(request.gender()).product(product).build());
     }
 
     public DetailExplanationResponse analyzeProductDetail(OutlineType outline, ProductDetailAnalysisRequest request) {
-        return openAiClient.explainProductDetail(outline, request);
+        return openAiClient.explainProductDetail(outline, imageUrlExtractor.extractImageUrlFromHtml(request.html()));
     }
-
 }
