@@ -26,12 +26,13 @@ public class ReviewService {
 
     @Transactional
     public ReviewSummaryResponse summarizeReview(ReviewSummaryRequest request) {
-        Product product = Product.builder()
-                .id(request.productId())
-                .build();
-
-        productRepository.save(product);
-
+        Product product = productRepository.findById(request.productId())
+                .orElseGet(() -> {
+                    Product newProduct = Product.builder()
+                            .id(request.productId())
+                            .build();
+                    return productRepository.save(newProduct);
+                 });
         Map<String, Map<String, Integer>> reviewMap = request.reviews();
 
         ReviewSummaryResponse response = clovaXClientService.summarizeReviewText(reviewMap);

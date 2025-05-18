@@ -10,6 +10,7 @@ public class ReviewMapper {
 
     public static Review toEntity(ReviewSummaryResponse response, Product product) {
         Review review = Review.builder()
+                .averageRating(response.averageRating())
                 .positiveSummary(String.join("||", response.positiveReviews()))
                 .negativeSummary(String.join("||", response.negativeReviews()))
                 .keywords(String.join(",", response.keywords()))
