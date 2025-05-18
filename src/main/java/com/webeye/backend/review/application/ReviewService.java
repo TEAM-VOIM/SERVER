@@ -1,7 +1,5 @@
 package com.webeye.backend.review.application;
 
-import com.webeye.backend.global.error.BusinessException;
-import com.webeye.backend.global.error.ErrorCode;
 import com.webeye.backend.product.domain.Product;
 import com.webeye.backend.product.persistent.ProductRepository;
 import com.webeye.backend.review.domain.Review;
