@@ -11,8 +11,10 @@ public record ReviewSummaryRequest(
         @Schema(description = "쿠팡 상품 ID", example = "85241789")
         String productId,
 
-        @Schema(description = "리뷰 만족도 통계",
-                example = """
+        @Schema(description = "별점 통계")
+        ReviewRating reviewRating,
+
+        @Schema(description = "리뷰 만족도 통계", example = """
                 {
                   "맛 만족도": {
                     "맛있어요": 55,
@@ -23,16 +25,26 @@ public record ReviewSummaryRequest(
                     "아주 달콤해요": 39,
                     "적당해요": 29,
                     "달지 않아요": 32
-                  },
-                  "별점": {
-                    "최고": 83,
-                    "좋음": 11,
-                    "보통": 4,
-                    "별로": 1,
-                    "나쁨": 1
-                   }
+                  }
                 }
                 """)
         Map<String, Map<String, Integer>> reviews
 ) {
+        public record ReviewRating(
+                @Schema(description = "총 별점 수", example = "150")
+                int totalCount,
+
+                @Schema(description = "별점 등급별 수", example = """
+                    {
+                      "별점": {
+                        "최고": 83,
+                        "좋음": 11,
+                        "보통": 4,
+                        "별로": 1,
+                        "나쁨": 1
+                      }
+                    }
+                    """)
+                Map<String, Map<String, Integer>> ratings
+        ){}
 }

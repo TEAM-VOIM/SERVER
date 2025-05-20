@@ -31,9 +31,12 @@ public class ReviewService {
                             .build();
                     return productRepository.save(newProduct);
                  });
-        Map<String, Map<String, Integer>> reviewMap = request.reviews();
 
-        ReviewSummaryResponse response = clovaXClientService.summarizeReviewText(reviewMap);
+        ReviewSummaryResponse response = clovaXClientService.summarizeReviewText(
+                request.reviews(),
+                request.reviewRating().ratings().get("별점"),
+                request.reviewRating().totalCount()
+        );
 
         Review review = ReviewMapper.toEntity(response, product);
 

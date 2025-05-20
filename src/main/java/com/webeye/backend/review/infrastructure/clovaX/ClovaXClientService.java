@@ -25,13 +25,9 @@ public class ClovaXClientService {
     @Value("${clova.request-id}")
     private String requestId;
 
-    public ReviewSummaryResponse summarizeReviewText(Map<String, Map<String, Integer>> reviewText) {
+    public ReviewSummaryResponse summarizeReviewText(Map<String, Map<String, Integer>> reviewText, Map<String, Integer> ratingMap, int totalCount) {
+        double averageRating = calculateAverageRating(ratingMap, totalCount);
         String inputText = convertReviewMapToText(reviewText);
-
-        double averageRating = 0.0;
-        if (reviewText.containsKey("별점")) {
-            averageRating = calculateAverageRating(reviewText.get("별점"));
-        }
 
         ClovaXRequest clovaXRequest = new ClovaXRequest(List.of(
                 new ClovaXMessage(Role.SYSTEM, List.of(
@@ -55,8 +51,8 @@ public class ClovaXClientService {
                                 주의:
                                 1. 긍정 리뷰와 부정 리뷰는 최대 3개까지 표시할 것
                                 2. 제공된 입력 내용을 기반으로만 판단하고, 임의로 생성하지 말 것
-                                3. 별점과 관련된 내용은 요약에 포함하지 말 것
-                                4. 각 항목에서 수치가 가장 높은 선택지만 참고할 것
+                                3. 각 항목에서 수치가 가장 높은 선택지만 참고할 것
+                                4. 만족도를 키워드로 추출할 경우, 만족도의 긍부정 여부도 함께 표시할 것 (예시 - 만족도 높음)
                                 """
                         )
                 )),
@@ -116,7 +112,7 @@ public class ClovaXClientService {
         return sb.toString();
     }
 
-    private double calculateAverageRating(Map<String, Integer> ratings) {
+    private double calculateAverageRating(Map<String, Integer> ratings, int totalCount) {
         Map<String, Integer> ratingPoint = Map.of(
                 "최고", 5,
                 "좋음", 4,
@@ -124,18 +120,14 @@ public class ClovaXClientService {
                 "별로", 2,
                 "나쁨", 1
         );
-        int totalScore = 0;
-        int totalPercent = 0;
+        int totalScore = ratings.entrySet().stream()
+                .mapToInt(entry -> {
+                    Integer rating = ratingPoint.get(entry.getKey());
+                    Integer score = entry.getValue();
+                    return rating != null ? rating * score : 0;
+                })
+                .sum();
 
-        for (Map.Entry<String, Integer> entry : ratings.entrySet()) {
-            Integer point = ratingPoint.get(entry.getKey());
-            Integer percent = entry.getValue();
-
-            if (point != null) {
-                totalScore += point * percent;
-                totalPercent += percent;
-            }
-        }
-        return totalPercent == 0 ? 0.0 : Math.round((totalScore / (double) totalPercent) * 100.0) / 100.0;
+        return totalCount == 0 ? 0.0 : Math.round((totalScore / (double) totalCount) * 100.0) / 100.0;
     }
 }
