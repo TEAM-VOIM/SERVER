@@ -1,5 +1,7 @@
 package com.webeye.backend.review.application;
 
+import com.webeye.backend.product.domain.Product;
+import com.webeye.backend.product.persistent.ProductRepository;
 import com.webeye.backend.review.domain.Review;
 import com.webeye.backend.review.dto.request.ReviewSummaryRequest;
 import com.webeye.backend.review.dto.response.ReviewSummaryResponse;
@@ -16,18 +18,35 @@ public class ReviewService {
 
     private final ClovaXClientService clovaXClientService;
     private final ReviewRepository reviewRepository;
+    private final ProductRepository productRepository;
 
     @Transactional
     public ReviewSummaryResponse summarizeReview(ReviewSummaryRequest request) {
-        String reviewText = String.join("\n", request.reviews());
+        Product product = findOrCreateProduct(request.productId());
 
-        ReviewSummaryResponse response = clovaXClientService.summarizeReviewText(reviewText);
+        Review existingReview = product.getReview();
+        if (existingReview != null) {
+            return ReviewMapper.toResponse(existingReview);
+        }
 
-        Review review = ReviewMapper.toEntity(response);
+        ReviewSummaryResponse response = clovaXClientService.summarizeReviewText(
+                request.reviews(),
+                request.reviewRating().ratings(),
+                request.reviewRating().totalCount()
+        );
+        Review review = ReviewMapper.toEntity(response, product);
+
         reviewRepository.save(review);
 
         return response;
     }
 
-    // TODO: 저장된 리뷰 요약 조회
+    @Transactional
+    public Product findOrCreateProduct(String productId) {
+        return productRepository.findByIdWithReview(productId)
+                .orElseGet(() -> productRepository.save(
+                        Product.builder()
+                                .id(productId)
+                                .build()));
+    }
 }
