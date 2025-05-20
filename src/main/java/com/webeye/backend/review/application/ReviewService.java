@@ -12,8 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Map;
-
 @Service
 @RequiredArgsConstructor
 public class ReviewService {
@@ -24,20 +22,18 @@ public class ReviewService {
 
     @Transactional
     public ReviewSummaryResponse summarizeReview(ReviewSummaryRequest request) {
-        Product product = productRepository.findById(request.productId())
-                .orElseGet(() -> {
-                    Product newProduct = Product.builder()
-                            .id(request.productId())
-                            .build();
-                    return productRepository.save(newProduct);
-                 });
+        Product product = findOrCreateProduct(request.productId());
+
+        Review existingReview = product.getReview();
+        if (existingReview != null) {
+            return ReviewMapper.toResponse(existingReview);
+        }
 
         ReviewSummaryResponse response = clovaXClientService.summarizeReviewText(
                 request.reviews(),
                 request.reviewRating().ratings().get("별점"),
                 request.reviewRating().totalCount()
         );
-
         Review review = ReviewMapper.toEntity(response, product);
 
         reviewRepository.save(review);
@@ -45,5 +41,12 @@ public class ReviewService {
         return response;
     }
 
-    // TODO: 저장된 리뷰 요약 조회
+    @Transactional
+    public Product findOrCreateProduct(String productId) {
+        return productRepository.findByIdWithReview(productId)
+                .orElseGet(() -> productRepository.save(
+                        Product.builder()
+                                .id(productId)
+                                .build()));
+    }
 }
