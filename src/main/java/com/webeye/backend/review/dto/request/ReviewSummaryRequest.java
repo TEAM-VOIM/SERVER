@@ -36,15 +36,13 @@ public record ReviewSummaryRequest(
 
                 @Schema(description = "별점 등급별 수", example = """
                     {
-                      "별점": {
-                        "최고": 83,
-                        "좋음": 11,
-                        "보통": 4,
-                        "별로": 1,
-                        "나쁨": 1
-                      }
-                    }
+                      "최고": 83,
+                      "좋음": 11,
+                      "보통": 4,
+                      "별로": 1,
+                      "나쁨": 1
+                     }
                     """)
-                Map<String, Map<String, Integer>> ratings
+                Map<String, Integer> ratings
         ){}
 }

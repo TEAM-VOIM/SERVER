@@ -31,7 +31,7 @@ public class ReviewService {
 
         ReviewSummaryResponse response = clovaXClientService.summarizeReviewText(
                 request.reviews(),
-                request.reviewRating().ratings().get("별점"),
+                request.reviewRating().ratings(),
                 request.reviewRating().totalCount()
         );
         Review review = ReviewMapper.toEntity(response, product);
