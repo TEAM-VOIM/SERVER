@@ -8,6 +8,9 @@ import java.util.List;
 @Builder
 @Schema(description = "리뷰 요약")
 public record ReviewSummaryResponse(
+        @Schema(description = "총 리뷰 수", example = "45078")
+        int totalCount,
+
         @Schema(description = "평균 별점", example = "4.85")
         double averageRating,
 

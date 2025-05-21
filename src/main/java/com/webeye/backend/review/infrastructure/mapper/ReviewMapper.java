@@ -20,8 +20,9 @@ public class ReviewMapper {
         return review;
     }
 
-    public static ReviewSummaryResponse toResponse(Review review) {
+    public static ReviewSummaryResponse toResponse(Review review, int totalCount) {
         return new ReviewSummaryResponse(
+                totalCount,
                 review.getAverageRating(),
                 Arrays.asList(review.getPositiveSummary().split("\\|\\|")),
                 Arrays.asList(review.getNegativeSummary().split("\\|\\|")),
