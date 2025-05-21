@@ -25,8 +25,8 @@ public class ClovaXClientService {
     @Value("${clova.request-id}")
     private String requestId;
 
-    public ReviewSummaryResponse summarizeReviewText(Map<String, Map<String, Integer>> reviewText, Map<String, Integer> ratingMap, int totalCount) {
-        double averageRating = calculateAverageRating(ratingMap, totalCount);
+    public ReviewSummaryResponse summarizeReviewText(Map<String, Map<String, Integer>> reviewText, Map<String, Integer> ratingMap) {
+        double averageRating = calculateAverageRating(ratingMap);
         String inputText = convertReviewMapToText(reviewText);
 
         ClovaXRequest clovaXRequest = new ClovaXRequest(List.of(
@@ -112,7 +112,7 @@ public class ClovaXClientService {
         return sb.toString();
     }
 
-    private double calculateAverageRating(Map<String, Integer> ratings, int totalCount) {
+    private double calculateAverageRating(Map<String, Integer> ratings) {
         Map<String, Integer> ratingPoint = Map.of(
                 "최고", 5,
                 "좋음", 4,
@@ -120,14 +120,12 @@ public class ClovaXClientService {
                 "별로", 2,
                 "나쁨", 1
         );
-        int totalScore = ratings.entrySet().stream()
-                .mapToInt(entry -> {
-                    Integer rating = ratingPoint.get(entry.getKey());
-                    Integer score = entry.getValue();
-                    return rating != null ? rating * score : 0;
-                })
+        if (ratings.isEmpty()) return 0.0;
+
+        double totalScore = ratings.entrySet().stream()
+                .mapToDouble(e -> ratingPoint.getOrDefault(e.getKey(), 0) * e.getValue())
                 .sum();
 
-        return totalCount == 0 ? 0.0 : Math.round((totalScore / (double) totalCount) * 100.0) / 100.0;
+        return Math.round((totalScore / 100.0) * 100.0) / 100.0;
     }
 }

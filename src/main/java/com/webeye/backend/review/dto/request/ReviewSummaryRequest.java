@@ -31,9 +31,6 @@ public record ReviewSummaryRequest(
         Map<String, Map<String, Integer>> reviews
 ) {
         public record ReviewRating(
-                @Schema(description = "총 별점 수", example = "150")
-                int totalCount,
-
                 @Schema(description = "별점 등급별 수", example = """
                     {
                       "최고": 83,
