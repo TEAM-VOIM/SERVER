@@ -62,10 +62,10 @@ public class ClovaXClientService {
         ));
         ClovaXResponse clovaXResponse = clovaXClient.createReviewSummary("Bearer "+ secretKey, requestId, clovaXRequest);
 
-        return parseResponse(clovaXResponse.result().message().content(), averageRating);
+        return parseResponse(clovaXResponse.result().message().content(), totalCount, averageRating);
     }
 
-    private ReviewSummaryResponse parseResponse(String content, double averageRating) {
+    private ReviewSummaryResponse parseResponse(String content, int totalCount, double averageRating) {
         String[] lines = content.split("\n");
 
         List<String> positiveReviews = new ArrayList<>();
@@ -96,7 +96,7 @@ public class ClovaXClientService {
                         .toList();
             }
         }
-        return new ReviewSummaryResponse(averageRating, positiveReviews, negativeReviews, keywords);
+        return new ReviewSummaryResponse(totalCount, averageRating, positiveReviews, negativeReviews, keywords);
     }
 
     private String convertReviewMapToText(Map<String, Map<String, Integer>> reviewMap) {

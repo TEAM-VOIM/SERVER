@@ -26,7 +26,7 @@ public class ReviewService {
 
         Review existingReview = product.getReview();
         if (existingReview != null) {
-            return ReviewMapper.toResponse(existingReview);
+            return ReviewMapper.toResponse(existingReview, request.reviewRating().totalCount());
         }
 
         ReviewSummaryResponse response = clovaXClientService.summarizeReviewText(
