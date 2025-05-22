@@ -2,6 +2,7 @@ package com.webeye.backend.imageanalysis.infrastructure;
 
 import com.webeye.backend.global.error.BusinessException;
 import com.webeye.backend.global.error.ErrorCode;
+import groovy.json.StringEscapeUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +15,8 @@ import java.util.regex.Pattern;
 @Component
 public class ImageUrlExtractor {
     public List<String> extractImageUrlFromHtml(String html) {
+        html = StringEscapeUtils.unescapeJava(html);
+
         Pattern pattern = Pattern.compile("<img[^>]+src=[\"'](//[^\"']+)[\"']");
         Matcher matcher = pattern.matcher(html);
 
