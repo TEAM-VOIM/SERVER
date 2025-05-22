@@ -33,6 +33,5 @@ public class ProductNutrient extends BaseEntity {
 
     public void associateWithProduct(Product product) {
         this.product = product;
-        product.getNutrients().add(this);
     }
 }
