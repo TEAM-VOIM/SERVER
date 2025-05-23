@@ -14,4 +14,7 @@ public interface ProductRepository extends JpaRepository<Product, String> {
 
     @Query("SELECT p FROM Product p LEFT JOIN FETCH p.review WHERE p.id = :id")
     Optional<Product> findByIdWithReview(@Param("id") String id);
+
+    @Query("SELECT p FROM Product p LEFT JOIN p.cosmetic WHERE p.id =  :id")
+    Optional<Product> findByIdWithCosmetic(@Param("id") String id);
 }

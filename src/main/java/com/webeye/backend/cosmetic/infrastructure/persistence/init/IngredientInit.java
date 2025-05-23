@@ -1,8 +1,8 @@
-package com.webeye.backend.cosmetic.persistence.init;
+package com.webeye.backend.cosmetic.infrastructure.persistence.init;
 
 import com.webeye.backend.cosmetic.domain.Ingredient;
 import com.webeye.backend.cosmetic.domain.type.IngredientType;
-import com.webeye.backend.cosmetic.persistence.IngredientRepository;
+import com.webeye.backend.cosmetic.infrastructure.persistence.IngredientRepository;
 import com.webeye.backend.global.util.DummyDataInit;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;

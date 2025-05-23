@@ -1,4 +1,4 @@
-package com.webeye.backend.cosmetic.persistence;
+package com.webeye.backend.cosmetic.infrastructure.persistence;
 
 import com.webeye.backend.cosmetic.domain.Ingredient;
 import com.webeye.backend.cosmetic.domain.type.IngredientType;
