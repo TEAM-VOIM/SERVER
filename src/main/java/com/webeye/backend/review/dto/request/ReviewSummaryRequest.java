@@ -3,6 +3,7 @@ package com.webeye.backend.review.dto.request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
+import java.util.List;
 import java.util.Map;
 
 @Builder
@@ -35,14 +36,8 @@ public record ReviewSummaryRequest(
                 int totalCount,
 
                 @Schema(description = "별점 등급별 수", example = """
-                    {
-                      "최고": 83,
-                      "좋음": 11,
-                      "보통": 4,
-                      "별로": 1,
-                      "나쁨": 1
-                     }
+                    [83, 11, 4, 1, 1]
                     """)
-                Map<String, Integer> ratings
+                List<Integer> ratings
         ){}
 }

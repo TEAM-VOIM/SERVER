@@ -12,6 +12,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 @Service
 @RequiredArgsConstructor
 public class ReviewService {
@@ -28,10 +32,11 @@ public class ReviewService {
         if (existingReview != null) {
             return ReviewMapper.toResponse(existingReview, request.reviewRating().totalCount());
         }
+        Map<String, Integer> ratingMap = convertToRatingMap(request.reviewRating().ratings());
 
         ReviewSummaryResponse response = clovaXClientService.summarizeReviewText(
                 request.reviews(),
-                request.reviewRating().ratings(),
+                ratingMap,
                 request.reviewRating().totalCount()
         );
         Review review = ReviewMapper.toEntity(response, product);
@@ -48,5 +53,14 @@ public class ReviewService {
                         Product.builder()
                                 .id(productId)
                                 .build()));
+    }
+
+    private Map<String, Integer> convertToRatingMap(List<Integer> ratingsList) {
+        List<String> keys = List.of("최고", "좋음", "보통", "별로", "나쁨");
+        Map<String, Integer> ratingMap = new LinkedHashMap<>();
+        for (int i = 0; i < keys.size(); i++) {
+            ratingMap.put(keys.get(i), i < ratingsList.size() ? ratingsList.get(i) : 0);
+        }
+        return ratingMap;
     }
 }
