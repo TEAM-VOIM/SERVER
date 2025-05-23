@@ -8,11 +8,13 @@ import com.webeye.backend.review.infrastructure.clovaX.dto.response.ClovaXRespon
 import com.webeye.backend.review.infrastructure.clovaX.model.ContentType;
 import com.webeye.backend.review.infrastructure.clovaX.model.Role;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ClovaXClientService {
@@ -124,9 +126,13 @@ public class ClovaXClientService {
                 .mapToInt(entry -> {
                     Integer rating = ratingPoint.get(entry.getKey());
                     Integer score = entry.getValue();
+
                     return rating != null ? rating * score : 0;
                 })
                 .sum();
+
+        log.info("[평균 별점 계산] ratings: {}", ratings);
+        log.info("[평균 별점 계산] totalCount: {}", totalCount);
 
         return totalCount == 0 ? 0.0 : Math.round((totalScore / (double) totalCount) * 100.0) / 100.0;
     }

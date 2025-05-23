@@ -7,11 +7,13 @@ import com.webeye.backend.review.dto.response.ReviewSummaryResponse;
 import com.webeye.backend.review.presentation.swagger.ReviewSwagger;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import static com.webeye.backend.global.dto.response.type.SuccessCode.REVIEW_SUMMARY_SUCCESS;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1/review")
@@ -23,6 +25,13 @@ public class ReviewController implements ReviewSwagger {
     @PostMapping("/summary")
     @ResponseStatus(HttpStatus.OK)
     public SuccessResponse<ReviewSummaryResponse> summarizeReview(@RequestBody @Valid ReviewSummaryRequest request) {
+        log.info("[리뷰 요약 요청] productId={}, totalCount={}, ratings={}, reviews={}",
+                request.productId(),
+                request.reviewRating().totalCount(),
+                request.reviewRating().ratings(),
+                request.reviews()
+        );
+
         return SuccessResponse.of(REVIEW_SUMMARY_SUCCESS, reviewService.summarizeReview(request));
     }
 }
