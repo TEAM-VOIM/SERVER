@@ -5,6 +5,7 @@ import com.webeye.backend.review.domain.Review;
 import com.webeye.backend.review.dto.response.ReviewSummaryResponse;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class ReviewMapper {
 
@@ -27,6 +28,16 @@ public class ReviewMapper {
                 Arrays.asList(review.getPositiveSummary().split("\\|\\|")),
                 Arrays.asList(review.getNegativeSummary().split("\\|\\|")),
                 Arrays.asList(review.getKeywords().split(","))
+        );
+    }
+
+    public static ReviewSummaryResponse toNullResponse(int totalCount, double averageRating) {
+        return new ReviewSummaryResponse(
+                totalCount,
+                averageRating,
+                List.of("리뷰가 존재하지 않습니다."),
+                List.of("리뷰가 존재하지 않습니다."),
+                List.of("리뷰가 존재하지 않습니다.")
         );
     }
 }
