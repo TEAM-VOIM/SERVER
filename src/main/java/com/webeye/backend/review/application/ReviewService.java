@@ -29,12 +29,14 @@ public class ReviewService {
     public ReviewSummaryResponse summarizeReview(ReviewSummaryRequest request) {
         Product product = findOrCreateProduct(request.productId());
 
+        // DB에 존재할 경우, DB에서 반환
         Review existingReview = product.getReview();
         if (existingReview != null) {
             return ReviewMapper.toResponse(existingReview, request.reviewRating().totalCount());
         }
         Map<String, Integer> ratingMap = convertToRatingMap(request.reviewRating().ratings());
 
+        // 리뷰 내 별점만 존재하고 리뷰 내용은 존재하지 않을 경우
         if (request.reviews() == null || request.reviews().isEmpty()) {
             double average = ReviewCalculator.calculateAverageRating(ratingMap, request.reviewRating().totalCount());
             ReviewSummaryResponse nullResponse = ReviewMapper.toNullResponse(request.reviewRating().totalCount(), average);
