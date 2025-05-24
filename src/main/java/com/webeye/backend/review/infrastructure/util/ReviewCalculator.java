@@ -9,19 +9,21 @@ import java.util.Map;
 @Slf4j
 public class ReviewCalculator {
 
+    public static final List<String> RATING_LABELS = List.of("최고", "좋음", "보통", "별로", "나쁨");
+
+    public static final Map<String, Integer> RATING_POINTS = Map.of(
+            "최고", 5,
+            "좋음", 4,
+            "보통", 3,
+            "별로", 2,
+            "나쁨", 1
+    );
+
     public static double calculateAverageRating(Map<String, Integer> ratings, int totalCount) {
-        Map<String, Integer> ratingPoint = Map.of(
-                "최고", 5,
-                "좋음", 4,
-                "보통", 3,
-                "별로", 2,
-                "나쁨", 1
-        );
         int totalScore = ratings.entrySet().stream()
                 .mapToInt(entry -> {
-                    Integer rating = ratingPoint.get(entry.getKey());
+                    Integer rating = RATING_POINTS.get(entry.getKey());
                     Integer score = entry.getValue();
-
                     return rating != null ? rating * score : 0;
                 })
                 .sum();
@@ -33,10 +35,9 @@ public class ReviewCalculator {
     }
 
     public static Map<String, Integer> convertToRatingMap(List<Integer> ratingsList) {
-        List<String> keys = List.of("최고", "좋음", "보통", "별로", "나쁨");
         Map<String, Integer> ratingMap = new LinkedHashMap<>();
-        for (int i = 0; i < keys.size(); i++) {
-            ratingMap.put(keys.get(i), i < ratingsList.size() ? ratingsList.get(i) : 0);
+        for (int i = 0; i < RATING_LABELS.size(); i++) {
+            ratingMap.put(RATING_LABELS.get(i), i < ratingsList.size() ? ratingsList.get(i) : 0);
         }
         return ratingMap;
     }
