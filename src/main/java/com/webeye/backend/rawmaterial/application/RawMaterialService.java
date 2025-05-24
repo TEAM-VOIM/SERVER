@@ -49,8 +49,6 @@ public class RawMaterialService {
                                 .build()
                 );
             });
-
-            productRepository.save(product);
         }, () -> log.warn("일치하는 원재료 데이터가 존재하지 않습니다."));
     }
 
