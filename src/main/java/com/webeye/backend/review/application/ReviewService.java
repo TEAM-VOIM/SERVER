@@ -34,7 +34,7 @@ public class ReviewService {
         if (existingReview != null) {
             return ReviewMapper.toResponse(existingReview, request.reviewRating().totalCount());
         }
-        Map<String, Integer> ratingMap = convertToRatingMap(request.reviewRating().ratings());
+        Map<String, Integer> ratingMap = ReviewCalculator.convertToRatingMap(request.reviewRating().ratings());
 
         // 리뷰 내 별점만 존재하고 리뷰 내용은 존재하지 않을 경우
         if (request.reviews() == null || request.reviews().isEmpty()) {
@@ -66,14 +66,5 @@ public class ReviewService {
                         Product.builder()
                                 .id(productId)
                                 .build()));
-    }
-
-    private Map<String, Integer> convertToRatingMap(List<Integer> ratingsList) {
-        List<String> keys = List.of("최고", "좋음", "보통", "별로", "나쁨");
-        Map<String, Integer> ratingMap = new LinkedHashMap<>();
-        for (int i = 0; i < keys.size(); i++) {
-            ratingMap.put(keys.get(i), i < ratingsList.size() ? ratingsList.get(i) : 0);
-        }
-        return ratingMap;
     }
 }
