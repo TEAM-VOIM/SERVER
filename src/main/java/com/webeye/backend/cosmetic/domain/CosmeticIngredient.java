@@ -27,15 +27,13 @@ public class CosmeticIngredient extends BaseEntity {
     private Ingredient ingredient;
 
     @Builder
-    public CosmeticIngredient(Long id) {
+    public CosmeticIngredient(
+            Long id,
+            Product product,
+            Ingredient ingredient
+    ) {
         this.id = id;
-    }
-
-    public void associateWithProduct(Product product) {
         this.product = product;
-    }
-
-    public void associateWithIngredient(Ingredient ingredient) {
         this.ingredient = ingredient;
     }
 }

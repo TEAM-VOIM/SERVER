@@ -29,7 +29,7 @@ public class CosmeticServiceImpl implements CosmeticService {
 
     @Transactional
     public Product findOrCreateProduct(String productId) {
-        return productRepository.findByIdWithCosmetic(productId)
+        return productRepository.findByIdWithCosmeticIngredients(productId)
                 .orElseGet(() -> productRepository.save(
                         Product.builder()
                                 .id(productId)

@@ -50,11 +50,6 @@ public class Product extends BaseEntity {
         }
     }
 
-    public void addCosmeticIngredient(CosmeticIngredient cosmeticIngredient) {
-        this.cosmeticIngredients.add(cosmeticIngredient);
-        cosmeticIngredient.associateWithProduct(this);
-    }
-
     public void addNutrient(ProductNutrient nutrient) {
         this.nutrients.add(nutrient);
         nutrient.associateWithProduct(this);

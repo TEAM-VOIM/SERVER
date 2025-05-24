@@ -8,6 +8,8 @@ public class CosmeticIngredientMapper {
 
     public static CosmeticIngredient toEntity(Product product, Ingredient ingredient) {
         return CosmeticIngredient.builder()
+                .product(product)
+                .ingredient(ingredient)
                 .build();
     }
 }

@@ -36,9 +36,4 @@ public class Ingredient extends BaseEntity {
         this.id = id;
         this.ingredientType = ingredientType;
     }
-
-    public void addCosmetic(CosmeticIngredient cosmeticIngredient) {
-        this.cosmeticIngredients.add(cosmeticIngredient);
-        cosmeticIngredient.associateWithIngredient(this);
-    }
 }
