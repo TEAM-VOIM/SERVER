@@ -92,6 +92,9 @@ public class OpenAiClient {
         String user = """
                 If the attached images contain 'nutrition information', please provide the amount of each nutrient in the format I sent.
                 If the nutritional information is not included, set the isNutrientIncluded field to false; if it is included, set it to true.
+                You are given a nutrition label image. Extract the number of grams that the nutritional values are based on.
+                This is typically written as "per 100g", "per 1 serving (XXg)", "100 g당" (in Korean), or similar.
+                Return only the numeric gram value in a field named nutrientReferenceAmount.
                 """;
 
         ImageAnalysisPrompt prompt = new ImageAnalysisPrompt(system, user);
@@ -136,6 +139,7 @@ public class OpenAiClient {
                 }
                 Return true only if the exact full Korean ingredient name appears continuously and separately; otherwise, return false.
                 Ignore partial, similar, or incomplete matches.
+                
                 """;
 
         ImageAnalysisPrompt prompt = new ImageAnalysisPrompt(system, user);
