@@ -1,7 +1,7 @@
 package com.webeye.backend.product.dto.response;
 
 import com.webeye.backend.allergy.type.AllergyType;
-import com.webeye.backend.nutrition.dto.response.NutrientRecommendationResponse;
+import com.webeye.backend.nutrition.dto.response.NutrientResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
@@ -13,7 +13,6 @@ public record ProductResponse (
         @Schema(description = "포함된 알레르기 유발 성분")
         List<AllergyType> allergyTypes,
 
-        @Schema(description = "영양성분 권장량을 넘는 성분")
-        List<NutrientRecommendationResponse> overRecommendationNutrients
+        NutrientResponse nutrientResponse
 ) {
 }
