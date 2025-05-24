@@ -16,6 +16,8 @@ public class Product extends BaseEntity {
     @Column(name = "product_id", nullable = false)
     private String id; // 쿠팡에서 products 뒤에 오는 숫자
 
+    private Integer nutrientReferenceAmount;
+
     @OneToOne(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Review review;
 
@@ -29,8 +31,9 @@ public class Product extends BaseEntity {
     private List<ProductHealthfood> healthFoods = new ArrayList<>();
 
     @Builder
-    public Product(String id) {
+    public Product(String id, Integer nutrientReferenceAmount) {
         this.id = id;
+        this.nutrientReferenceAmount = nutrientReferenceAmount;
     }
 
     public void associateWithReview(Review review) {
@@ -53,5 +56,9 @@ public class Product extends BaseEntity {
     public void addHealthFood(ProductHealthfood healthFood) {
         this.healthFoods.add(healthFood);
         healthFood.associateWithProduct(this);
+    }
+
+    public void setNutrientReferenceAmount(Integer nutrientReferenceAmount) {
+        this.nutrientReferenceAmount = nutrientReferenceAmount;
     }
 }
