@@ -1,6 +1,5 @@
 package com.webeye.backend.cosmetic.application;
 
-import com.webeye.backend.cosmetic.domain.Cosmetic;
 import com.webeye.backend.cosmetic.dto.response.CosmeticResponse;
 import com.webeye.backend.imageanalysis.infrastructure.ImageUrlExtractor;
 import com.webeye.backend.imageanalysis.infrastructure.OpenAiClient;
@@ -25,10 +24,6 @@ public class CosmeticServiceImpl implements CosmeticService {
     public CosmeticResponse analyzeCosmetic(ProductAnalysisRequest request) {
         Product product = findOrCreateProduct(request.productId());
 
-        Cosmetic existingCosmetic = product.getCosmetic();
-        if (existingCosmetic != null) {
-            return null;
-        }
         return openAiClient.explainCosmetic(imageUrlExtractor.extractImageUrlFromHtml(request.html()));
     }
 

@@ -1,6 +1,6 @@
 package com.webeye.backend.product.domain;
 
-import com.webeye.backend.cosmetic.domain.Cosmetic;
+import com.webeye.backend.cosmetic.domain.CosmeticIngredient;
 import com.webeye.backend.global.domain.BaseEntity;
 import com.webeye.backend.product.domain.type.ProductType;
 import com.webeye.backend.review.domain.Review;
@@ -25,8 +25,8 @@ public class Product extends BaseEntity {
     @OneToOne(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Review review;
 
-    @OneToOne(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private Cosmetic cosmetic;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CosmeticIngredient> cosmeticIngredients = new ArrayList<>();
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductAllergy> allergies = new ArrayList<>();
@@ -38,10 +38,9 @@ public class Product extends BaseEntity {
     private List<ProductHealthfood> healthFoods = new ArrayList<>();
 
     @Builder
-    public Product(String id, ProductType productType, Cosmetic cosmetic) {
+    public Product(String id, ProductType productType) {
         this.id = id;
         this.productType = productType;
-        this.cosmetic = cosmetic;
     }
 
     public void associateWithReview(Review review) {
@@ -49,6 +48,11 @@ public class Product extends BaseEntity {
         if (review.getProduct() != this) {
             review.associateWithProduct(this);
         }
+    }
+
+    public void addCosmeticIngredient(CosmeticIngredient cosmeticIngredient) {
+        this.cosmeticIngredients.add(cosmeticIngredient);
+        cosmeticIngredient.associateWithProduct(this);
     }
 
     public void addNutrient(ProductNutrient nutrient) {

@@ -19,21 +19,23 @@ public class CosmeticIngredient extends BaseEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cosmetic_id")
-    private Cosmetic cosmetic;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product product;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ingredient_id")
+    private Ingredient ingredient;
+
     @Builder
-    public CosmeticIngredient(
-            Long id,
-            Cosmetic cosmetic,
-            Product product
-    ) {
+    public CosmeticIngredient(Long id) {
         this.id = id;
-        this.cosmetic = cosmetic;
+    }
+
+    public void associateWithProduct(Product product) {
         this.product = product;
+    }
+
+    public void associateWithIngredient(Ingredient ingredient) {
+        this.ingredient = ingredient;
     }
 }

@@ -8,6 +8,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -22,6 +25,9 @@ public class Ingredient extends BaseEntity {
     @Column(nullable = false, unique = true)
     private IngredientType ingredientType;
 
+    @OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CosmeticIngredient> cosmeticIngredients = new ArrayList<>();
+
     @Builder
     public Ingredient(
             Long id,
@@ -29,5 +35,10 @@ public class Ingredient extends BaseEntity {
     ) {
         this.id = id;
         this.ingredientType = ingredientType;
+    }
+
+    public void addCosmetic(CosmeticIngredient cosmeticIngredient) {
+        this.cosmeticIngredients.add(cosmeticIngredient);
+        cosmeticIngredient.associateWithIngredient(this);
     }
 }
