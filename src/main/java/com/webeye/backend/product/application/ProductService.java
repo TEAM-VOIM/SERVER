@@ -3,13 +3,13 @@ package com.webeye.backend.product.application;
 import com.webeye.backend.allergy.application.AllergyService;
 import com.webeye.backend.allergy.type.AllergyType;
 import com.webeye.backend.imageanalysis.infrastructure.ImageUrlExtractor;
+import com.webeye.backend.nutrition.dto.response.NutrientResponse;
 import com.webeye.backend.product.dto.response.DetailExplanationResponse;
 import com.webeye.backend.global.error.BusinessException;
 import com.webeye.backend.global.error.ErrorCode;
 import com.webeye.backend.imageanalysis.infrastructure.OpenAiClient;
 import com.webeye.backend.nutrition.application.NutrientRecommendationService;
 import com.webeye.backend.nutrition.dto.request.NutrientRecommendationRequest;
-import com.webeye.backend.nutrition.dto.response.NutrientRecommendationResponse;
 import com.webeye.backend.product.domain.ProductAllergy;
 import com.webeye.backend.product.domain.type.OutlineType;
 import com.webeye.backend.product.dto.request.FoodProductAnalysisRequest;
@@ -46,7 +46,7 @@ public class ProductService {
 
             return ProductResponse.builder()
                     .allergyTypes(getAllergyResponse(product, request.allergies()))
-                    .overRecommendationNutrients(getNutrientRecommendationResponse(request, product))
+                    .nutrientResponse(getNutrientRecommendationResponse(request, product))
                     .build();
         }
         Product product = Product.builder()
@@ -59,7 +59,7 @@ public class ProductService {
 
         return ProductResponse.builder()
                 .allergyTypes(getAllergyResponse(product, request.allergies()))
-                .overRecommendationNutrients(getNutrientRecommendationResponse(request, product))
+                .nutrientResponse(getNutrientRecommendationResponse(request, product))
                 .build();
     }
 
@@ -71,10 +71,13 @@ public class ProductService {
                 .toList();
     }
 
-    private List<NutrientRecommendationResponse> getNutrientRecommendationResponse(
+    private NutrientResponse getNutrientRecommendationResponse(
             FoodProductAnalysisRequest request, Product product) {
-        return nutrientRecommendationService.analyzeNutrientSufficiency(NutrientRecommendationRequest
-                .builder().birthYear(request.birthYear()).gender(request.gender()).product(product).build());
+        return NutrientResponse.builder()
+                .nutrientReferenceAmount(product.getNutrientReferenceAmount())
+                .overRecommendationNutrients(nutrientRecommendationService.analyzeNutrientSufficiency(NutrientRecommendationRequest
+                        .builder().birthYear(request.birthYear()).gender(request.gender()).product(product).build()))
+                .build();
     }
 
     public DetailExplanationResponse analyzeProductDetail(OutlineType outline, ProductDetailAnalysisRequest request) {

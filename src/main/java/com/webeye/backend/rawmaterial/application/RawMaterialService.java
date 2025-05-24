@@ -32,6 +32,7 @@ public class RawMaterialService {
 
     @Transactional
     public void saveRawMaterialNutrition(Product product, FoodProductAnalysisRequest request) {
+        product.setNutrientReferenceAmount(100);
         String foodName = openAiClient.explainRawMaterial(request).name();
         Optional<RawMaterial> rawMaterialOpt = rawMaterialRepository.findFirstByNameContaining(foodName);
         rawMaterialOpt.ifPresentOrElse(rawMaterial -> {
@@ -52,7 +53,7 @@ public class RawMaterialService {
             productRepository.save(product);
         }, () -> log.warn("일치하는 원재료 데이터가 존재하지 않습니다."));
     }
-    
+
     private Map<NutrientType, Double> convertToNutrientMap(RawMaterial rawMaterial) {
         Map<NutrientType, Double> map = new EnumMap<>(NutrientType.class);
         map.put(NutrientType.SODIUM, rawMaterial.getSodium());
