@@ -7,7 +7,6 @@ import com.webeye.backend.nutrition.persistent.NutrientRepository;
 import com.webeye.backend.product.domain.Product;
 import com.webeye.backend.product.domain.ProductNutrient;
 import com.webeye.backend.product.dto.request.FoodProductAnalysisRequest;
-import com.webeye.backend.product.persistent.ProductRepository;
 import com.webeye.backend.rawmaterial.domain.RawMaterial;
 import com.webeye.backend.rawmaterial.persistent.RawMaterialRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +27,6 @@ public class RawMaterialService {
 
     private final RawMaterialRepository rawMaterialRepository;
     private final NutrientRepository nutrientRepository;
-    private final ProductRepository productRepository;
 
     @Transactional
     public void saveRawMaterialNutrition(Product product, FoodProductAnalysisRequest request) {
