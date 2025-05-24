@@ -46,7 +46,7 @@ public class ProductService {
 
             return ProductResponse.builder()
                     .allergyTypes(getAllergyResponse(product, request.allergies()))
-                    .nutrientResponse(getNutrientRecommendationResponse(request, product))
+                    .nutrientResponse(getNutrientResponse(request, product))
                     .build();
         }
         Product product = Product.builder()
@@ -59,7 +59,7 @@ public class ProductService {
 
         return ProductResponse.builder()
                 .allergyTypes(getAllergyResponse(product, request.allergies()))
-                .nutrientResponse(getNutrientRecommendationResponse(request, product))
+                .nutrientResponse(getNutrientResponse(request, product))
                 .build();
     }
 
@@ -71,7 +71,7 @@ public class ProductService {
                 .toList();
     }
 
-    private NutrientResponse getNutrientRecommendationResponse(
+    private NutrientResponse getNutrientResponse(
             FoodProductAnalysisRequest request, Product product) {
         return NutrientResponse.builder()
                 .nutrientReferenceAmount(product.getNutrientReferenceAmount())
