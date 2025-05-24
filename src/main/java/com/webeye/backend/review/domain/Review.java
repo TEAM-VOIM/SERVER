@@ -23,7 +23,7 @@ public class Review extends BaseEntity {
 
     @Column(nullable = false)
     private Double averageRating;
-    .
+
     @Column(nullable = false)
     private String positiveSummary;
 
