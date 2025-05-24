@@ -8,6 +8,7 @@ import com.webeye.backend.review.dto.response.ReviewSummaryResponse;
 import com.webeye.backend.review.infrastructure.clovaX.ClovaXClientService;
 import com.webeye.backend.review.infrastructure.mapper.ReviewMapper;
 import com.webeye.backend.review.infrastructure.persistence.ReviewRepository;
+import com.webeye.backend.review.infrastructure.util.ReviewCalculator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +34,16 @@ public class ReviewService {
             return ReviewMapper.toResponse(existingReview, request.reviewRating().totalCount());
         }
         Map<String, Integer> ratingMap = convertToRatingMap(request.reviewRating().ratings());
+
+        if (request.reviews() == null || request.reviews().isEmpty()) {
+            double average = ReviewCalculator.calculateAverageRating(ratingMap, request.reviewRating().totalCount());
+            ReviewSummaryResponse nullResponse = ReviewMapper.toNullResponse(request.reviewRating().totalCount(), average);
+
+            Review review = ReviewMapper.toEntity(nullResponse, product);
+            reviewRepository.save(review);
+
+            return ReviewMapper.toResponse(review, request.reviewRating().totalCount());
+        }
 
         ReviewSummaryResponse response = clovaXClientService.summarizeReviewText(
                 request.reviews(),
