@@ -29,11 +29,7 @@ public class Ingredient extends BaseEntity {
     private List<CosmeticIngredient> cosmeticIngredients = new ArrayList<>();
 
     @Builder
-    public Ingredient(
-            Long id,
-            IngredientType ingredientType
-    ) {
-        this.id = id;
+    public Ingredient(IngredientType ingredientType) {
         this.ingredientType = ingredientType;
     }
 }
