@@ -11,7 +11,6 @@ import com.webeye.backend.nutrition.dto.response.NutritionAiResponse;
 import com.webeye.backend.nutrition.persistent.NutrientRepository;
 import com.webeye.backend.product.domain.Product;
 import com.webeye.backend.product.domain.ProductNutrient;
-import com.webeye.backend.product.persistent.ProductRepository;
 import com.webeye.backend.rawmaterial.application.RawMaterialService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,7 +28,6 @@ public class NutritionService {
     private final RawMaterialService rawMaterialService;
 
     private final NutrientRepository nutrientRepository;
-    private final ProductRepository productRepository;
 
     public Nutrient findByType(NutrientType type) {
         return nutrientRepository.findByType(type)
@@ -40,6 +38,7 @@ public class NutritionService {
     public void saveProductNutrition(Product product, FoodProductAnalysisRequest request) {
         NutritionAiResponse response = openAiClient.explainNutrition(imageUrlExtractor.extractImageUrlFromHtml(request.html()));
         if (Boolean.TRUE.equals(response.isNutrientIncluded())) {
+            product.setNutrientReferenceAmount(response.nutrientReferenceAmount());
             Map<NutrientType, Double> nutrientMap = extractNutrientMap(response);
 
             nutrientMap.forEach((type, amount) -> {
@@ -53,7 +52,6 @@ public class NutritionService {
                                 .build()
                 );
             });
-            productRepository.save(product);
             return;
         }
         rawMaterialService.saveRawMaterialNutrition(product, request);
