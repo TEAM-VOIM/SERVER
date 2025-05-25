@@ -8,9 +8,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.Arrays;
-import java.util.List;
-
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -55,9 +52,5 @@ public class Review extends BaseEntity {
         if (product.getReview() != this) {
             product.associateWithReview(this);
         }
-    }
-
-    public List<String> getKeywordList() {
-        return Arrays.asList(this.keywords.split(","));
     }
 }
