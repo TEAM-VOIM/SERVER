@@ -31,9 +31,4 @@ public class Keyword {
     public Keyword(HealthFoodType type) {
         this.type = type;
     }
-
-    public void addHealthFood(HealthFoodKeyword healthFoodKeyword) {
-        healthFoodKeywords.add(healthFoodKeyword);
-        healthFoodKeyword.associateWithKeyword(this);
-    }
 }

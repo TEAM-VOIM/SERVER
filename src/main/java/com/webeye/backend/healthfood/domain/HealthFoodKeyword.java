@@ -30,12 +30,4 @@ public class HealthFoodKeyword extends BaseEntity {
         this.healthFood = healthFood;
         this.keyword = keyword;
     }
-
-    public void associateWithHealthFood(HealthFood healthFood) {
-        this.healthFood = healthFood;
-    }
-
-    public void associateWithKeyword(Keyword keyword) {
-        this.keyword = keyword;
-    }
 }
