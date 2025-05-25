@@ -4,6 +4,7 @@ import com.webeye.backend.allergy.application.AllergyService;
 import com.webeye.backend.allergy.type.AllergyType;
 import com.webeye.backend.imageanalysis.infrastructure.ImageUrlExtractor;
 import com.webeye.backend.nutrition.dto.response.NutrientResponse;
+import com.webeye.backend.product.domain.type.ProductType;
 import com.webeye.backend.product.dto.response.DetailExplanationResponse;
 import com.webeye.backend.global.error.BusinessException;
 import com.webeye.backend.global.error.ErrorCode;
@@ -51,6 +52,7 @@ public class ProductService {
         }
         Product product = Product.builder()
                 .id(request.productId())
+                .productType(ProductType.FOOD)
                 .build();
         productRepository.save(product);
 
