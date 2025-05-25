@@ -26,6 +26,9 @@ public enum ErrorCode {
 
     // nutrient
     NUTRIENT_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 영양성분입니다."),
+
+    // cosmetic
+    COSMETIC_INGREDIENT_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 화장품 성분입니다.")
     ;
     private final HttpStatus status;
     private final String errorMessage;

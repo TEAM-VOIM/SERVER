@@ -28,7 +28,7 @@ public class HealthFood extends BaseEntity {
     private String functionality;
 
     @OneToMany(mappedBy = "healthFood", cascade = CascadeType.ALL)
-    private List<HealthFoodKeyword> healthFoodKeywords= new ArrayList<>();
+    private List<HealthFoodKeyword> healthFoodKeywords = new ArrayList<>();
 
     @OneToMany(mappedBy = "healthFood", cascade = CascadeType.ALL)
     private List<ProductHealthfood> healthfoods = new ArrayList<>();
@@ -37,11 +37,6 @@ public class HealthFood extends BaseEntity {
     public HealthFood(String itemName, String functionality) {
         this.itemName = itemName;
         this.functionality = functionality;
-    }
-
-    public void addKeyword(HealthFoodKeyword healthFoodKeyword) {
-        healthFoodKeywords.add(healthFoodKeyword);
-        healthFoodKeyword.associateWithHealthFood(this);
     }
 
     public void addProduct(ProductHealthfood healthFood) {

@@ -1,9 +1,13 @@
 package com.webeye.backend.healthfood.infrastructure.mapper;
 
 import com.webeye.backend.healthfood.domain.HealthFood;
+import com.webeye.backend.healthfood.domain.HealthFoodKeyword;
+import com.webeye.backend.healthfood.domain.Keyword;
 import com.webeye.backend.healthfood.domain.type.HealthFoodType;
 import com.webeye.backend.healthfood.dto.HealthFoodKeywordResponse;
 import com.webeye.backend.healthfood.dto.HealthFoodResponse;
+import com.webeye.backend.product.domain.Product;
+import com.webeye.backend.product.domain.ProductHealthfood;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,9 +42,28 @@ public class HealthFoodMapper {
         return new HealthFoodResponse.I2710(totalCount, i2710List);
     }
 
-    public static HealthFoodKeywordResponse toResponse(List<HealthFoodType> types) {
+    public static HealthFoodKeywordResponse toResponseFromProduct(Product product) {
+        List<HealthFood> healthFoods = product.getHealthFoods().stream()
+                .map(ProductHealthfood::getHealthFood)
+                .toList();
+
+        return toResponseFromHealthFoods(healthFoods);
+    }
+
+    public static HealthFoodKeywordResponse toResponseFromHealthFoods(List<HealthFood> healthFoods) {
+        List<HealthFoodType> types = extractTypes(healthFoods);
+
         return HealthFoodKeywordResponse.builder()
                 .types(types)
                 .build();
+    }
+
+    private static List<HealthFoodType> extractTypes(List<HealthFood> healthFoods) {
+        return healthFoods.stream()
+                .flatMap(healthFood -> healthFood.getHealthFoodKeywords().stream())
+                .map(HealthFoodKeyword::getKeyword)
+                .map(Keyword::getType)
+                .distinct()
+                .toList();
     }
 }

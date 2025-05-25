@@ -1,9 +1,6 @@
 package com.webeye.backend.healthfood.application;
 
 import com.webeye.backend.healthfood.domain.HealthFood;
-import com.webeye.backend.healthfood.domain.HealthFoodKeyword;
-import com.webeye.backend.healthfood.domain.Keyword;
-import com.webeye.backend.healthfood.domain.type.HealthFoodType;
 import com.webeye.backend.healthfood.dto.HealthFoodAiResponse;
 import com.webeye.backend.healthfood.dto.HealthFoodKeywordResponse;
 import com.webeye.backend.healthfood.dto.HealthFoodResponse;
@@ -15,6 +12,7 @@ import com.webeye.backend.imageanalysis.infrastructure.ImageUrlExtractor;
 import com.webeye.backend.imageanalysis.infrastructure.OpenAiClient;
 import com.webeye.backend.product.domain.Product;
 import com.webeye.backend.product.domain.ProductHealthfood;
+import com.webeye.backend.product.domain.type.ProductType;
 import com.webeye.backend.product.dto.request.FoodProductAnalysisRequest;
 import com.webeye.backend.product.persistent.ProductHealthFoodRepository;
 import com.webeye.backend.product.persistent.ProductRepository;
@@ -24,6 +22,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -61,12 +60,12 @@ public class HealthFoodService {
 
     @Transactional
     public HealthFoodKeywordResponse analyzeAndSaveHealthFood(FoodProductAnalysisRequest request) {
-        Product product = productRepository.findById(request.productId())
-                .orElseGet(() -> productRepository.save(
-                        Product.builder()
-                                .id(request.productId())
-                                .build()
-                ));
+        Product product = findOrCreateProduct(request.productId());
+
+        // DB에 있을 경우, DB에서 조회 후 호출
+        if (product.getHealthFoods() != null && !product.getHealthFoods().isEmpty()) {
+            return HealthFoodMapper.toResponseFromProduct(product);
+        }
         HealthFoodAiResponse response = analyzeHealthFood(request);
 
         List<String> dbItemNames = healthFoodRepository.findAllItemNames();
@@ -76,9 +75,7 @@ public class HealthFoodService {
 
         saveProductHealthFood(product, healthFoods);
 
-        List<HealthFoodType> types = mapHealthFoodTypes(healthFoods);
-
-        return HealthFoodMapper.toResponse(types);
+        return HealthFoodMapper.toResponseFromHealthFoods(healthFoods);
     }
 
     public HealthFoodAiResponse analyzeHealthFood(FoodProductAnalysisRequest request) {
@@ -87,20 +84,27 @@ public class HealthFoodService {
 
     @Transactional
     public void saveProductHealthFood(Product product, List<HealthFood> healthFoods) {
-        List<ProductHealthfood> productHealthFoods = healthFoods.stream()
-                .map(healthFood -> ProductHealthFoodMapper.toEntity(product, healthFood))
-                .toList();
+        List<ProductHealthfood> productHealthFoods = new ArrayList<>();
 
+        for (HealthFood healthFood : healthFoods) {
+            ProductHealthfood productHealthfood = ProductHealthFoodMapper.toEntity(product, healthFood);
+
+            product.addHealthFood(productHealthfood);
+            healthFood.addProduct(productHealthfood);
+
+            productHealthFoods.add(productHealthfood);
+        }
         productHealthFoodRepository.saveAll(productHealthFoods);
     }
 
-    private List<HealthFoodType> mapHealthFoodTypes(List<HealthFood> healthFoods) {
-        return healthFoods.stream()
-                .flatMap(healthFood -> healthFood.getHealthFoodKeywords().stream())
-                .map(HealthFoodKeyword::getKeyword)
-                .map(Keyword::getType)
-                .distinct()
-                .toList();
+    @Transactional
+    public Product findOrCreateProduct(String productId) {
+        return productRepository.findByIdWithHealthFoods(productId)
+                .orElseGet(() -> productRepository.save(
+                        Product.builder()
+                                .id(productId)
+                                .productType(ProductType.HEALTH_FOOD)
+                                .build()));
     }
 
     private List<String> matchItemNames(List<String> aiItemNames, List<String> dbItemNames) {

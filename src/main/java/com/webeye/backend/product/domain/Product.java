@@ -1,6 +1,8 @@
 package com.webeye.backend.product.domain;
 
+import com.webeye.backend.cosmetic.domain.CosmeticIngredient;
 import com.webeye.backend.global.domain.BaseEntity;
+import com.webeye.backend.product.domain.type.ProductType;
 import com.webeye.backend.review.domain.Review;
 import jakarta.persistence.*;
 import lombok.*;
@@ -18,8 +20,15 @@ public class Product extends BaseEntity {
 
     private Integer nutrientReferenceAmount;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private ProductType productType;
+
     @OneToOne(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Review review;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CosmeticIngredient> cosmeticIngredients = new ArrayList<>();
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductAllergy> allergies = new ArrayList<>();
@@ -31,8 +40,13 @@ public class Product extends BaseEntity {
     private List<ProductHealthfood> healthFoods = new ArrayList<>();
 
     @Builder
-    public Product(String id, Integer nutrientReferenceAmount) {
+    public Product(
+            String id,
+            ProductType productType,
+            Integer nutrientReferenceAmount
+    ) {
         this.id = id;
+        this.productType = productType;
         this.nutrientReferenceAmount = nutrientReferenceAmount;
     }
 
