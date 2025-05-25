@@ -106,10 +106,12 @@ public class OpenAiClient {
                 """;
 
         String user = """
-                Carefully examine the attached image. Focus only on Korean ingredient names.
+                Carefully examine the attached image. Focus only on **Korean ingredient names** that appear under the section labeled **"전성분"**.
 
-                Your goal is to check for the exact **presence** of the following Korean ingredient names:
-                (These names must appear exactly and completely in the image, including spacing and punctuation)
+                Your task is to check for the exact **presence** of the following Korean ingredient names — but **only within the "전성분" section**.
+
+                These names must appear **exactly and completely**, including spacing and punctuation.
+                Ignore any matches that appear **outside of the "전성분" section**, or are **partial/similar**.
                 
                 Use this mapping:
                 {
@@ -136,6 +138,8 @@ public class OpenAiClient {
                 }
                 Return true only if the exact full Korean ingredient name appears continuously and separately; otherwise, return false.
                 Ignore partial, similar, or incomplete matches.
+                
+                Note: "인공 향료 (Synthetic Fragrance, Parfum)" is considered the same as "향료" or "Fragrance" — treat all of them as matching "syntheticFragrance".
                 """;
 
         ImageAnalysisPrompt prompt = new ImageAnalysisPrompt(system, user);
