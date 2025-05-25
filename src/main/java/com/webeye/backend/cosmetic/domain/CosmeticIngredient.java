@@ -28,11 +28,9 @@ public class CosmeticIngredient extends BaseEntity {
 
     @Builder
     public CosmeticIngredient(
-            Long id,
             Product product,
             Ingredient ingredient
     ) {
-        this.id = id;
         this.product = product;
         this.ingredient = ingredient;
     }
