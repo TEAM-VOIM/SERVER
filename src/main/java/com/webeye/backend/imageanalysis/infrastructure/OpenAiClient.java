@@ -158,6 +158,7 @@ public class OpenAiClient {
                 Look for the section that lists ingredients. This section is usually labeled with:
                 - '원재료명'
                 - '원재료 및 함량'
+                - '영양·기능정보'
                 - or similar titles
                 
                 From this section, extract only the ingredient names. For example:
