@@ -1,9 +1,6 @@
 package com.webeye.backend.healthfood.application;
 
 import com.webeye.backend.healthfood.domain.HealthFood;
-import com.webeye.backend.healthfood.domain.HealthFoodKeyword;
-import com.webeye.backend.healthfood.domain.Keyword;
-import com.webeye.backend.healthfood.domain.type.HealthFoodType;
 import com.webeye.backend.healthfood.dto.HealthFoodAiResponse;
 import com.webeye.backend.healthfood.dto.HealthFoodKeywordResponse;
 import com.webeye.backend.healthfood.dto.HealthFoodResponse;
@@ -25,6 +22,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -86,10 +84,16 @@ public class HealthFoodService {
 
     @Transactional
     public void saveProductHealthFood(Product product, List<HealthFood> healthFoods) {
-        List<ProductHealthfood> productHealthFoods = healthFoods.stream()
-                .map(healthFood -> ProductHealthFoodMapper.toEntity(product, healthFood))
-                .toList();
+        List<ProductHealthfood> productHealthFoods = new ArrayList<>();
 
+        for (HealthFood healthFood : healthFoods) {
+            ProductHealthfood productHealthfood = ProductHealthFoodMapper.toEntity(product, healthFood);
+
+            product.addHealthFood(productHealthfood);
+            healthFood.addProduct(productHealthfood);
+
+            productHealthFoods.add(productHealthfood);
+        }
         productHealthFoodRepository.saveAll(productHealthFoods);
     }
 
