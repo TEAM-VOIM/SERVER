@@ -43,13 +43,23 @@ public class ProductDetailService {
     @Transactional
     public void saveProductDetails(String id, AllDetailExplanationResponse details) {
         Product product = findOrCreateProduct(id);
-        ProductDetail main = ProductDetail.builder().product(product).outline(OutlineType.MAIN).content(details.main()).build();
-        ProductDetail usage = ProductDetail.builder().product(product).outline(OutlineType.USAGE).content(details.usage()).build();
-        ProductDetail warning = ProductDetail.builder().product(product).outline(OutlineType.WARNING).content(details.warning()).build();
-        ProductDetail specs = ProductDetail.builder().product(product).outline(OutlineType.SPECS).content(details.specs()).build();
-        ProductDetail certification = ProductDetail.builder().product(product).outline(OutlineType.CERTIFICATION).content(details.certification()).build();
 
-        productDetailRepository.saveAll(List.of(main, usage, warning, specs, certification));
+        List<ProductDetail> productDetails = List.of(
+                createProductDetail(product, OutlineType.MAIN, details.main()),
+                createProductDetail(product, OutlineType.USAGE, details.usage()),
+                createProductDetail(product, OutlineType.WARNING, details.warning()),
+                createProductDetail(product, OutlineType.SPECS, details.specs()),
+                createProductDetail(product, OutlineType.CERTIFICATION, details.certification())
+        );
+        productDetailRepository.saveAll(productDetails);
+    }
+
+    private ProductDetail createProductDetail(Product product, OutlineType outline, String content) {
+        return ProductDetail.builder()
+                .product(product)
+                .outline(outline)
+                .content(content)
+                .build();
     }
 
     @Transactional
