@@ -56,6 +56,10 @@ public class ProductDetailService {
     }
 
     private ProductDetail createProductDetail(Product product, OutlineType outline, String content) {
+        if (content == null || content.trim().isEmpty()) {
+            log.warn("[ProductDetailService] 빈 content가 감지되었습니다. outline: {}, productId: {}", outline, product.getId());
+            content = "해당 항목에 대한 정보는 기재되어 있지 않습니다.";
+        }
         return ProductDetail.builder()
                 .product(product)
                 .outline(outline)
