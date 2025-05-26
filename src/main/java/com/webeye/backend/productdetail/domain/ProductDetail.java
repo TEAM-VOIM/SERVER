@@ -1,6 +1,5 @@
 package com.webeye.backend.productdetail.domain;
 
-
 import com.webeye.backend.global.domain.BaseEntity;
 import com.webeye.backend.product.domain.Product;
 import com.webeye.backend.productdetail.domain.type.OutlineType;
@@ -31,6 +30,7 @@ public class ProductDetail extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private OutlineType outline;
 
+    @Column(columnDefinition = "TEXT")
     private String content;
 
     @Builder
