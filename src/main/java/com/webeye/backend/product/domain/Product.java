@@ -3,6 +3,7 @@ package com.webeye.backend.product.domain;
 import com.webeye.backend.cosmetic.domain.CosmeticIngredient;
 import com.webeye.backend.global.domain.BaseEntity;
 import com.webeye.backend.product.domain.type.ProductType;
+import com.webeye.backend.productdetail.domain.ProductDetail;
 import com.webeye.backend.review.domain.Review;
 import jakarta.persistence.*;
 import lombok.*;

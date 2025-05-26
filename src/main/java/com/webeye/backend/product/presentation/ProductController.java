@@ -2,7 +2,7 @@ package com.webeye.backend.product.presentation;
 
 import com.webeye.backend.product.dto.response.DetailExplanationResponse;
 import com.webeye.backend.global.dto.response.SuccessResponse;
-import com.webeye.backend.product.domain.type.OutlineType;
+import com.webeye.backend.productdetail.domain.type.OutlineType;
 import com.webeye.backend.product.dto.request.FoodProductAnalysisRequest;
 import com.webeye.backend.product.application.ProductService;
 import com.webeye.backend.product.dto.request.ProductDetailAnalysisRequest;
@@ -36,5 +36,4 @@ public class ProductController implements ProductSwagger {
             @PathVariable OutlineType outline, @Valid @RequestBody ProductDetailAnalysisRequest request) {
         return SuccessResponse.of(PRODUCT_DETAIL_EXPLANATION_ANALYSIS_SUCCESS, productService.analyzeProductDetail(outline, request));
     }
-
 }

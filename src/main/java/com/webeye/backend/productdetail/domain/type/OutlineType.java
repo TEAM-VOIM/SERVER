@@ -1,4 +1,4 @@
-package com.webeye.backend.product.domain.type;
+package com.webeye.backend.productdetail.domain.type;
 
 import lombok.Getter;
 

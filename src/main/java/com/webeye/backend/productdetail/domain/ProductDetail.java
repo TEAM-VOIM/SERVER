@@ -1,8 +1,9 @@
-package com.webeye.backend.product.domain;
+package com.webeye.backend.productdetail.domain;
 
 
 import com.webeye.backend.global.domain.BaseEntity;
-import com.webeye.backend.product.domain.type.OutlineType;
+import com.webeye.backend.product.domain.Product;
+import com.webeye.backend.productdetail.domain.type.OutlineType;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;

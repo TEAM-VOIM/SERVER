@@ -12,7 +12,7 @@ import com.webeye.backend.imageanalysis.infrastructure.OpenAiClient;
 import com.webeye.backend.nutrition.application.NutrientRecommendationService;
 import com.webeye.backend.nutrition.dto.request.NutrientRecommendationRequest;
 import com.webeye.backend.product.domain.ProductAllergy;
-import com.webeye.backend.product.domain.type.OutlineType;
+import com.webeye.backend.productdetail.domain.type.OutlineType;
 import com.webeye.backend.product.dto.request.FoodProductAnalysisRequest;
 import com.webeye.backend.nutrition.application.NutritionService;
 import com.webeye.backend.product.domain.Product;
@@ -83,6 +83,8 @@ public class ProductService {
     }
 
     public DetailExplanationResponse analyzeProductDetail(OutlineType outline, ProductDetailAnalysisRequest request) {
+
+
         return openAiClient.explainProductDetail(outline, imageUrlExtractor.extractImageUrlFromHtml(request.html()));
     }
 }
