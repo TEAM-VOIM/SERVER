@@ -24,6 +24,7 @@ public class ProductDetailController implements ProductDetailSwagger {
     @PostMapping(value = "/{outline}")
     public SuccessResponse<DetailExplanationResponse> productDetailAnalysis(
             @PathVariable OutlineType outline, @Valid @RequestBody ProductDetailAnalysisRequest request) {
-        return SuccessResponse.of(PRODUCT_DETAIL_EXPLANATION_ANALYSIS_SUCCESS, productDetailService.analyzeProductDetail(outline, request));
+        return SuccessResponse.of(PRODUCT_DETAIL_EXPLANATION_ANALYSIS_SUCCESS,
+                productDetailService.analyzeProductDetail(outline, request));
     }
 }

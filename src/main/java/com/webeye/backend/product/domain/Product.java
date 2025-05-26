@@ -76,11 +76,13 @@ public class Product extends BaseEntity {
         healthFood.associateWithProduct(this);
     }
 
+    public void addProductDetail(ProductDetail detail) {
+        this.details.add(detail);
+        detail.associateWithProduct(this);
+    }
+
     public void addProductDetails(List<ProductDetail> details) {
-        details.forEach(detail -> {
-            this.details.add(detail);
-            detail.associateWithProduct(this);
-        });
+        details.forEach(this::addProductDetail);
     }
 
     public void setNutrientReferenceAmount(Integer nutrientReferenceAmount) {
