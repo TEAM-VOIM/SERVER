@@ -22,7 +22,7 @@ public class Product extends BaseEntity {
     private Integer nutrientReferenceAmount;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = true)
     private ProductType productType;
 
     @OneToOne(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
