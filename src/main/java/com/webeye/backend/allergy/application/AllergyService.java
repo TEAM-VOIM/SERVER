@@ -11,15 +11,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 @Service
 @RequiredArgsConstructor
 public class AllergyService {
     private final OpenAiClient openAiClient;
-    private final ImageUrlExtractor imageUrlExtractor;
     private final ProductRepository productRepository;
 
     public AllergyAiResponse analyzeAllergy(FoodProductAnalysisRequest request) {
-        return openAiClient.explainAllergy(imageUrlExtractor.extractImageUrlFromHtml(request.html()));
+        return openAiClient.explainAllergy(ImageUrlExtractor.extractImageUrlFromHtml(request.html()));
     }
 
     @Transactional

@@ -35,7 +35,6 @@ public class ProductService {
     private final NutrientRecommendationService nutrientRecommendationService;
     private final AllergyService allergyService;
     private final OpenAiClient openAiClient;
-    private final ImageUrlExtractor imageUrlExtractor;
 
     private final ProductRepository productRepository;
 
@@ -83,8 +82,6 @@ public class ProductService {
     }
 
     public DetailExplanationResponse analyzeProductDetail(OutlineType outline, ProductDetailAnalysisRequest request) {
-
-
-        return openAiClient.explainProductDetail(outline, imageUrlExtractor.extractImageUrlFromHtml(request.html()));
+        return openAiClient.explainProductDetail(outline, ImageUrlExtractor.extractImageUrlFromHtml(request.html()));
     }
 }

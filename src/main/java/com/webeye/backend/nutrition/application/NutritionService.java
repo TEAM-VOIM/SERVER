@@ -24,7 +24,6 @@ import java.util.Map;
 @Transactional(readOnly = true)
 public class NutritionService {
     private final OpenAiClient openAiClient;
-    private final ImageUrlExtractor imageUrlExtractor;
     private final RawMaterialService rawMaterialService;
 
     private final NutrientRepository nutrientRepository;
@@ -36,7 +35,7 @@ public class NutritionService {
 
     @Transactional
     public void saveProductNutrition(Product product, FoodProductAnalysisRequest request) {
-        NutritionAiResponse response = openAiClient.explainNutrition(imageUrlExtractor.extractImageUrlFromHtml(request.html()));
+        NutritionAiResponse response = openAiClient.explainNutrition(ImageUrlExtractor.extractImageUrlFromHtml(request.html()));
         if (Boolean.TRUE.equals(response.isNutrientIncluded())) {
             product.setNutrientReferenceAmount(response.nutrientReferenceAmount());
             Map<NutrientType, Double> nutrientMap = extractNutrientMap(response);

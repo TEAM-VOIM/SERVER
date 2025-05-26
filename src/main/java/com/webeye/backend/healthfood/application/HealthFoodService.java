@@ -37,7 +37,6 @@ public class HealthFoodService {
     private String serviceKey;
 
     private final OpenAiClient openAiClient;
-    private final ImageUrlExtractor imageUrlExtractor;
     private final HealthFoodClient healthFoodClient;
     private final ProductRepository productRepository;
     private final HealthFoodRepository healthFoodRepository;
@@ -79,7 +78,7 @@ public class HealthFoodService {
     }
 
     public HealthFoodAiResponse analyzeHealthFood(FoodProductAnalysisRequest request) {
-        return openAiClient.explainHealthFood(imageUrlExtractor.extractImageUrlFromHtml(request.html()));
+        return openAiClient.explainHealthFood(ImageUrlExtractor.extractImageUrlFromHtml(request.html()));
     }
 
     @Transactional

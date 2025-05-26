@@ -26,7 +26,6 @@ import java.util.Map;
 public class CosmeticService {
 
     private final OpenAiClient openAiClient;
-    private final ImageUrlExtractor imageUrlExtractor;
     private final ProductRepository productRepository;
     private final IngredientRepository ingredientRepository;
     private final CosmeticIngredientRepository cosmeticIngredientRepository;
@@ -41,7 +40,7 @@ public class CosmeticService {
         }
 
         CosmeticResponse response = openAiClient.explainCosmetic(
-                imageUrlExtractor.extractImageUrlFromHtml(request.html())
+                ImageUrlExtractor.extractImageUrlFromHtml(request.html())
         );
 
         Map<IngredientType, Boolean> resultMap = convertToEnumMap(response);
