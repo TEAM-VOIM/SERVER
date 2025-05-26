@@ -51,6 +51,7 @@ public class ProductDetailService {
                 createProductDetail(product, OutlineType.SPECS, details.specs()),
                 createProductDetail(product, OutlineType.CERTIFICATION, details.certification())
         );
+        product.addProductDetails(productDetails);
         productDetailRepository.saveAll(productDetails);
     }
 
