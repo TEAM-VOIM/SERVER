@@ -5,6 +5,7 @@ import com.webeye.backend.product.dto.request.ProductDetailAnalysisRequest;
 import com.webeye.backend.product.dto.response.DetailExplanationResponse;
 import com.webeye.backend.productdetail.application.ProductDetailService;
 import com.webeye.backend.productdetail.domain.type.OutlineType;
+import com.webeye.backend.productdetail.presentation.swagger.ProductDetailSwagger;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,10 +16,10 @@ import static com.webeye.backend.global.dto.response.type.SuccessCode.PRODUCT_DE
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/v1/product-detail")
-public class ProductDetailController {
+public class ProductDetailController implements ProductDetailSwagger {
     private final ProductDetailService productDetailService;
 
-//    @Override
+    @Override
     @ResponseStatus(HttpStatus.OK)
     @PostMapping(value = "/{outline}")
     public SuccessResponse<DetailExplanationResponse> productDetailAnalysis(
