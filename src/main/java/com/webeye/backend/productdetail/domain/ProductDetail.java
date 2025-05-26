@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Table(
         name = "product_detail",
         uniqueConstraints = {
-                @UniqueConstraint(columnNames = {"product_id", "type"})
+                @UniqueConstraint(columnNames = {"product_id", "outline"})
         }
 )
 public class ProductDetail extends BaseEntity {
