@@ -1,14 +1,9 @@
 package com.webeye.backend.product.presentation.swagger;
 
-import com.webeye.backend.product.dto.response.DetailExplanationResponse;
 import com.webeye.backend.global.dto.response.SuccessResponse;
-import com.webeye.backend.productdetail.domain.type.OutlineType;
 import com.webeye.backend.product.dto.request.FoodProductAnalysisRequest;
-import com.webeye.backend.product.dto.request.ProductDetailAnalysisRequest;
 import com.webeye.backend.product.dto.response.ProductResponse;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
