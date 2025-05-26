@@ -10,7 +10,7 @@ import com.webeye.backend.imageanalysis.dto.request.ImageAnalysisPrompt;
 import com.webeye.backend.productdetail.domain.type.OutlineType;
 import com.webeye.backend.product.dto.request.FoodProductAnalysisRequest;
 import com.webeye.backend.nutrition.dto.response.NutritionAiResponse;
-import com.webeye.backend.productdetail.dto.AllDetailExplanationResponse;
+import com.webeye.backend.productdetail.dto.response.AllDetailExplanationResponse;
 import com.webeye.backend.rawmaterial.dto.response.RawMaterialAiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

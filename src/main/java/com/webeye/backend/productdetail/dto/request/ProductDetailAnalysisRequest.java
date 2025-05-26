@@ -1,4 +1,4 @@
-package com.webeye.backend.product.dto.request;
+package com.webeye.backend.productdetail.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;

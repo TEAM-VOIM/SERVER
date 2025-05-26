@@ -1,4 +1,4 @@
-package com.webeye.backend.product.dto.response;
+package com.webeye.backend.productdetail.dto.response;
 
 import lombok.Builder;
 

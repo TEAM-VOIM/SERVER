@@ -1,8 +1,8 @@
 package com.webeye.backend.productdetail.presentation.swagger;
 
 import com.webeye.backend.global.dto.response.SuccessResponse;
-import com.webeye.backend.product.dto.request.ProductDetailAnalysisRequest;
-import com.webeye.backend.product.dto.response.DetailExplanationResponse;
+import com.webeye.backend.productdetail.dto.request.ProductDetailAnalysisRequest;
+import com.webeye.backend.productdetail.dto.response.DetailExplanationResponse;
 import com.webeye.backend.productdetail.domain.type.OutlineType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
