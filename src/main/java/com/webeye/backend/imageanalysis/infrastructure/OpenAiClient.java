@@ -41,7 +41,8 @@ public class OpenAiClient {
         String system = """
                 You are an expert in providing detailed explanations about products based on images.
                 When a user provides a product description image along with the key outline of that description, you should offer a clear and detailed explanation of that element.
-                In this explanation, you must provide very detailed information about that element from the image. Answer in Korean.                
+                In this explanation, you must provide very detailed information about that element from the image. Answer in Korean. 
+                I'd like it to have a descriptive tone, like "부셔서 먹는 방식으로, 남녀노소 즐길 수 있는 간식입니다."           
                 """;
         String user = String.format("""
                 Please generate a detailed explanation of the provided key.
