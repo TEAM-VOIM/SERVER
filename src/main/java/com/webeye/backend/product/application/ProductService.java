@@ -34,7 +34,6 @@ public class ProductService {
     private final NutritionService nutritionService;
     private final NutrientRecommendationService nutrientRecommendationService;
     private final AllergyService allergyService;
-    private final OpenAiClient openAiClient;
 
     private final ProductRepository productRepository;
 
@@ -79,9 +78,5 @@ public class ProductService {
                 .overRecommendationNutrients(nutrientRecommendationService.analyzeNutrientSufficiency(NutrientRecommendationRequest
                         .builder().birthYear(request.birthYear()).gender(request.gender()).product(product).build()))
                 .build();
-    }
-
-    public DetailExplanationResponse analyzeProductDetail(OutlineType outline, ProductDetailAnalysisRequest request) {
-        return openAiClient.explainProductDetail(outline, ImageUrlExtractor.extractImageUrlFromHtml(request.html()));
     }
 }

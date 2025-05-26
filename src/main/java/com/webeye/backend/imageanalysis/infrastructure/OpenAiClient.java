@@ -4,7 +4,6 @@ import com.webeye.backend.allergy.dto.response.AllergyAiResponse;
 import com.webeye.backend.cosmetic.dto.response.CosmeticResponse;
 import com.webeye.backend.imageanalysis.dto.request.ImageAnalysisRequest;
 import com.webeye.backend.imageanalysis.dto.response.ImageAnalysisResponse;
-import com.webeye.backend.product.dto.response.DetailExplanationResponse;
 import com.webeye.backend.global.error.BusinessException;
 import com.webeye.backend.healthfood.dto.HealthFoodAiResponse;
 import com.webeye.backend.imageanalysis.dto.request.ImageAnalysisPrompt;
@@ -37,23 +36,6 @@ import static com.webeye.backend.global.error.ErrorCode.INVALID_IMAGE_URL;
 public class OpenAiClient {
     private final ChatClient chatClient;
 
-
-    public DetailExplanationResponse explainProductDetail(OutlineType outline, List<String> urls) {
-        String system = """
-                You are an expert in providing detailed explanations about products based on images.
-                When a user provides a product description image along with the key outline of that description, you should offer a clear and detailed explanation of that element.
-                In this explanation, you must provide very detailed information about that element from the image. Answer in Korean.
-                """;
-
-        String user = String.format("""
-                Key Outline: %s
-                Please generate a detailed explanation of the provided outline.
-                """, outline.getPrompt());
-
-
-        ImageAnalysisPrompt prompt = new ImageAnalysisPrompt(system, user);
-        return callWithStructuredOutput(urls, prompt, DetailExplanationResponse.class);
-    }
 
     public AllDetailExplanationResponse explainProductAllDetail(List<String> urls) {
         String system = """

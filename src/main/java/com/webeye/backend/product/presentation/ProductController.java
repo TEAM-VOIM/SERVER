@@ -1,11 +1,8 @@
 package com.webeye.backend.product.presentation;
 
-import com.webeye.backend.product.dto.response.DetailExplanationResponse;
 import com.webeye.backend.global.dto.response.SuccessResponse;
-import com.webeye.backend.productdetail.domain.type.OutlineType;
 import com.webeye.backend.product.dto.request.FoodProductAnalysisRequest;
 import com.webeye.backend.product.application.ProductService;
-import com.webeye.backend.product.dto.request.ProductDetailAnalysisRequest;
 import com.webeye.backend.product.dto.response.ProductResponse;
 import com.webeye.backend.product.presentation.swagger.ProductSwagger;
 import jakarta.validation.Valid;
