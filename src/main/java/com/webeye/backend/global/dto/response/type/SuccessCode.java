@@ -12,6 +12,8 @@ public enum SuccessCode {
 
     // product
     FOOD_PRODUCT_ANALYSIS_SUCCESS(200, "Product Analysis Success"),
+
+    // product detail
     PRODUCT_DETAIL_EXPLANATION_ANALYSIS_SUCCESS(200, "Product detail explanation analysis success"),
 
     // explanation

@@ -1,0 +1,48 @@
+package com.webeye.backend.productdetail.domain;
+
+import com.webeye.backend.global.domain.BaseEntity;
+import com.webeye.backend.product.domain.Product;
+import com.webeye.backend.productdetail.domain.type.OutlineType;
+import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(
+        name = "product_detail",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"product_id", "outline"})
+        }
+)
+public class ProductDetail extends BaseEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
+    private Product product;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private OutlineType outline;
+
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String content;
+
+    @Builder
+    public ProductDetail(Product product, OutlineType outline, String content) {
+        this.product = product;
+        this.outline = outline;
+        this.content = content;
+    }
+
+    public void associateWithProduct(Product product) {
+        this.product = product;
+        product.getDetails().add(this);
+    }
+}

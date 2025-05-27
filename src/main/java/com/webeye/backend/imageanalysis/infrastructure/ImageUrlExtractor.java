@@ -4,7 +4,6 @@ import com.webeye.backend.global.error.BusinessException;
 import com.webeye.backend.global.error.ErrorCode;
 import groovy.json.StringEscapeUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,9 +11,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Slf4j
-@Component
 public class ImageUrlExtractor {
-    public List<String> extractImageUrlFromHtml(String html) {
+    public static List<String> extractImageUrlFromHtml(String html) {
         html = StringEscapeUtils.unescapeJava(html);
 
         // http://, https://, // 모두 잡는 정규식

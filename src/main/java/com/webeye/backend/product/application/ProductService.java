@@ -2,21 +2,16 @@ package com.webeye.backend.product.application;
 
 import com.webeye.backend.allergy.application.AllergyService;
 import com.webeye.backend.allergy.type.AllergyType;
-import com.webeye.backend.imageanalysis.infrastructure.ImageUrlExtractor;
 import com.webeye.backend.nutrition.dto.response.NutrientResponse;
 import com.webeye.backend.product.domain.type.ProductType;
-import com.webeye.backend.product.dto.response.DetailExplanationResponse;
 import com.webeye.backend.global.error.BusinessException;
 import com.webeye.backend.global.error.ErrorCode;
-import com.webeye.backend.imageanalysis.infrastructure.OpenAiClient;
 import com.webeye.backend.nutrition.application.NutrientRecommendationService;
 import com.webeye.backend.nutrition.dto.request.NutrientRecommendationRequest;
 import com.webeye.backend.product.domain.ProductAllergy;
-import com.webeye.backend.product.domain.type.OutlineType;
 import com.webeye.backend.product.dto.request.FoodProductAnalysisRequest;
 import com.webeye.backend.nutrition.application.NutritionService;
 import com.webeye.backend.product.domain.Product;
-import com.webeye.backend.product.dto.request.ProductDetailAnalysisRequest;
 import com.webeye.backend.product.dto.response.ProductResponse;
 import com.webeye.backend.product.persistent.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -34,8 +29,6 @@ public class ProductService {
     private final NutritionService nutritionService;
     private final NutrientRecommendationService nutrientRecommendationService;
     private final AllergyService allergyService;
-    private final OpenAiClient openAiClient;
-    private final ImageUrlExtractor imageUrlExtractor;
 
     private final ProductRepository productRepository;
 
@@ -80,9 +73,5 @@ public class ProductService {
                 .overRecommendationNutrients(nutrientRecommendationService.analyzeNutrientSufficiency(NutrientRecommendationRequest
                         .builder().birthYear(request.birthYear()).gender(request.gender()).product(product).build()))
                 .build();
-    }
-
-    public DetailExplanationResponse analyzeProductDetail(OutlineType outline, ProductDetailAnalysisRequest request) {
-        return openAiClient.explainProductDetail(outline, imageUrlExtractor.extractImageUrlFromHtml(request.html()));
     }
 }

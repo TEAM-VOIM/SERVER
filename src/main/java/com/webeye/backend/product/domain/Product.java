@@ -3,6 +3,7 @@ package com.webeye.backend.product.domain;
 import com.webeye.backend.cosmetic.domain.CosmeticIngredient;
 import com.webeye.backend.global.domain.BaseEntity;
 import com.webeye.backend.product.domain.type.ProductType;
+import com.webeye.backend.productdetail.domain.ProductDetail;
 import com.webeye.backend.review.domain.Review;
 import jakarta.persistence.*;
 import lombok.*;
@@ -21,7 +22,7 @@ public class Product extends BaseEntity {
     private Integer nutrientReferenceAmount;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = true)
     private ProductType productType;
 
     @OneToOne(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
@@ -38,6 +39,9 @@ public class Product extends BaseEntity {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductHealthfood> healthFoods = new ArrayList<>();
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductDetail> details = new ArrayList<>();
 
     @Builder
     public Product(
@@ -70,6 +74,15 @@ public class Product extends BaseEntity {
     public void addHealthFood(ProductHealthfood healthFood) {
         this.healthFoods.add(healthFood);
         healthFood.associateWithProduct(this);
+    }
+
+    public void addProductDetail(ProductDetail detail) {
+        this.details.add(detail);
+        detail.associateWithProduct(this);
+    }
+
+    public void addProductDetails(List<ProductDetail> details) {
+        details.forEach(this::addProductDetail);
     }
 
     public void setNutrientReferenceAmount(Integer nutrientReferenceAmount) {
