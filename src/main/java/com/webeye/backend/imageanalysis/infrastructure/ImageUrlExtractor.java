@@ -17,16 +17,25 @@ public class ImageUrlExtractor {
     public List<String> extractImageUrlFromHtml(String html) {
         html = StringEscapeUtils.unescapeJava(html);
 
-        Pattern pattern = Pattern.compile("<img[^>]+src=[\"'](//[^\"']+)[\"']");
+        // http://, https://, // 모두 잡는 정규식
+        Pattern pattern = Pattern.compile("<img[^>]+src=[\"']((https?:)?//[^\"']+)[\"']");
         Matcher matcher = pattern.matcher(html);
 
         List<String> imageUrls = new ArrayList<>();
 
         while (matcher.find()) {
             String rawUrl = matcher.group(1);
-            String fullUrl = "https:" + rawUrl;
-            imageUrls.add(fullUrl);
+
+            if (rawUrl.startsWith("//")) {
+                rawUrl = "https:" + rawUrl;
+            }
+            else if (rawUrl.startsWith("http://")) {
+                rawUrl = rawUrl.replaceFirst("http://", "https://");
+            }
+
+            imageUrls.add(rawUrl);
         }
+
         log.info("extracted urls: {}", imageUrls);
         log.info("total number of images: {}", imageUrls.size());
 
