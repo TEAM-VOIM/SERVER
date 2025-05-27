@@ -90,7 +90,6 @@ public class HealthFoodService {
             ProductHealthfood productHealthfood = ProductHealthFoodMapper.toEntity(product, healthFood);
 
             product.addHealthFood(productHealthfood);
-            healthFood.addProduct(productHealthfood);
 
             productHealthFoods.add(productHealthfood);
         }
