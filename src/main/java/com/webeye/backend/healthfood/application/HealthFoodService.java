@@ -89,8 +89,6 @@ public class HealthFoodService {
             ProductHealthfood productHealthfood = ProductHealthFoodMapper.toEntity(product, healthFood);
 
             product.addHealthFood(productHealthfood);
-            healthFood.addProduct(productHealthfood);
-
             productHealthFoods.add(productHealthfood);
         }
         productHealthFoodRepository.saveAll(productHealthFoods);
@@ -108,8 +106,7 @@ public class HealthFoodService {
 
     private List<String> matchItemNames(List<String> aiItemNames, List<String> dbItemNames) {
         return aiItemNames.stream()
-                .flatMap(ai -> dbItemNames.stream()
-                        .filter(ai::contains))
+                .filter(ai -> dbItemNames.stream().anyMatch(ai::contains))
                 .distinct()
                 .toList();
     }

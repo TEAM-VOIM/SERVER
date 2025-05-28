@@ -38,9 +38,4 @@ public class HealthFood extends BaseEntity {
         this.itemName = itemName;
         this.functionality = functionality;
     }
-
-    public void addProduct(ProductHealthfood healthFood) {
-        healthfoods.add(healthFood);
-        healthFood.associateWithHealthFood(this);
-    }
 }
