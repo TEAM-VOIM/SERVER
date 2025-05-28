@@ -25,13 +25,6 @@ public class ReviewController implements ReviewSwagger {
     @PostMapping("/summary")
     @ResponseStatus(HttpStatus.OK)
     public SuccessResponse<ReviewSummaryResponse> summarizeReview(@RequestBody @Valid ReviewSummaryRequest request) {
-        log.info("[리뷰 요약 요청] productId={}, totalCount={}, ratings={}, reviews={}",
-                request.productId(),
-                request.reviewRating().totalCount(),
-                request.reviewRating().ratings(),
-                request.reviews()
-        );
-
         return SuccessResponse.of(REVIEW_SUMMARY_SUCCESS, reviewService.summarizeReview(request));
     }
 }
