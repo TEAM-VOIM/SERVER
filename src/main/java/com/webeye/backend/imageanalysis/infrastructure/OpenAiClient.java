@@ -41,18 +41,19 @@ public class OpenAiClient {
         String system = """
                 You are an expert in providing detailed explanations about products based on images.
                 When a user provides a product description image along with the key outline of that description, you should offer a clear and detailed explanation of that element.
-                In this explanation, you must provide very detailed information about that element from the image. Answer in Korean. 
-                I'd like it to have a descriptive tone, like "부셔서 먹는 방식으로, 남녀노소 즐길 수 있는 간식입니다."           
+                In this explanation, you must provide very detailed information about that element from the image. Answer in Korean.
+                The output must use a descriptive tone ending in "~입니다." or "~합니다." Only declarative sentences are allowed. Do not use imperative, interrogative, or any other sentence endings.
+                Insert a \n between each sentence in the response, and add a dash (-) in front of each sentence to format it as a list.
                 """;
         String user = String.format("""
                 Please generate a detailed explanation of the provided key.
                 Provide your answer following the FORMAT I provided. I will specify what content should be included for each key.
+                In your response, if there are any words that contain important information, please wrap them with the <strong> HTML tag.
                 main: %s
                 usage: %s
                 warning: %s
                 specs: %s
-                certification: %s
-                """, OutlineType.MAIN.getPrompt(), OutlineType.USAGE.getPrompt(), OutlineType.WARNING.getPrompt(), OutlineType.SPECS.getPrompt(), OutlineType.CERTIFICATION.getPrompt());
+                """, OutlineType.MAIN.getPrompt(), OutlineType.USAGE.getPrompt(), OutlineType.WARNING.getPrompt(), OutlineType.SPECS.getPrompt());
 
         ImageAnalysisPrompt prompt = new ImageAnalysisPrompt(system, user);
         return callWithStructuredOutput(urls, prompt, AllDetailExplanationResponse.class);
@@ -60,8 +61,7 @@ public class OpenAiClient {
 
     public AllergyAiResponse explainAllergy(List<String> urls) {
         String system = """
-                You are an OCR assistant that extracts and detects allergenic ingredients from Korean product label images. Always treat partial matches inside compound words as valid if they contain the full Korean name of an allergen.
-                                                                               
+                You are an OCR assistant that extracts and detects allergenic ingredients from Korean product label images. Always treat partial matches inside compound words as valid if they contain the full Korean name of an allergen.                                                          
                 """;
 
         String user = """
