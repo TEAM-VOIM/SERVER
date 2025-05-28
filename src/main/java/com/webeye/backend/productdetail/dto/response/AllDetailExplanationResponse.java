@@ -7,7 +7,6 @@ public record AllDetailExplanationResponse(
         String main,
         String usage,
         String warning,
-        String specs,
-        String certification
+        String specs
 ) {
 }

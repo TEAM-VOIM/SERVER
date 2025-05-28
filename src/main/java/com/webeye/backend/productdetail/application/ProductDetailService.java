@@ -48,8 +48,7 @@ public class ProductDetailService {
                 createProductDetail(product, OutlineType.MAIN, details.main()),
                 createProductDetail(product, OutlineType.USAGE, details.usage()),
                 createProductDetail(product, OutlineType.WARNING, details.warning()),
-                createProductDetail(product, OutlineType.SPECS, details.specs()),
-                createProductDetail(product, OutlineType.CERTIFICATION, details.certification())
+                createProductDetail(product, OutlineType.SPECS, details.specs())
         );
         product.addProductDetails(productDetails);
         productDetailRepository.saveAll(productDetails);
@@ -82,7 +81,6 @@ public class ProductDetailService {
             case USAGE -> details.usage();
             case WARNING -> details.warning();
             case SPECS -> details.specs();
-            case CERTIFICATION -> details.certification();
         };
     }
 }
