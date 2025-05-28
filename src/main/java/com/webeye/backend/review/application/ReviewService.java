@@ -46,7 +46,7 @@ public class ReviewService {
         }
 
         ReviewSummaryResponse response = clovaXClientService.summarizeReviewText(
-                request.reviews(),
+                String.valueOf(request.reviews()),
                 ratingMap,
                 request.reviewRating().totalCount()
         );

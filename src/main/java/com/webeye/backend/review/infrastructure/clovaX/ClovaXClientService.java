@@ -28,13 +28,15 @@ public class ClovaXClientService {
     @Value("${clova.request-id}")
     private String requestId;
 
-    public ReviewSummaryResponse summarizeReviewText(Map<String, Map<String, Integer>> reviewText, Map<String, Integer> ratingMap, int totalCount) {
+    public ReviewSummaryResponse summarizeReviewText(String reviewText, Map<String, Integer> ratingMap, int totalCount) {
         double averageRating = ReviewCalculator.calculateAverageRating(ratingMap, totalCount);
-        String inputText = convertReviewMapToText(reviewText);
 
-        ClovaXRequest request = buildReviewSummaryPrompt(inputText);
+        ClovaXRequest request = buildReviewSummaryPrompt(reviewText);
 
         ClovaXResponse clovaXResponse = clovaXClient.createReviewSummary("Bearer "+ secretKey, requestId, request);
+
+        String content = clovaXResponse.result().message().content();
+        log.info("[Clova 요약 응답] content = {}", content);
 
         return parseResponse(clovaXResponse.result().message().content(), totalCount, averageRating);
     }
@@ -55,12 +57,6 @@ public class ClovaXClientService {
         긍정 리뷰: 맛있다는 평가가 많습니다, 달콤하다는 평가가 많습니다
         부정 리뷰: 배송이 느리다는 평가가 많습니다, 포장이 별로라는 평가가 많습니다
         키워드: 맛있어요, 신선해요, 배송이 느려요
-
-        주의:
-        1. 긍정 리뷰와 부정 리뷰는 최대 3개까지 표시할 것
-        2. 제공된 입력 내용을 기반으로만 판단하고, 임의로 생성하지 말 것
-        3. 각 항목에서 수치가 가장 높은 선택지만 참고할 것
-        4. 만족도를 키워드로 추출할 경우, 만족도의 긍부정 여부도 함께 표시할 것 (예시 - 만족도 높음)
         """;
 
         return new ClovaXRequest(List.of(
@@ -73,7 +69,6 @@ public class ClovaXClientService {
         ));
     }
 
-
     private ReviewSummaryResponse parseResponse(String content, int totalCount, double averageRating) {
         String[] lines = content.split("\n");
 
@@ -81,7 +76,9 @@ public class ClovaXClientService {
         List<String> negativeReviews = new ArrayList<>();
         List<String> keywords = new ArrayList<>();
 
-        for (String line : lines) {
+        for (String rawLine : lines) {
+            String line = rawLine.replaceAll("\\*\\*", "").trim();
+
             if (line != null && line.startsWith("긍정 리뷰:")) {
                 String text = line.replace("긍정 리뷰:", "").trim();
                 positiveReviews = Arrays.stream(text.split("[.,]"))
@@ -106,18 +103,5 @@ public class ClovaXClientService {
             }
         }
         return new ReviewSummaryResponse(totalCount, averageRating, positiveReviews, negativeReviews, keywords);
-    }
-
-    private String convertReviewMapToText(Map<String, Map<String, Integer>> reviewMap) {
-        StringBuilder sb = new StringBuilder();
-
-        for (Map.Entry<String, Map<String, Integer>> entry : reviewMap.entrySet()) {
-            sb.append("[").append(entry.getKey()).append("]\n");
-            for (Map.Entry<String, Integer> option : entry.getValue().entrySet()) {
-                sb.append("- ").append(option.getKey()).append(": ").append(option.getValue()).append("%\n");
-            }
-            sb.append("\n");
-        }
-        return sb.toString();
     }
 }
