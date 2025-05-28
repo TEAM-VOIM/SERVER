@@ -14,9 +14,7 @@ public record ReviewSummaryRequest(
         @Schema(description = "별점 통계")
         ReviewRating reviewRating,
 
-        @Schema(description = "쿠팡 리뷰 목록", example = """
-                [맛있어요, 배송 느려요, 부드러워요]
-                """)
+        @Schema(description = "쿠팡 리뷰 목록", example = "[\"맛있어요\", \"배송 느려요\", \"부드러워요\"]")
         List<String> reviews
 ) {
         public record ReviewRating(
