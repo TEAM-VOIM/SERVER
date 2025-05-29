@@ -17,7 +17,6 @@ public record FoodProductAnalysisRequest(
         @NotEmpty(message = "제품 ID는 비어있을 수 없습니다.")
         String productId,
 
-        @NotBlank(message = "상품 제목은 비어있을 수 없습니다.")
         @Schema(description = "상품 제목")
         String title,
 
