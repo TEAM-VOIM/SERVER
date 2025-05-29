@@ -66,20 +66,20 @@ public class OpenAiClient {
 
         String user = """
                 Step 1: Carefully examine the attached image(s).
-                
+                                
                 Identify the box that contains the full list of ingredients, labeled with '원재료명' or similar (e.g., '원재료 및 함량').
-                
                 Only extract text from this box — ignore all other parts of the image, including allergy warnings or separate notices.
-                
+                If there is no match or anything similar, skip to Step 4 and set the value of all keys to false.
+                                
                 Step 2: From the identified box, extract the ingredient list **exactly as written**, without summarizing, translating, or omitting anything — including words like '분말', '가루', or '함유'.
-                
+                                
                 Step 3: Compare the text to the following list of allergenic ingredients:
                 계란(EGG), 우유(MILK), 메밀(BUCKWHEAT), 땅콩(PEANUT), 대두(SOYBEAN), 밀(WHEAT), 잣(PINE_NUT), 호두(WALNUT), 게(CRAB), 새우(SHRIMP), 오징어(SQUID), 고등어(MACKEREL), 조개(SHELLFISH), 복숭아(PEACH), 토마토(TOMATO), 닭고기(CHICKEN), 돼지고기(PORK), 쇠고기(BEEF), 아황산류(SULFITE).
 
                 Return true for an allergen if its full Korean name appears **anywhere inside any word** in the ingredient list — even if it is part of a compound word (e.g., "호두함유", "호두분말", "밀가루").
-                
+                                
                 Return false if the full Korean allergen word does not appear in any part of the ingredient text.
-                
+                                
                 Step 4: Output a list of booleans (true/false), in the same order as the allergen list above.
                  """;
 
