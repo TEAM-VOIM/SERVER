@@ -43,7 +43,7 @@ public class OpenAiClient {
                 When a user provides a product description image along with the key outline of that description, you should offer a clear and detailed explanation of that element.
                 In this explanation, you must provide very detailed information about that element from the image. Answer in Korean.
                 The output must use a descriptive tone ending in "~입니다." or "~합니다." Only declarative sentences are allowed. Do not use imperative, interrogative, or any other sentence endings.
-                Insert a \n between each sentence in the response, and add a dash (-) in front of each sentence to format it as a list.
+                Please separate each sentence onto a new line using \\n as the line break.
                 """;
         String user = String.format("""
                 Please generate a detailed explanation of the provided key.
