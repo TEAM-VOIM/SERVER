@@ -33,11 +33,17 @@ public class ClovaXClientService {
 
         ClovaXRequest request = buildReviewSummaryPrompt(reviewText);
 
-        ClovaXResponse clovaXResponse = clovaXClient.createReviewSummary("Bearer "+ secretKey, requestId, request);
+        try {
+            ClovaXResponse clovaXResponse = clovaXClient.createReviewSummary("Bearer "+ secretKey, requestId, request);
 
-        log.info("[Clova 요약 응답] content = {}", clovaXResponse.result().message().content());
+            log.info("reviewText 길이: {}", reviewText.length());
+            log.info("[Clova 요약 응답] content = {}", clovaXResponse.result().message().content());
 
-        return parseResponse(clovaXResponse.result().message().content(), totalCount, averageRating);
+            return parseResponse(clovaXResponse.result().message().content(), totalCount, averageRating);
+        } catch (Exception e) {
+            log.error("Clova 요약 실패: {}", e.getMessage(), e);
+            throw new RuntimeException("Clova 요약 중 오류 발생", e);
+        }
     }
 
     private ClovaXRequest buildReviewSummaryPrompt(String inputText) {
