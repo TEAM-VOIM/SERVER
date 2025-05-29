@@ -29,6 +29,7 @@ public class ProductDetailService {
 
     @Transactional
     public DetailExplanationResponse analyzeProductDetail(OutlineType outline, ProductDetailAnalysisRequest request) {
+        log.info("[ProductDetailService] 📌 requested product ID: {}", request.productId());
         Optional<ProductDetail> productDetailOpt = productDetailRepository.findByProductIdAndOutline(request.productId(), outline);
         if (productDetailOpt.isEmpty()) {
             AllDetailExplanationResponse details = openAiClient.explainProductAllDetail(ImageUrlExtractor.extractImageUrlFromHtml(request.html()));

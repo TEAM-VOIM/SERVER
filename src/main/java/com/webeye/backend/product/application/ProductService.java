@@ -34,6 +34,7 @@ public class ProductService {
 
     @Transactional
     public ProductResponse analyzeFoodProduct(FoodProductAnalysisRequest request) {
+        log.info("[ProductService] 📌 requested product ID: {}", request.productId());
         if (productRepository.existsById(request.productId())) {
             Product product = productRepository.findById(request.productId())
                     .orElseThrow(() -> new BusinessException(ErrorCode.PRODUCT_NOT_FOUND));
