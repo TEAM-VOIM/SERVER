@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 
 @Slf4j
 public class ImageUrlExtractor {
-    private static final int MAX_IMAGE_COUNT = 6;
+    private static final int MAX_IMAGE_COUNT = 17;
 
     public static List<String> extractImageUrlFromHtml(String html) {
         String unescapedHtml = unescapeHtml(html);
