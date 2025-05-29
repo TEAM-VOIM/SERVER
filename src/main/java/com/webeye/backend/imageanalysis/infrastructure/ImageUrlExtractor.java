@@ -12,10 +12,28 @@ import java.util.regex.Pattern;
 
 @Slf4j
 public class ImageUrlExtractor {
-    public static List<String> extractImageUrlFromHtml(String html) {
-        html = StringEscapeUtils.unescapeJava(html);
+    private static final int MAX_IMAGE_COUNT = 20;
 
-        // http://, https://, // 모두 잡는 정규식
+    public static List<String> extractImageUrlFromHtml(String html) {
+        String unescapedHtml = unescapeHtml(html);
+        List<String> imageUrls = extractImageUrls(unescapedHtml);
+        List<String> trimmedUrls = trimToMaxSize(imageUrls, MAX_IMAGE_COUNT);
+
+        log.info("extracted urls: {}", trimmedUrls);
+        log.info("total number of images: {}", trimmedUrls.size());
+
+        if (trimmedUrls.isEmpty()) {
+            throw new BusinessException(ErrorCode.IMAGE_URL_NOT_FOUND);
+        }
+
+        return trimmedUrls;
+    }
+
+    private static String unescapeHtml(String html) {
+        return StringEscapeUtils.unescapeJava(html);
+    }
+
+    private static List<String> extractImageUrls(String html) {
         Pattern pattern = Pattern.compile("<img[^>]+src=[\"']((https?:)?//[^\"']+)[\"']");
         Matcher matcher = pattern.matcher(html);
 
@@ -26,20 +44,20 @@ public class ImageUrlExtractor {
 
             if (rawUrl.startsWith("//")) {
                 rawUrl = "https:" + rawUrl;
-            }
-            else if (rawUrl.startsWith("http://")) {
+            } else if (rawUrl.startsWith("http://")) {
                 rawUrl = rawUrl.replaceFirst("http://", "https://");
             }
 
             imageUrls.add(rawUrl);
         }
 
-        log.info("extracted urls: {}", imageUrls);
-        log.info("total number of images: {}", imageUrls.size());
-
-        if (imageUrls.isEmpty()) {
-            throw new BusinessException(ErrorCode.IMAGE_URL_NOT_FOUND);
-        }
         return imageUrls;
+    }
+
+    private static List<String> trimToMaxSize(List<String> urls, int maxSize) {
+        if (urls.size() <= maxSize) {
+            return urls;
+        }
+        return new ArrayList<>(urls.subList(urls.size() - maxSize, urls.size()));
     }
 }
