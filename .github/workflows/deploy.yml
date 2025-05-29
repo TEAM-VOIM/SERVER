@@ -71,7 +71,6 @@ jobs:
       - name: Push Docker Image
         run: docker push ${{ secrets.DOCKER_USERNAME }}/webeye-server:latest
 
-
   deploy-pipeline:
     needs: build-docker-image
     runs-on: ubuntu-latest
