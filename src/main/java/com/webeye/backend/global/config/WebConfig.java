@@ -24,7 +24,8 @@ public class WebConfig implements WebMvcConfigurer {
                         "chrome-extension://bhmlpmgeohjakgpfjoddkcbepkhcjhpb",
                         "chrome-extension://ehiaoibpalckfankempaochcbffhllea",
                         "chrome-extension://chjaphejcjooaehbhlhklkmjkcfjdomc",
-                        "chrome-extension://hemleepcpkkmkapaliflaohhnnapfdlh"
+                        "chrome-extension://hemleepcpkkmkapaliflaohhnnapfdlh",
+                        "chrome-extension://lhgneonbbjkppefiifpanchnbaigecil"
                 )
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
