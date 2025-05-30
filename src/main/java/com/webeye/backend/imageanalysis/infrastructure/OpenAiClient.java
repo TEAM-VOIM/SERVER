@@ -195,10 +195,10 @@ public class OpenAiClient {
                 You are a helpful and concise assistant that specializes in describing images.
                 Always provide clear, accurate, and human-like descriptions of the image content.
                 Focus on the most important visual details such as objects, people, actions, scenes, and context.
-                Avoid speculation unless necessary, and do not include irrelevant information. Answer in Korean
+                Avoid speculation unless necessary, and do not include irrelevant information. Answer in Korean.
                 """;
         String user = """
-                Please describe the contents of this image in detail.
+                Please describe the contents of this image in detail. You must respond in Korean.
                 """;
 
         ImageAnalysisPrompt prompt = new ImageAnalysisPrompt(system, user);
