@@ -27,8 +27,7 @@ import org.springframework.util.MimeType;
 import java.net.MalformedURLException;
 import java.util.List;
 
-import static com.webeye.backend.global.error.ErrorCode.FILE_EXTENSION_NOT_FOUND;
-import static com.webeye.backend.global.error.ErrorCode.INVALID_IMAGE_URL;
+import static com.webeye.backend.global.error.ErrorCode.*;
 
 @Slf4j
 @Component
@@ -202,7 +201,8 @@ public class OpenAiClient {
                 """;
 
         ImageAnalysisPrompt prompt = new ImageAnalysisPrompt(system, user);
-        return callWithStructuredOutput(List.of(request.url()), prompt, ImageAnalysisResponse.class);
+
+        return callWithStructuredOutput(List.of(trimImageUrl(request.url())), prompt, ImageAnalysisResponse.class);
     }
 
     private <T> T callWithStructuredOutput(List<String> urls, ImageAnalysisPrompt prompt, Class<T> clazz) {
@@ -235,6 +235,18 @@ public class OpenAiClient {
             throw new BusinessException(FILE_EXTENSION_NOT_FOUND);
         }
         return fileName.substring(dotIndex + 1);
+    }
+
+    private String trimImageUrl(String url) {
+        for (ImageMimeType type : ImageMimeType.values()) {
+            String extension = "." + type.name().toLowerCase();
+            int index = url.toLowerCase().indexOf(extension);
+            if (index != -1) {
+                int endIndex = index + extension.length();
+                return url.substring(0, endIndex);
+            }
+        }
+        throw new BusinessException(NO_IMAGE_FILE_EXTENSION_FOUND);
     }
 
 

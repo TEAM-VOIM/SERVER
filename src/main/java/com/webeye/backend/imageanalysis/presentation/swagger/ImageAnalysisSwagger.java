@@ -19,6 +19,10 @@ public interface ImageAnalysisSwagger {
             @ApiResponse(
                     responseCode = "200",
                     description = "이미지가 성공적으로 분석되었습니다."
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "이미지 확장자가 없습니다."
             )
     })
     SuccessResponse<ImageAnalysisResponse> imageAnalysis(
